@@ -1,18 +1,16 @@
 package com.udacity.food.feasta.foodfeasta;
 
+import android.content.Intent;
 import android.content.res.AssetFileDescriptor;
-import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -21,6 +19,7 @@ import android.view.View;
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
 import com.udacity.food.feasta.foodfeasta.ui.BaseActivity;
+import com.udacity.food.feasta.foodfeasta.ui.DetailViewActivity;
 import com.udacity.food.feasta.foodfeasta.ui.MenuFragment;
 import com.udacity.food.feasta.foodfeasta.ui.ViewPagerAdapter;
 import com.udacity.food.feasta.foodfeasta.ui.dummy.DummyContent;
@@ -75,23 +74,23 @@ public class LandingPageActivity extends BaseActivity
     }
 
     @OnClick({R.id.fabWaiter, R.id.fabWater, R.id.fabFeedback})
-    public void onClick(View view){
+    public void onClick(View view) {
 
-        switch (view.getId()){
+        switch (view.getId()) {
             case R.id.fabWaiter:
 
-                try{
+                try {
                     //mp.start();
-                    if(mp.isPlaying()){
+                    if (mp.isPlaying()) {
                         mp.stop();
                     }
                     mp.reset();
                     AssetFileDescriptor afd;
                     afd = getAssets().openFd("door_bell.mp3");
-                    mp.setDataSource(afd.getFileDescriptor(),afd.getStartOffset(),afd.getLength());
+                    mp.setDataSource(afd.getFileDescriptor(), afd.getStartOffset(), afd.getLength());
                     mp.prepare();
                     mp.start();
-                }catch(Exception e){
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
 
@@ -169,6 +168,8 @@ public class LandingPageActivity extends BaseActivity
     @Override
     public void onListFragmentInteraction(DummyContent.DummyItem item) {
 
+        Intent detailViewIntent = new Intent(this, DetailViewActivity.class);
+        startActivity(detailViewIntent);
     }
 
     @Override
