@@ -1,7 +1,9 @@
 package com.udacity.food.feasta.foodfeasta;
 
+import android.content.res.AssetFileDescriptor;
+import android.media.AudioManager;
+import android.media.MediaPlayer;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
@@ -16,6 +18,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.github.clans.fab.FloatingActionButton;
+import com.github.clans.fab.FloatingActionMenu;
 import com.udacity.food.feasta.foodfeasta.ui.BaseActivity;
 import com.udacity.food.feasta.foodfeasta.ui.MenuFragment;
 import com.udacity.food.feasta.foodfeasta.ui.ViewPagerAdapter;
@@ -23,24 +27,32 @@ import com.udacity.food.feasta.foodfeasta.ui.dummy.DummyContent;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class LandingPageActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener,
         MenuFragment.OnListFragmentInteractionListener {
 
     private MenuFragment mMenuFragment;
+    private MediaPlayer mp;
     @BindView(R.id.toolbar)
     Toolbar toolbar;
     @BindView(R.id.tabs)
     TabLayout mTabs;
     @BindView(R.id.viewpager)
     ViewPager mViewPager;
-    @BindView(R.id.fab)
-    FloatingActionButton mFab;
+    @BindView(R.id.floatingActionMenu)
+    FloatingActionMenu mFloatingActionMenu;
     @BindView(R.id.drawer_layout)
     DrawerLayout drawer;
     @BindView(R.id.nav_view)
     NavigationView navigationView;
+    @BindView(R.id.fabFeedback)
+    FloatingActionButton fabFeedback;
+    @BindView(R.id.fabWater)
+    FloatingActionButton fabWater;
+    @BindView(R.id.fabWaiter)
+    FloatingActionButton fabWaiter;
 
 
     @Override
@@ -50,6 +62,8 @@ public class LandingPageActivity extends BaseActivity
 
         ButterKnife.bind(this);
 
+        //mp = MediaPlayer.create(this, R.raw.door_bell);
+        mp = new MediaPlayer();
         setupUI();
         setupListeners();
     }
@@ -58,6 +72,41 @@ public class LandingPageActivity extends BaseActivity
         mMenuFragment = MenuFragment.newInstance(1);
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.add(R.id.rlFragmentContainer, mMenuFragment).commit();
+    }
+
+    @OnClick({R.id.fabWaiter, R.id.fabWater, R.id.fabFeedback})
+    public void onClick(View view){
+
+        switch (view.getId()){
+            case R.id.fabWaiter:
+
+                try{
+                    //mp.start();
+                    if(mp.isPlaying()){
+                        mp.stop();
+                    }
+                    mp.reset();
+                    AssetFileDescriptor afd;
+                    afd = getAssets().openFd("door_bell.mp3");
+                    mp.setDataSource(afd.getFileDescriptor(),afd.getStartOffset(),afd.getLength());
+                    mp.prepare();
+                    mp.start();
+                }catch(Exception e){
+                    e.printStackTrace();
+                }
+
+                break;
+            case R.id.fabWater:
+
+                break;
+            case R.id.fabFeedback:
+
+                break;
+            default:
+
+                break;
+
+        }
     }
 
     @Override
