@@ -9,13 +9,15 @@
     tools:showIn="@layout/app_bar_landing_page"
     tools:context="com.udacity.food.feasta.foodfeasta.LandingPageActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello World!"
+    <RelativeLayout
+        android:id="@+id/rlFragmentContainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         app:layout_constraintBottom_toBottomOf="@+id/content_landing_page"
         app:layout_constraintLeft_toLeftOf="@+id/content_landing_page"
         app:layout_constraintRight_toRightOf="@+id/content_landing_page"
-        app:layout_constraintTop_toTopOf="@+id/content_landing_page" />
+        app:layout_constraintTop_toTopOf="@+id/content_landing_page" >
+
+    </RelativeLayout>
 
 </android.support.constraint.ConstraintLayout>
