@@ -2,16 +2,12 @@ package com.udacity.food.feasta.foodfeasta;
 
 import android.content.Intent;
 import android.content.res.AssetFileDescriptor;
-import android.database.Cursor;
 import android.media.MediaPlayer;
-import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.CursorLoader;
-import android.support.v4.content.Loader;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
@@ -25,10 +21,13 @@ import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
 import com.udacity.food.feasta.foodfeasta.ui.BaseActivity;
 import com.udacity.food.feasta.foodfeasta.ui.DetailViewActivity;
-import com.udacity.food.feasta.foodfeasta.ui.MenuCursorAdapter;
 import com.udacity.food.feasta.foodfeasta.ui.MenuFragment;
 import com.udacity.food.feasta.foodfeasta.ui.ViewPagerAdapter;
 import com.udacity.food.feasta.foodfeasta.ui.dummy.DummyContent;
+
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -36,13 +35,10 @@ import butterknife.OnClick;
 
 public class LandingPageActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener,
-        MenuFragment.OnListFragmentInteractionListener,
-        LoaderManager.LoaderCallbacks<Cursor>{
+        MenuFragment.OnListFragmentInteractionListener {
 
     private MenuFragment mMenuFragment;
     private MediaPlayer mp;
-    private static final int LOADER_SEARCH_RESULTS = 1;
-    private MenuCursorAdapter adapter;
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
@@ -199,8 +195,9 @@ public class LandingPageActivity extends BaseActivity
         mTabs = (TabLayout) findViewById(R.id.tabs);
         mTabs.setupWithViewPager(mViewPager);
 
-        // start loader
-        this.getSupportLoaderManager().restartLoader(LOADER_SEARCH_RESULTS, null, this);
+        MenuFetchingAsyncTask fetchingAsyncTask = new MenuFetchingAsyncTask();
+        fetchingAsyncTask.execute();
+
     }
 
     @Override
@@ -216,40 +213,45 @@ public class LandingPageActivity extends BaseActivity
         viewPager.setAdapter(adapter);
     }
 
-    @Override
-    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        switch (id)
-        {
-            case LOADER_SEARCH_RESULTS:
+    public class MenuFetchingAsyncTask extends AsyncTask<String, Integer, Integer> {
 
-                final Uri uri = Uri.parse("https://myfirstfirebase-2c835.firebaseio.com/fooditem.json");
-                return new CursorLoader(this, uri, null, null, null, null);
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
         }
 
-        return null;
-    }
+        @Override
+        protected Integer doInBackground(String... params) {
 
-    @Override
-    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-        switch (loader.getId())
-        {
-            case LOADER_SEARCH_RESULTS:
+            HttpURLConnection urlConnection = null;
+            try {
+                String response = null;
+                URL url = new URL("https://myfirstfirebase-2c835.firebaseio.com/fooditem.json");
+                urlConnection = (HttpURLConnection) url.openConnection();
+                urlConnection.setConnectTimeout(30000);
+                InputStream in = urlConnection.getInputStream();
+                StringBuilder sb = new StringBuilder();
+                byte[] buff = new byte[1024];
+                int count;
+                while ((count = in.read(buff)) > 0) {
+                    sb.append(new String(buff, 0, count));
+                }
+                response = sb.toString();
 
-
-                System.out.println("it came here onloadfinish");
-                //this.adapter.swapCursor(data);
-                break;
+                System.out.println("json -- " + response);
+            } catch (Exception e) {
+                e.printStackTrace();
+            } finally {
+                if (urlConnection != null) {
+                    urlConnection.disconnect();
+                }
+            }
+            return 1;
         }
-    }
 
-    @Override
-    public void onLoaderReset(Loader<Cursor> loader) {
-        switch (loader.getId())
-        {
-            case LOADER_SEARCH_RESULTS:
-
-                //this.adapter.swapCursor(null);
-                break;
+        @Override
+        protected void onPostExecute(Integer integer) {
+            super.onPostExecute(integer);
         }
     }
 }
