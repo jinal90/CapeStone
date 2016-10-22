@@ -193,12 +193,14 @@ public class LandingPageActivity extends BaseActivity
         toggle.syncState();
 
         navigationView.setNavigationItemSelectedListener(this);
-        // start loader
-        this.getSupportLoaderManager().restartLoader(LOADER_SEARCH_RESULTS, null, this);
 
+        setupViewPager(mViewPager);
 
         mTabs = (TabLayout) findViewById(R.id.tabs);
         mTabs.setupWithViewPager(mViewPager);
+
+        // start loader
+        this.getSupportLoaderManager().restartLoader(LOADER_SEARCH_RESULTS, null, this);
     }
 
     @Override
@@ -233,8 +235,9 @@ public class LandingPageActivity extends BaseActivity
         {
             case LOADER_SEARCH_RESULTS:
 
-                setupViewPager(mViewPager);
-                this.adapter.swapCursor(data);
+
+                System.out.println("it came here onloadfinish");
+                //this.adapter.swapCursor(data);
                 break;
         }
     }

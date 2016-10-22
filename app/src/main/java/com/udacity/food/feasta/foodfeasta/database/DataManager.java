@@ -14,7 +14,7 @@ import com.google.firebase.database.ValueEventListener;
 
 public class DataManager {
 
-    public void getData(){
+    /*public void getData(){
         DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference("users");
         mDatabase.child(userId).addValueEventListener(new ValueEventListener() {
             @Override
@@ -31,5 +31,5 @@ public class DataManager {
                 Log.w("Firebase", "Failed to read value.", error.toException());
             }
         });
-    }
+    }*/
 }
