@@ -15,14 +15,35 @@
         app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
     <RelativeLayout
-        android:id="@+id/rlFragmentContainer"
+        android:id="@+id/rlProgressIndicator"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="@+id/content_landing_page"
-        app:layout_constraintLeft_toLeftOf="@+id/content_landing_page"
-        app:layout_constraintRight_toRightOf="@+id/content_landing_page"
-        app:layout_constraintTop_toTopOf="@+id/content_landing_page">
+        android:layout_height="match_parent">
+
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rlErrorView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/tvErrorTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="Error" />
+
+        <TextView
+            android:id="@+id/tvErrorDesc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tvErrorTitle"
+            android:layout_centerHorizontal="true"
+            android:text="Some Description Goes Here" />
 
     </RelativeLayout>
 

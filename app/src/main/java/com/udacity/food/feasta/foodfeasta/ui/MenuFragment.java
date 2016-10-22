@@ -1,20 +1,24 @@
 package com.udacity.food.feasta.foodfeasta.ui;
 
 import android.content.Context;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.gson.Gson;
 import com.udacity.food.feasta.foodfeasta.R;
+import com.udacity.food.feasta.foodfeasta.helper.Constants;
+import com.udacity.food.feasta.foodfeasta.helper.Utility;
+import com.udacity.food.feasta.foodfeasta.model.FoodMenu;
 import com.udacity.food.feasta.foodfeasta.ui.dummy.DummyContent;
 import com.udacity.food.feasta.foodfeasta.ui.dummy.DummyContent.DummyItem;
-
-import java.util.List;
 
 /**
  * A fragment representing a list of Items.
@@ -29,6 +33,7 @@ public class MenuFragment extends Fragment {
     // TODO: Customize parameters
     private int mColumnCount = 1;
     private OnListFragmentInteractionListener mListener;
+    private RecyclerView recyclerView;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -60,21 +65,23 @@ public class MenuFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.menu_item_list, container, false);
-
-        // Set the adapter
         if (view instanceof RecyclerView) {
-            Context context = view.getContext();
-            RecyclerView recyclerView = (RecyclerView) view;
-            if (mColumnCount <= 1) {
-                recyclerView.setLayoutManager(new LinearLayoutManager(context));
-            } else {
-                recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
-            }
-            recyclerView.setAdapter(new MenuRecyclerViewAdapter(DummyContent.ITEMS, mListener));
+            recyclerView = (RecyclerView) view;
+            ProcessMenuData task = new ProcessMenuData();
+            task.execute();
         }
         return view;
     }
 
+    public void showContent() {
+        // Set the adapter
+        if (mColumnCount <= 1) {
+            recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        } else {
+            recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), mColumnCount));
+        }
+        recyclerView.setAdapter(new MenuRecyclerViewAdapter(DummyContent.ITEMS, mListener));
+    }
 
     @Override
     public void onAttach(Context context) {
@@ -106,5 +113,57 @@ public class MenuFragment extends Fragment {
     public interface OnListFragmentInteractionListener {
         // TODO: Update argument type and name
         void onListFragmentInteraction(DummyItem item);
+    }
+
+    public class ProcessMenuData extends AsyncTask<String, Integer, Integer> {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            //showProgressIndicator();
+        }
+
+        @Override
+        protected Integer doInBackground(String... params) {
+
+            if (Utility.isOnline(getActivity())) {
+                try {
+                    String response = Utility.getSavedStringDataFromPref(getActivity(), "MenuData");
+
+                    if (!TextUtils.isEmpty(response)) {
+
+                        Gson gson = new Gson();
+                        FoodMenu menuObject = gson.fromJson(response, FoodMenu.class);
+                        if (menuObject != null && menuObject.getFooditem() != null
+                                && menuObject.getFooditem().size() > 0) {
+                            System.out.println("json -- " + menuObject.getFooditem().size());
+                            return Constants.SUCCESS;
+                        }
+
+                    }
+
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            return Constants.FAILUR;
+        }
+
+        @Override
+        protected void onPostExecute(Integer result) {
+            super.onPostExecute(result);
+            switch (result) {
+                case Constants.SUCCESS:
+                    showContent();
+                    break;
+                case Constants.FAILUR:
+                    //showErrorView();
+                    break;
+                default:
+                    break;
+            }
+        }
     }
 }

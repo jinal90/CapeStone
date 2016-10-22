@@ -7,18 +7,21 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.RelativeLayout;
 
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
+import com.udacity.food.feasta.foodfeasta.helper.Constants;
+import com.udacity.food.feasta.foodfeasta.helper.Utility;
 import com.udacity.food.feasta.foodfeasta.ui.BaseActivity;
 import com.udacity.food.feasta.foodfeasta.ui.DetailViewActivity;
 import com.udacity.food.feasta.foodfeasta.ui.MenuFragment;
@@ -58,6 +61,10 @@ public class LandingPageActivity extends BaseActivity
     FloatingActionButton fabWater;
     @BindView(R.id.fabWaiter)
     FloatingActionButton fabWaiter;
+    @BindView(R.id.rlErrorView)
+    RelativeLayout rlErrorView;
+    @BindView(R.id.rlProgressIndicator)
+    RelativeLayout rlProgressIndicator;
 
 
     @Override
@@ -71,12 +78,6 @@ public class LandingPageActivity extends BaseActivity
         mp = new MediaPlayer();
         setupUI();
         setupListeners();
-    }
-
-    public void loadFrament() {
-        mMenuFragment = MenuFragment.newInstance(1);
-        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.add(R.id.rlFragmentContainer, mMenuFragment).commit();
     }
 
     @OnClick({R.id.fabWaiter, R.id.fabWater, R.id.fabFeedback})
@@ -182,18 +183,12 @@ public class LandingPageActivity extends BaseActivity
     public void setupUI() {
         setSupportActionBar(toolbar);
 
-        //loadFrament();
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
         navigationView.setNavigationItemSelectedListener(this);
-
-        setupViewPager(mViewPager);
-
-        mTabs = (TabLayout) findViewById(R.id.tabs);
-        mTabs.setupWithViewPager(mViewPager);
 
         MenuFetchingAsyncTask fetchingAsyncTask = new MenuFetchingAsyncTask();
         fetchingAsyncTask.execute();
@@ -213,45 +208,91 @@ public class LandingPageActivity extends BaseActivity
         viewPager.setAdapter(adapter);
     }
 
+    public void showProgressIndicator() {
+
+        rlProgressIndicator.setVisibility(View.VISIBLE);
+        rlErrorView.setVisibility(View.GONE);
+        mViewPager.setVisibility(View.GONE);
+        mTabs.setVisibility(View.GONE);
+
+    }
+
+    public void showErrorView() {
+        rlProgressIndicator.setVisibility(View.GONE);
+        rlErrorView.setVisibility(View.VISIBLE);
+        mViewPager.setVisibility(View.GONE);
+        mTabs.setVisibility(View.GONE);
+    }
+
+    public void showContent() {
+        rlProgressIndicator.setVisibility(View.GONE);
+        rlErrorView.setVisibility(View.GONE);
+        mViewPager.setVisibility(View.VISIBLE);
+        mTabs.setVisibility(View.VISIBLE);
+        setupViewPager(mViewPager);
+        mTabs = (TabLayout) findViewById(R.id.tabs);
+        mTabs.setupWithViewPager(mViewPager);
+    }
+
     public class MenuFetchingAsyncTask extends AsyncTask<String, Integer, Integer> {
 
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
+            showProgressIndicator();
         }
 
         @Override
         protected Integer doInBackground(String... params) {
 
-            HttpURLConnection urlConnection = null;
-            try {
-                String response = null;
-                URL url = new URL("https://myfirstfirebase-2c835.firebaseio.com/fooditem.json");
-                urlConnection = (HttpURLConnection) url.openConnection();
-                urlConnection.setConnectTimeout(30000);
-                InputStream in = urlConnection.getInputStream();
-                StringBuilder sb = new StringBuilder();
-                byte[] buff = new byte[1024];
-                int count;
-                while ((count = in.read(buff)) > 0) {
-                    sb.append(new String(buff, 0, count));
-                }
-                response = sb.toString();
+            if (Utility.isOnline(LandingPageActivity.this)) {
+                HttpURLConnection urlConnection = null;
+                try {
+                    String response = null;
+                    URL url = new URL("https://myfirstfirebase-2c835.firebaseio.com/fooditem.json");
+                    urlConnection = (HttpURLConnection) url.openConnection();
+                    urlConnection.setConnectTimeout(30000);
+                    InputStream in = urlConnection.getInputStream();
+                    StringBuilder sb = new StringBuilder();
+                    byte[] buff = new byte[1024];
+                    int count;
+                    while ((count = in.read(buff)) > 0) {
+                        sb.append(new String(buff, 0, count));
+                    }
+                    response = sb.toString();
 
-                System.out.println("json -- " + response);
-            } catch (Exception e) {
-                e.printStackTrace();
-            } finally {
-                if (urlConnection != null) {
-                    urlConnection.disconnect();
+                    if (!TextUtils.isEmpty(response)) {
+                        Utility.saveStringDataInPref(LandingPageActivity.this, "MenuData", response);
+                        return Constants.SUCCESS;
+                    }
+
+                    System.out.println("json -- " + response);
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                } finally {
+                    if (urlConnection != null) {
+                        urlConnection.disconnect();
+                    }
                 }
             }
-            return 1;
+
+            return Constants.FAILUR;
         }
 
         @Override
-        protected void onPostExecute(Integer integer) {
-            super.onPostExecute(integer);
+        protected void onPostExecute(Integer result) {
+            super.onPostExecute(result);
+            switch (result) {
+                case Constants.SUCCESS:
+                    showContent();
+                    break;
+                case Constants.FAILUR:
+                    showErrorView();
+                    break;
+                default:
+                    break;
+            }
         }
     }
 }
