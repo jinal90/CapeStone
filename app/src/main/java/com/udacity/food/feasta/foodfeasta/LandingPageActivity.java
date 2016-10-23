@@ -202,9 +202,9 @@ public class LandingPageActivity extends BaseActivity
 
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(MenuFragment.newInstance(1), "Starters");
-        adapter.addFragment(MenuFragment.newInstance(1), "Main Course");
-        adapter.addFragment(MenuFragment.newInstance(1), "Desert");
+        adapter.addFragment(MenuFragment.newInstance(11), "Starters");
+        adapter.addFragment(MenuFragment.newInstance(12), "Main Course");
+        adapter.addFragment(MenuFragment.newInstance(13), "Desert");
         viewPager.setAdapter(adapter);
     }
 
@@ -277,7 +277,7 @@ public class LandingPageActivity extends BaseActivity
                 }
             }
 
-            return Constants.FAILUR;
+            return Constants.FAILURE;
         }
 
         @Override
@@ -287,7 +287,7 @@ public class LandingPageActivity extends BaseActivity
                 case Constants.SUCCESS:
                     showContent();
                     break;
-                case Constants.FAILUR:
+                case Constants.FAILURE:
                     showErrorView();
                     break;
                 default:

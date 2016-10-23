@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
 import com.udacity.food.feasta.foodfeasta.R;
 import com.udacity.food.feasta.foodfeasta.model.FoodMenu;
 import com.udacity.food.feasta.foodfeasta.model.Fooditem;
@@ -43,6 +44,10 @@ public class MenuRecyclerViewAdapter extends RecyclerView.Adapter<MenuRecyclerVi
         holder.tvMenuItemName.setText(mFoodMenu.getFooditem().get(position).getName());
         holder.tvMenuItemDescription.setText(mFoodMenu.getFooditem().get(position).getShort_desc());
         holder.tvMenuItemPrice.setText(mFoodMenu.getFooditem().get(position).getPrice());
+
+        Picasso.with(holder.itemView.getContext())
+                .load(mFoodMenu.getFooditem().get(position).getImage())
+                .into(holder.imgFoodItem);
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override

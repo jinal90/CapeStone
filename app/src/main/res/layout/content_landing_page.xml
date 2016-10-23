@@ -12,7 +12,11 @@
         android:id="@+id/viewpager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        app:layout_constraintBottom_toBottomOf="@+id/content_landing_page"
+        app:layout_constraintLeft_toLeftOf="@+id/content_landing_page"
+        app:layout_constraintRight_toRightOf="@+id/content_landing_page"
+        app:layout_constraintTop_toTopOf="@+id/content_landing_page" />
 
     <RelativeLayout
         android:id="@+id/rlProgressIndicator"

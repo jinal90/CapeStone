@@ -5,7 +5,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -18,8 +17,9 @@ import com.udacity.food.feasta.foodfeasta.helper.Constants;
 import com.udacity.food.feasta.foodfeasta.helper.Utility;
 import com.udacity.food.feasta.foodfeasta.model.FoodMenu;
 import com.udacity.food.feasta.foodfeasta.model.Fooditem;
-import com.udacity.food.feasta.foodfeasta.ui.dummy.DummyContent;
-import com.udacity.food.feasta.foodfeasta.ui.dummy.DummyContent.DummyItem;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A fragment representing a list of Items.
@@ -30,12 +30,12 @@ import com.udacity.food.feasta.foodfeasta.ui.dummy.DummyContent.DummyItem;
 public class MenuFragment extends Fragment {
 
     // TODO: Customize parameter argument names
-    private static final String ARG_COLUMN_COUNT = "column-count";
     // TODO: Customize parameters
-    private int mColumnCount = 1;
     private OnListFragmentInteractionListener mListener;
     private RecyclerView recyclerView;
     private FoodMenu menuObject;
+    private static final String ARG_FOOD_TYPE = "food_type";
+    private int mFoodType;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -46,10 +46,10 @@ public class MenuFragment extends Fragment {
 
     // TODO: Customize parameter initialization
     @SuppressWarnings("unused")
-    public static MenuFragment newInstance(int columnCount) {
+    public static MenuFragment newInstance(int foodType) {
         MenuFragment fragment = new MenuFragment();
         Bundle args = new Bundle();
-        args.putInt(ARG_COLUMN_COUNT, columnCount);
+        args.putInt(ARG_FOOD_TYPE, foodType);
         fragment.setArguments(args);
         return fragment;
     }
@@ -59,7 +59,7 @@ public class MenuFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         if (getArguments() != null) {
-            mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
+            mFoodType = getArguments().getInt(ARG_FOOD_TYPE);
         }
     }
 
@@ -77,11 +77,7 @@ public class MenuFragment extends Fragment {
 
     public void showContent() {
         // Set the adapter
-        if (mColumnCount <= 1) {
-            recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        } else {
-            recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), mColumnCount));
-        }
+        recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 1));
         recyclerView.setAdapter(new MenuRecyclerViewAdapter(menuObject, mListener));
     }
 
@@ -132,12 +128,30 @@ public class MenuFragment extends Fragment {
                 try {
                     String response = Utility.getSavedStringDataFromPref(getActivity(), "MenuData");
 
+                    String type = "";
                     if (!TextUtils.isEmpty(response)) {
 
+                        if (mFoodType == Constants.FOOD_DESSERT) {
+                            type = "desert";
+                        } else if (mFoodType == Constants.FOOD_MAIN_COURSE) {
+                            type = "main_course";
+                        } else if (mFoodType == Constants.FOOD_STARTER) {
+                            type = "starter";
+                        }
+
                         Gson gson = new Gson();
-                        menuObject = gson.fromJson(response, FoodMenu.class);
-                        if (menuObject != null && menuObject.getFooditem() != null
-                                && menuObject.getFooditem().size() > 0) {
+                        FoodMenu fullMenu = gson.fromJson(response, FoodMenu.class);
+                        menuObject = new FoodMenu();
+                        List itemList = new ArrayList<Fooditem>();
+                        if (fullMenu != null && fullMenu.getFooditem() != null
+                                && fullMenu.getFooditem().size() > 0) {
+                            for (int i = 0; i < fullMenu.getFooditem().size(); i++) {
+
+                                if (type.equalsIgnoreCase(fullMenu.getFooditem().get(i).getCategory())) {
+                                    itemList.add(fullMenu.getFooditem().get(i));
+                                }
+                            }
+                            menuObject.setFooditem(itemList);
                             System.out.println("json -- " + menuObject.getFooditem().size());
                             return Constants.SUCCESS;
                         }
@@ -150,7 +164,7 @@ public class MenuFragment extends Fragment {
                 }
             }
 
-            return Constants.FAILUR;
+            return Constants.FAILURE;
         }
 
         @Override
@@ -160,7 +174,7 @@ public class MenuFragment extends Fragment {
                 case Constants.SUCCESS:
                     showContent();
                     break;
-                case Constants.FAILUR:
+                case Constants.FAILURE:
                     //showErrorView();
                     break;
                 default:

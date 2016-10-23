@@ -7,6 +7,10 @@ package com.udacity.food.feasta.foodfeasta.helper;
 public class Constants {
 
     public static final int SUCCESS = 0;
-    public static final int FAILUR = 1;
+    public static final int FAILURE = 1;
+
+    public static final int FOOD_STARTER = 11;
+    public static final int FOOD_MAIN_COURSE = 12;
+    public static final int FOOD_DESSERT = 13;
 
 }
