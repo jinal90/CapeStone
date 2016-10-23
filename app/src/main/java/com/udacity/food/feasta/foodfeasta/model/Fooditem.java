@@ -2,7 +2,10 @@
 package com.udacity.food.feasta.foodfeasta.model;
 
 
-public class Fooditem {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class Fooditem implements Parcelable{
 
     private String category;
     private String image;
@@ -10,6 +13,42 @@ public class Fooditem {
     private String name;
     private String price;
     private String short_desc;
+
+    protected Fooditem(Parcel in) {
+        category = in.readString();
+        image = in.readString();
+        long_desc = in.readString();
+        name = in.readString();
+        price = in.readString();
+        short_desc = in.readString();
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(category);
+        dest.writeString(image);
+        dest.writeString(long_desc);
+        dest.writeString(name);
+        dest.writeString(price);
+        dest.writeString(short_desc);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    public static final Creator<Fooditem> CREATOR = new Creator<Fooditem>() {
+        @Override
+        public Fooditem createFromParcel(Parcel in) {
+            return new Fooditem(in);
+        }
+
+        @Override
+        public Fooditem[] newArray(int size) {
+            return new Fooditem[size];
+        }
+    };
 
     /**
      * 
