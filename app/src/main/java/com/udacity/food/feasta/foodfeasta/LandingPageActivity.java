@@ -176,6 +176,7 @@ public class LandingPageActivity extends BaseActivity
     public void onListFragmentInteraction(Fooditem item) {
 
         Intent detailViewIntent = new Intent(this, DetailViewActivity.class);
+        detailViewIntent.putExtra(Constants.SELECTED_FOOD_ITEM, item);
         startActivity(detailViewIntent);
     }
 

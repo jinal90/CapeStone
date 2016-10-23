@@ -13,4 +13,6 @@ public class Constants {
     public static final int FOOD_MAIN_COURSE = 12;
     public static final int FOOD_DESSERT = 13;
 
+    public static final String SELECTED_FOOD_ITEM = "selected_food_item";
+
 }

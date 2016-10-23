@@ -11,6 +11,10 @@ public class FoodMenu implements Parcelable{
 
     private List<Fooditem> fooditem = new ArrayList<Fooditem>();
 
+    public FoodMenu(){
+
+    }
+
     protected FoodMenu(Parcel in) {
         fooditem = in.createTypedArrayList(Fooditem.CREATOR);
     }
