@@ -4,12 +4,16 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.udacity.food.feasta.foodfeasta.R;
+import com.udacity.food.feasta.foodfeasta.model.FoodMenu;
+import com.udacity.food.feasta.foodfeasta.model.Fooditem;
 import com.udacity.food.feasta.foodfeasta.ui.dummy.DummyContent.DummyItem;
 
-import java.util.List;
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 /**
  * {@link RecyclerView.Adapter} that can display a {@link DummyItem} and makes a call to the
@@ -18,11 +22,11 @@ import java.util.List;
  */
 public class MenuRecyclerViewAdapter extends RecyclerView.Adapter<MenuRecyclerViewAdapter.ViewHolder> {
 
-    private final List<DummyItem> mValues;
+    private final FoodMenu mFoodMenu;
     private final MenuFragment.OnListFragmentInteractionListener mListener;
 
-    public MenuRecyclerViewAdapter(List<DummyItem> items, MenuFragment.OnListFragmentInteractionListener listener) {
-        mValues = items;
+    public MenuRecyclerViewAdapter(FoodMenu items, MenuFragment.OnListFragmentInteractionListener listener) {
+        mFoodMenu = items;
         mListener = listener;
     }
 
@@ -35,9 +39,10 @@ public class MenuRecyclerViewAdapter extends RecyclerView.Adapter<MenuRecyclerVi
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        holder.mItem = mValues.get(position);
-        holder.mIdView.setText(mValues.get(position).id);
-        holder.mContentView.setText(mValues.get(position).content);
+        holder.mItem = mFoodMenu.getFooditem().get(position);
+        holder.tvMenuItemName.setText(mFoodMenu.getFooditem().get(position).getName());
+        holder.tvMenuItemDescription.setText(mFoodMenu.getFooditem().get(position).getShort_desc());
+        holder.tvMenuItemPrice.setText(mFoodMenu.getFooditem().get(position).getPrice());
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -53,25 +58,32 @@ public class MenuRecyclerViewAdapter extends RecyclerView.Adapter<MenuRecyclerVi
 
     @Override
     public int getItemCount() {
-        return mValues.size();
+        return mFoodMenu.getFooditem().size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         public final View mView;
-        public final TextView mIdView;
-        public final TextView mContentView;
-        public DummyItem mItem;
+        @BindView(R.id.tvMenuItemName)
+        TextView tvMenuItemName;
+        @BindView(R.id.tvMenuItemDescription)
+        TextView tvMenuItemDescription;
+        @BindView(R.id.tvMenuItemPrice)
+        TextView tvMenuItemPrice;
+        @BindView(R.id.imgFoodItem)
+        ImageView imgFoodItem;
+
+        public Fooditem mItem;
 
         public ViewHolder(View view) {
             super(view);
+
+            ButterKnife.bind(this, view);
             mView = view;
-            mIdView = (TextView) view.findViewById(R.id.id);
-            mContentView = (TextView) view.findViewById(R.id.content);
         }
 
         @Override
         public String toString() {
-            return super.toString() + " '" + mContentView.getText() + "'";
+            return super.toString() + " 'Something Something'";
         }
     }
 }

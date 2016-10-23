@@ -17,6 +17,7 @@ import com.udacity.food.feasta.foodfeasta.R;
 import com.udacity.food.feasta.foodfeasta.helper.Constants;
 import com.udacity.food.feasta.foodfeasta.helper.Utility;
 import com.udacity.food.feasta.foodfeasta.model.FoodMenu;
+import com.udacity.food.feasta.foodfeasta.model.Fooditem;
 import com.udacity.food.feasta.foodfeasta.ui.dummy.DummyContent;
 import com.udacity.food.feasta.foodfeasta.ui.dummy.DummyContent.DummyItem;
 
@@ -34,6 +35,7 @@ public class MenuFragment extends Fragment {
     private int mColumnCount = 1;
     private OnListFragmentInteractionListener mListener;
     private RecyclerView recyclerView;
+    private FoodMenu menuObject;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -80,7 +82,7 @@ public class MenuFragment extends Fragment {
         } else {
             recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), mColumnCount));
         }
-        recyclerView.setAdapter(new MenuRecyclerViewAdapter(DummyContent.ITEMS, mListener));
+        recyclerView.setAdapter(new MenuRecyclerViewAdapter(menuObject, mListener));
     }
 
     @Override
@@ -112,7 +114,7 @@ public class MenuFragment extends Fragment {
      */
     public interface OnListFragmentInteractionListener {
         // TODO: Update argument type and name
-        void onListFragmentInteraction(DummyItem item);
+        void onListFragmentInteraction(Fooditem item);
     }
 
     public class ProcessMenuData extends AsyncTask<String, Integer, Integer> {
@@ -133,7 +135,7 @@ public class MenuFragment extends Fragment {
                     if (!TextUtils.isEmpty(response)) {
 
                         Gson gson = new Gson();
-                        FoodMenu menuObject = gson.fromJson(response, FoodMenu.class);
+                        menuObject = gson.fromJson(response, FoodMenu.class);
                         if (menuObject != null && menuObject.getFooditem() != null
                                 && menuObject.getFooditem().size() > 0) {
                             System.out.println("json -- " + menuObject.getFooditem().size());

@@ -22,11 +22,11 @@ import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
 import com.udacity.food.feasta.foodfeasta.helper.Constants;
 import com.udacity.food.feasta.foodfeasta.helper.Utility;
+import com.udacity.food.feasta.foodfeasta.model.Fooditem;
 import com.udacity.food.feasta.foodfeasta.ui.BaseActivity;
 import com.udacity.food.feasta.foodfeasta.ui.DetailViewActivity;
 import com.udacity.food.feasta.foodfeasta.ui.MenuFragment;
 import com.udacity.food.feasta.foodfeasta.ui.ViewPagerAdapter;
-import com.udacity.food.feasta.foodfeasta.ui.dummy.DummyContent;
 
 import java.io.InputStream;
 import java.net.HttpURLConnection;
@@ -173,7 +173,7 @@ public class LandingPageActivity extends BaseActivity
     }
 
     @Override
-    public void onListFragmentInteraction(DummyContent.DummyItem item) {
+    public void onListFragmentInteraction(Fooditem item) {
 
         Intent detailViewIntent = new Intent(this, DetailViewActivity.class);
         startActivity(detailViewIntent);
@@ -249,7 +249,7 @@ public class LandingPageActivity extends BaseActivity
                 HttpURLConnection urlConnection = null;
                 try {
                     String response = null;
-                    URL url = new URL("https://myfirstfirebase-2c835.firebaseio.com/fooditem.json");
+                    URL url = new URL("https://myfirstfirebase-2c835.firebaseio.com/foodmenu.json");
                     urlConnection = (HttpURLConnection) url.openConnection();
                     urlConnection.setConnectTimeout(30000);
                     InputStream in = urlConnection.getInputStream();
