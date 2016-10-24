@@ -34,4 +34,5 @@ dependencies {
     apt 'com.jakewharton:butterknife-compiler:8.4.0'
     compile 'com.github.clans:fab:1.6.4'
     compile 'com.google.code.gson:gson:2.7'
+    compile 'com.google.android.gms:play-services-nearby:9.6.1'
 }
