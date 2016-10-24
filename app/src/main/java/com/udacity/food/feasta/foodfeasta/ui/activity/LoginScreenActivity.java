@@ -1,9 +1,8 @@
-package com.udacity.food.feasta.foodfeasta.ui;
+package com.udacity.food.feasta.foodfeasta.ui.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.view.animation.Interpolator;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
@@ -11,7 +10,6 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
-import com.udacity.food.feasta.foodfeasta.LandingPageActivity;
 import com.udacity.food.feasta.foodfeasta.R;
 
 import butterknife.BindView;

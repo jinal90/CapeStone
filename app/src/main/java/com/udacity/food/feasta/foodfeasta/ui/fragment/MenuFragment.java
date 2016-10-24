@@ -1,4 +1,4 @@
-package com.udacity.food.feasta.foodfeasta.ui;
+package com.udacity.food.feasta.foodfeasta.ui.fragment;
 
 import android.content.Context;
 import android.os.AsyncTask;
@@ -17,6 +17,7 @@ import com.udacity.food.feasta.foodfeasta.helper.Constants;
 import com.udacity.food.feasta.foodfeasta.helper.Utility;
 import com.udacity.food.feasta.foodfeasta.model.FoodMenu;
 import com.udacity.food.feasta.foodfeasta.model.Fooditem;
+import com.udacity.food.feasta.foodfeasta.ui.adapters.MenuRecyclerViewAdapter;
 
 import java.util.ArrayList;
 import java.util.List;

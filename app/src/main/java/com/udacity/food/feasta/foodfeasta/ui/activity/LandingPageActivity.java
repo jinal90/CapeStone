@@ -1,4 +1,4 @@
-package com.udacity.food.feasta.foodfeasta;
+package com.udacity.food.feasta.foodfeasta.ui.activity;
 
 import android.content.Intent;
 import android.content.res.AssetFileDescriptor;
@@ -20,12 +20,11 @@ import android.widget.RelativeLayout;
 
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
+import com.udacity.food.feasta.foodfeasta.R;
 import com.udacity.food.feasta.foodfeasta.helper.Constants;
 import com.udacity.food.feasta.foodfeasta.helper.Utility;
 import com.udacity.food.feasta.foodfeasta.model.Fooditem;
-import com.udacity.food.feasta.foodfeasta.ui.BaseActivity;
-import com.udacity.food.feasta.foodfeasta.ui.DetailViewActivity;
-import com.udacity.food.feasta.foodfeasta.ui.MenuFragment;
+import com.udacity.food.feasta.foodfeasta.ui.fragment.MenuFragment;
 import com.udacity.food.feasta.foodfeasta.ui.ViewPagerAdapter;
 
 import java.io.InputStream;

@@ -1,4 +1,4 @@
-package com.udacity.food.feasta.foodfeasta.ui;
+package com.udacity.food.feasta.foodfeasta.ui.adapters;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -11,16 +11,12 @@ import com.squareup.picasso.Picasso;
 import com.udacity.food.feasta.foodfeasta.R;
 import com.udacity.food.feasta.foodfeasta.model.FoodMenu;
 import com.udacity.food.feasta.foodfeasta.model.Fooditem;
-import com.udacity.food.feasta.foodfeasta.ui.dummy.DummyContent.DummyItem;
+import com.udacity.food.feasta.foodfeasta.ui.fragment.MenuFragment;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-/**
- * {@link RecyclerView.Adapter} that can display a {@link DummyItem} and makes a call to the
- * specified {@link MenuFragment.OnListFragmentInteractionListener}.
- * TODO: Replace the implementation with code for your data type.
- */
+
 public class MenuRecyclerViewAdapter extends RecyclerView.Adapter<MenuRecyclerViewAdapter.ViewHolder> {
 
     private final FoodMenu mFoodMenu;

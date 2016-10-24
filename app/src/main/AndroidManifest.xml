@@ -12,10 +12,10 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".LandingPageActivity"
+            android:name=".ui.activity.LandingPageActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".ui.LoginScreenActivity">
+        <activity android:name=".ui.activity.LoginScreenActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -23,10 +23,10 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.DetailViewActivity"
+            android:name=".ui.activity.DetailViewActivity"
             android:label="@string/title_activity_detail_view"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".ui.OrderCartActivity"></activity>
+        <activity android:name=".ui.activity.OrderCartActivity"></activity>
     </application>
 
 </manifest>

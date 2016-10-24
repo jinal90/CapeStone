@@ -1,10 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_order_cart"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.udacity.food.feasta.foodfeasta.ui.OrderCartActivity">
+    tools:context="com.udacity.food.feasta.foodfeasta.ui.activity.OrderCartActivity">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rvOrderCart"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@+id/btnOrder"
+            android:layout_marginBottom="30dp"/>
+
+        <Button
+            android:id="@+id/btnOrder"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Order"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="50dp" />
+
+
+    </RelativeLayout>
 
 </android.support.constraint.ConstraintLayout>
