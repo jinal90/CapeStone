@@ -6,6 +6,7 @@ package com.udacity.food.feasta.foodfeasta.model;
 
 public class TableOrder {
 
+    private long orderId;
     private int tableId;
     private int foodItemId;
 
@@ -23,5 +24,13 @@ public class TableOrder {
 
     public void setFoodItemId(int foodItemId) {
         this.foodItemId = foodItemId;
+    }
+
+    public long getOrderId() {
+        return orderId;
+    }
+
+    public void setOrderId(long orderId) {
+        this.orderId = orderId;
     }
 }

@@ -28,6 +28,10 @@ public class TableOrderManager extends SQLiteOpenHelper {
             + COLUMN_FOOD_ITEM_ID + " int "
             + ");";
 
+    public TableOrderManager(Context ctx){
+        super (ctx, TABLE_NAME, null, DATABASE_VERSION);
+    }
+
     public TableOrderManager(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
         super(context, name, factory, version);
     }
