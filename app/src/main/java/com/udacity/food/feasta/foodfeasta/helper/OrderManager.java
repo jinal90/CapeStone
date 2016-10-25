@@ -11,5 +11,16 @@ import com.udacity.food.feasta.foodfeasta.model.FoodMenu;
  */
 
 public class OrderManager {
-    
+
+    private static OrderInterface mOrderImpl;
+
+    public static OrderInterface getInstance(){
+        if(mOrderImpl == null){
+            mOrderImpl = new OrderImpl();
+        }
+
+        return mOrderImpl;
+
+    }
+
 }

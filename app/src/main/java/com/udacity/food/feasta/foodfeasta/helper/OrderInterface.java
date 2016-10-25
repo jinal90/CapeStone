@@ -10,7 +10,7 @@ import com.udacity.food.feasta.foodfeasta.model.FoodMenu;
 
 public interface OrderInterface {
 
-    FoodMenu getCurrentOrder(Context ctx);
+    FoodMenu getCurrentOrder(Context ctx, String TableId);
 
     void setCurrentOrder(FoodMenu currentOrder);
 
