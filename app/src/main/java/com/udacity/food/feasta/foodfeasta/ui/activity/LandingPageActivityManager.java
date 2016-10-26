@@ -5,7 +5,9 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.LoaderManager;
+import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.support.v4.widget.SimpleCursorAdapter;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -17,10 +19,18 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.udacity.food.feasta.foodfeasta.R;
+import com.udacity.food.feasta.foodfeasta.database.TableOrderContentProvider;
+import com.udacity.food.feasta.foodfeasta.database.TableOrderManager;
 
 public class LandingPageActivityManager extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
         LoaderManager.LoaderCallbacks <Cursor>{
+
+    private static final int ACTIVITY_CREATE = 0;
+    private static final int ACTIVITY_EDIT = 1;
+    private static final int DELETE_ID = Menu.FIRST + 1;
+    // private Cursor cursor;
+    private SimpleCursorAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,16 +117,37 @@ public class LandingPageActivityManager extends AppCompatActivity
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        return null;
+        String[] projection = { TableOrderManager.COLUMN_ID, TableOrderManager.COLUMN_TABLE_ID,
+                TableOrderManager.COLUMN_FOOD_ITEM_ID };
+        CursorLoader cursorLoader = new CursorLoader(this,
+                TableOrderContentProvider.CONTENT_URI, projection, null, null, null);
+        return cursorLoader;
     }
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-
+        adapter.swapCursor(data);
     }
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
+// data is not available anymore, delete reference
+        adapter.swapCursor(null);
+    }
 
+    private void fetchData() {
+
+        // Fields from the database (projection)
+        // Must include the _id column for the adapter to work
+        String[] from = new String[] { TableOrderManager.COLUMN_TABLE_ID };
+
+        // Fields on the UI to which we map
+        /*int[] to = new int[] { R.id.label };
+
+        getLoaderManager().initLoader(0, null, this);
+        adapter = new SimpleCursorAdapter(this, R.layout.todo_row, null, from,
+                to, 0);
+
+        setListAdapter(adapter);*/
     }
 }
