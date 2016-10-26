@@ -62,7 +62,7 @@ public class LoginScreenActivity extends BaseActivity {
         if (radioCustomer.isChecked() || radioManager.isChecked()) {
             Toast.makeText(this, "Success", Toast.LENGTH_SHORT).show();
 
-            Intent intent = new Intent(this, LandingPageActivity.class);
+            Intent intent = new Intent(this, LandingPageActivityCustomer.class);
             startActivity(intent);
         } else {
 

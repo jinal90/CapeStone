@@ -35,7 +35,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class LandingPageActivity extends BaseActivity
+public class LandingPageActivityCustomer extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener,
         MenuFragment.OnListFragmentInteractionListener {
 
@@ -245,7 +245,7 @@ public class LandingPageActivity extends BaseActivity
         @Override
         protected Integer doInBackground(String... params) {
 
-            if (Utility.isOnline(LandingPageActivity.this)) {
+            if (Utility.isOnline(LandingPageActivityCustomer.this)) {
                 HttpURLConnection urlConnection = null;
                 try {
                     String response = null;
@@ -262,7 +262,7 @@ public class LandingPageActivity extends BaseActivity
                     response = sb.toString();
 
                     if (!TextUtils.isEmpty(response)) {
-                        Utility.saveStringDataInPref(LandingPageActivity.this, "MenuData", response);
+                        Utility.saveStringDataInPref(LandingPageActivityCustomer.this, "MenuData", response);
                         return Constants.SUCCESS;
                     }
 
