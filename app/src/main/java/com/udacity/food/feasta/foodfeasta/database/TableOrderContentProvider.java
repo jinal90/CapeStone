@@ -23,6 +23,11 @@ public class TableOrderContentProvider extends ContentProvider {
     // used for the UriMacher
     private static final int TODOS = 10;
     private static final int TODO_ID = 20;
+    private static final int ORDERS = 30;
+    private static final int ORDER_ID = 40;
+    private static final int CUSTOMER_TABLES = 50;
+    private static final int CUSTOMER_TABLE_ID = 60;
+
 
     private static final String AUTHORITY = "com.udacity.food.feasta.foodfeasta.database";
 
@@ -40,6 +45,10 @@ public class TableOrderContentProvider extends ContentProvider {
     static {
         sURIMatcher.addURI(AUTHORITY, BASE_PATH, TODOS);
         sURIMatcher.addURI(AUTHORITY, BASE_PATH + "/#", TODO_ID);
+        sURIMatcher.addURI(AUTHORITY, BASE_PATH, ORDERS);
+        sURIMatcher.addURI(AUTHORITY, BASE_PATH, CUSTOMER_TABLES);
+        sURIMatcher.addURI(AUTHORITY, BASE_PATH + "/#", ORDER_ID);
+        sURIMatcher.addURI(AUTHORITY, BASE_PATH + "/#", CUSTOMER_TABLE_ID);
     }
 
     @Override
