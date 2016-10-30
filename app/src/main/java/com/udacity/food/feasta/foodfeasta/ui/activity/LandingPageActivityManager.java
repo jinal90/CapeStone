@@ -23,14 +23,11 @@ import com.udacity.food.feasta.foodfeasta.database.TableOrderContentProvider;
 import com.udacity.food.feasta.foodfeasta.database.TableOrderManager;
 
 public class LandingPageActivityManager extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener,
-        LoaderManager.LoaderCallbacks <Cursor>{
+        implements NavigationView.OnNavigationItemSelectedListener{
 
     private static final int ACTIVITY_CREATE = 0;
     private static final int ACTIVITY_EDIT = 1;
     private static final int DELETE_ID = Menu.FIRST + 1;
-    // private Cursor cursor;
-    private SimpleCursorAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -113,26 +110,6 @@ public class LandingPageActivityManager extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
-    }
-
-    @Override
-    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        String[] projection = { TableOrderManager.COLUMN_ID, TableOrderManager.COLUMN_TABLE_ID,
-                TableOrderManager.COLUMN_FOOD_ITEM_ID };
-        CursorLoader cursorLoader = new CursorLoader(this,
-                TableOrderContentProvider.CONTENT_URI, projection, null, null, null);
-        return cursorLoader;
-    }
-
-    @Override
-    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-        adapter.swapCursor(data);
-    }
-
-    @Override
-    public void onLoaderReset(Loader<Cursor> loader) {
-// data is not available anymore, delete reference
-        adapter.swapCursor(null);
     }
 
     private void fetchData() {

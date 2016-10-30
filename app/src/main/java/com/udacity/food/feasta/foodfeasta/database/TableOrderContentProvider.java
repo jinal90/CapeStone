@@ -17,75 +17,46 @@ import android.text.TextUtils;
 
 public class TableOrderContentProvider extends ContentProvider {
 
-    // database
-    private TableOrderManager database;
+    static final String PROVIDER_NAME = "com.udacity.food.feasta.foodfeasta.database";
+    static final String URL = "content://" + PROVIDER_NAME + "/orders";
+    static final Uri CONTENT_URI = Uri.parse(URL);
 
-    // used for the UriMacher
-    private static final int TODOS = 10;
-    private static final int TODO_ID = 20;
-    private static final int ORDERS = 30;
-    private static final int ORDER_ID = 40;
-    private static final int CUSTOMER_TABLES = 50;
-    private static final int CUSTOMER_TABLE_ID = 60;
+    static final int ORDERS = 1;
+    static final int ORDER = 2;
+    static final int RESTAURANT_TABLES = 3;
+    static final int RESTAURANT_TABLE = 4;
+    static final int MENU_ITEMS = 5;
+    static final int MENU_ITEM = 6;
 
+    SQLiteDatabase db;
+    TableOrderManager dbHelper;
 
-    private static final String AUTHORITY = "com.udacity.food.feasta.foodfeasta.database";
-
-    private static final String BASE_PATH = "tablesOrders";
-    public static final Uri CONTENT_URI = Uri.parse("content://" + AUTHORITY
-            + "/" + BASE_PATH);
-
-    public static final String CONTENT_TYPE = ContentResolver.CURSOR_DIR_BASE_TYPE
-            + "/tablesOrders";
-    public static final String CONTENT_ITEM_TYPE = ContentResolver.CURSOR_ITEM_BASE_TYPE
-            + "/tablesOrder";
-
-    private static final UriMatcher sURIMatcher = new UriMatcher(
-            UriMatcher.NO_MATCH);
+    private static UriMatcher uriMatcher;
     static {
-        sURIMatcher.addURI(AUTHORITY, BASE_PATH, TODOS);
-        sURIMatcher.addURI(AUTHORITY, BASE_PATH + "/#", TODO_ID);
-        sURIMatcher.addURI(AUTHORITY, BASE_PATH, ORDERS);
-        sURIMatcher.addURI(AUTHORITY, BASE_PATH, CUSTOMER_TABLES);
-        sURIMatcher.addURI(AUTHORITY, BASE_PATH + "/#", ORDER_ID);
-        sURIMatcher.addURI(AUTHORITY, BASE_PATH + "/#", CUSTOMER_TABLE_ID);
+        uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
+        uriMatcher.addURI(PROVIDER_NAME, TableOrderManager.TABLE_NAME, ORDER);
+
     }
 
     @Override
     public boolean onCreate() {
-        database = new TableOrderManager(getContext());
-        return false;
+        dbHelper = new TableOrderManager(getContext());
+        return true;
     }
 
     @Nullable
     @Override
     public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
-        // Uisng SQLiteQueryBuilder instead of query() method
-        SQLiteQueryBuilder queryBuilder = new SQLiteQueryBuilder();
 
-        // check if the caller has requested a column which does not exists
-        checkColumns(projection);
+        Cursor cursor;
 
-        // Set the table
-        queryBuilder.setTables(TableOrderManager.TABLE_NAME);
+        /*if(uriMatcher.match(uri) == ORDER){
+            cursor = db.query(TableOrderManager.TABLE_NAME, projection, selection, selectionArgs, null, null, sortOrder);
+        }*/
 
-        int uriType = sURIMatcher.match(uri);
-        switch (uriType) {
-            case TODOS:
-                break;
-            case TODO_ID:
-                // adding the ID to the original query
-                queryBuilder.appendWhere(TableOrderManager.COLUMN_ID + "="
-                        + uri.getLastPathSegment());
-                break;
-            default:
-                throw new IllegalArgumentException("Unknown URI: " + uri);
-        }
-
-        SQLiteDatabase db = database.getWritableDatabase();
-        Cursor cursor = queryBuilder.query(db, projection, selection,
-                selectionArgs, null, null, sortOrder);
-        // make sure that potential listeners are getting notified
+        db = dbHelper.getReadableDatabase();
+        cursor = db.query(TableOrderManager.TABLE_NAME, projection, selection, selectionArgs, null,
+                null, sortOrder);
         cursor.setNotificationUri(getContext().getContentResolver(), uri);
 
         return cursor;
@@ -100,101 +71,27 @@ public class TableOrderContentProvider extends ContentProvider {
     @Nullable
     @Override
     public Uri insert(Uri uri, ContentValues values) {
-        int uriType = sURIMatcher.match(uri);
-        SQLiteDatabase sqlDB = database.getWritableDatabase();
-        long id = 0;
-        switch (uriType) {
-            case TODOS:
-                id = sqlDB.insert(TableOrderManager.TABLE_NAME, null, values);
-                break;
-            default:
-                throw new IllegalArgumentException("Unknown URI: " + uri);
+
+        db = dbHelper.getWritableDatabase();
+
+        if(uriMatcher.match(uri) == ORDER){
+            db.insert(TableOrderManager.TABLE_NAME, null, values);
         }
+
+        db.close();
+
         getContext().getContentResolver().notifyChange(uri, null);
-        return Uri.parse(BASE_PATH + "/" + id);
+        return null;
     }
+
 
     @Override
     public int delete(Uri uri, String selection, String[] selectionArgs) {
-        int uriType = sURIMatcher.match(uri);
-        SQLiteDatabase sqlDB = database.getWritableDatabase();
-        int rowsDeleted = 0;
-        switch (uriType) {
-            case TODOS:
-                rowsDeleted = sqlDB.delete(TableOrderManager.TABLE_NAME, selection,
-                        selectionArgs);
-                break;
-            case TODO_ID:
-                String id = uri.getLastPathSegment();
-                if (TextUtils.isEmpty(selection)) {
-                    rowsDeleted = sqlDB.delete(
-                            TableOrderManager.TABLE_NAME,
-                            TableOrderManager.COLUMN_ID + "=" + id,
-                            null);
-                } else {
-                    rowsDeleted = sqlDB.delete(
-                            TableOrderManager.TABLE_NAME,
-                            TableOrderManager.COLUMN_ID + "=" + id
-                                    + " and " + selection,
-                            selectionArgs);
-                }
-                break;
-            default:
-                throw new IllegalArgumentException("Unknown URI: " + uri);
-        }
-        getContext().getContentResolver().notifyChange(uri, null);
-        return rowsDeleted;
+        return 0;
     }
 
     @Override
     public int update(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
-        int uriType = sURIMatcher.match(uri);
-        SQLiteDatabase sqlDB = database.getWritableDatabase();
-        int rowsUpdated = 0;
-        switch (uriType) {
-            case TODOS:
-                rowsUpdated = sqlDB.update(TableOrderManager.TABLE_NAME,
-                        values,
-                        selection,
-                        selectionArgs);
-                break;
-            case TODO_ID:
-                String id = uri.getLastPathSegment();
-                if (TextUtils.isEmpty(selection)) {
-                    rowsUpdated = sqlDB.update(TableOrderManager.TABLE_NAME,
-                            values,
-                            TableOrderManager.COLUMN_ID + "=" + id,
-                            null);
-                } else {
-                    rowsUpdated = sqlDB.update(TableOrderManager.TABLE_NAME,
-                            values,
-                            TableOrderManager.COLUMN_ID + "=" + id
-                                    + " and "
-                                    + selection,
-                            selectionArgs);
-                }
-                break;
-            default:
-                throw new IllegalArgumentException("Unknown URI: " + uri);
-        }
-        getContext().getContentResolver().notifyChange(uri, null);
-        return rowsUpdated;
-    }
-
-    private void checkColumns(String[] projection) {
-        /*String[] available = { TodoTable.COLUMN_CATEGORY,
-                TodoTable.COLUMN_SUMMARY, TodoTable.COLUMN_DESCRIPTION,
-                TodoTable.COLUMN_ID };
-        if (projection != null) {
-            HashSet<String> requestedColumns = new HashSet<String>(
-                    Arrays.asList(projection));
-            HashSet<String> availableColumns = new HashSet<String>(
-                    Arrays.asList(available));
-            // check if all columns which are requested are available
-            if (!availableColumns.containsAll(requestedColumns)) {
-                throw new IllegalArgumentException(
-                        "Unknown columns in projection");
-            }
-        }*/
+        return 0;
     }
 }

@@ -24,7 +24,7 @@ public class TableOrderDataSource {
             TableOrderManager.COLUMN_TABLE_ID, TableOrderManager.COLUMN_FOOD_ITEM_ID };
 
     public TableOrderDataSource(Context context) {
-        dbHelper = new TableOrderManager();
+        dbHelper = new TableOrderManager(context);
     }
 
     public void open() throws SQLException {
