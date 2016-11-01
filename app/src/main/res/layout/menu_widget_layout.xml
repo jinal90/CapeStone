@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/rlWidgetContainer"
+    android:layout_margin="10dp">
+
+    <ImageView
+        android:id="@+id/imgFoodItem"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:src="@drawable/item_afghani_chicken" />
+
+    <RelativeLayout
+        android:id="@+id/rlItemDetails"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="5dp"
+        android:layout_toRightOf="@id/imgFoodItem">
+
+        <TextView
+            android:id="@+id/tvMenuItemName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginBottom="5dp"
+            android:text="Afghani Chicken" />
+
+        <TextView
+            android:id="@+id/tvMenuItemDescription"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tvMenuItemName"
+            android:text="Boneless chicken, fried with cream and flavour of garlic" />
+
+        <TextView
+            android:id="@+id/tvMenuItemPrice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/tvMenuItemDescription"
+            android:text="Rs. 160" />
+
+    </RelativeLayout>
+</RelativeLayout>
