@@ -10,7 +10,7 @@ import android.util.Log;
 import android.widget.RemoteViews;
 
 import com.udacity.food.feasta.foodfeasta.R;
-import com.udacity.food.feasta.foodfeasta.ui.activity.LoginScreenActivity;
+import com.udacity.food.feasta.foodfeasta.table.customer.ui.activity.LoginScreenActivity;
 
 import java.util.Random;
 

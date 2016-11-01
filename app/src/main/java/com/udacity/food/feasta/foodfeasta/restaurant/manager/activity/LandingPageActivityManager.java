@@ -1,4 +1,4 @@
-package com.udacity.food.feasta.foodfeasta.ui.activity;
+package com.udacity.food.feasta.foodfeasta.restaurant.manager.activity;
 
 import android.content.Intent;
 import android.content.res.AssetFileDescriptor;
@@ -18,14 +18,14 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.RelativeLayout;
 
-import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
 import com.udacity.food.feasta.foodfeasta.R;
 import com.udacity.food.feasta.foodfeasta.helper.Constants;
 import com.udacity.food.feasta.foodfeasta.helper.Utility;
 import com.udacity.food.feasta.foodfeasta.model.Fooditem;
-import com.udacity.food.feasta.foodfeasta.ui.fragment.MenuFragment;
+import com.udacity.food.feasta.foodfeasta.restaurant.manager.fragment.TableOrderFragment;
 import com.udacity.food.feasta.foodfeasta.ui.ViewPagerAdapter;
+import com.udacity.food.feasta.foodfeasta.ui.BaseActivity;
 
 import java.io.InputStream;
 import java.net.HttpURLConnection;
@@ -35,11 +35,10 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class LandingPageActivityCustomer extends BaseActivity
-        implements NavigationView.OnNavigationItemSelectedListener,
-        MenuFragment.OnListFragmentInteractionListener {
+public class LandingPageActivityManager extends BaseActivity
+        implements NavigationView.OnNavigationItemSelectedListener {
 
-    private MenuFragment mMenuFragment;
+    private TableOrderFragment mTableOrderFragment;
     private MediaPlayer mp;
 
     @BindView(R.id.toolbar)
@@ -55,11 +54,11 @@ public class LandingPageActivityCustomer extends BaseActivity
     @BindView(R.id.nav_view)
     NavigationView navigationView;
     @BindView(R.id.fabFeedback)
-    FloatingActionButton fabFeedback;
+    com.github.clans.fab.FloatingActionButton fabFeedback;
     @BindView(R.id.fabWater)
-    FloatingActionButton fabWater;
+    com.github.clans.fab.FloatingActionButton fabWater;
     @BindView(R.id.fabWaiter)
-    FloatingActionButton fabWaiter;
+    com.github.clans.fab.FloatingActionButton fabWaiter;
     @BindView(R.id.rlErrorView)
     RelativeLayout rlErrorView;
     @BindView(R.id.rlProgressIndicator)
@@ -172,14 +171,6 @@ public class LandingPageActivityCustomer extends BaseActivity
     }
 
     @Override
-    public void onListFragmentInteraction(Fooditem item) {
-
-        Intent detailViewIntent = new Intent(this, DetailViewActivity.class);
-        detailViewIntent.putExtra(Constants.SELECTED_FOOD_ITEM, item);
-        startActivity(detailViewIntent);
-    }
-
-    @Override
     public void setupUI() {
         setSupportActionBar(toolbar);
 
@@ -190,7 +181,7 @@ public class LandingPageActivityCustomer extends BaseActivity
 
         navigationView.setNavigationItemSelectedListener(this);
 
-        MenuFetchingAsyncTask fetchingAsyncTask = new MenuFetchingAsyncTask();
+        LandingPageActivityManager.MenuFetchingAsyncTask fetchingAsyncTask = new LandingPageActivityManager.MenuFetchingAsyncTask();
         fetchingAsyncTask.execute();
 
     }
@@ -202,9 +193,9 @@ public class LandingPageActivityCustomer extends BaseActivity
 
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(MenuFragment.newInstance(11), "Starters");
-        adapter.addFragment(MenuFragment.newInstance(12), "Main Course");
-        adapter.addFragment(MenuFragment.newInstance(13), "Desert");
+        adapter.addFragment(TableOrderFragment.newInstance(11), "Starters");
+        adapter.addFragment(TableOrderFragment.newInstance(12), "Main Course");
+        adapter.addFragment(TableOrderFragment.newInstance(13), "Desert");
         viewPager.setAdapter(adapter);
     }
 
@@ -245,7 +236,7 @@ public class LandingPageActivityCustomer extends BaseActivity
         @Override
         protected Integer doInBackground(String... params) {
 
-            if (Utility.isOnline(LandingPageActivityCustomer.this)) {
+            if (Utility.isOnline(LandingPageActivityManager.this)) {
                 HttpURLConnection urlConnection = null;
                 try {
                     String response = null;
@@ -262,7 +253,7 @@ public class LandingPageActivityCustomer extends BaseActivity
                     response = sb.toString();
 
                     if (!TextUtils.isEmpty(response)) {
-                        Utility.saveStringDataInPref(LandingPageActivityCustomer.this, "MenuData", response);
+                        Utility.saveStringDataInPref(LandingPageActivityManager.this, "MenuData", response);
                         return Constants.SUCCESS;
                     }
 

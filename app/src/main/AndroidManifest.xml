@@ -12,10 +12,10 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".ui.activity.LandingPageActivityCustomer"
+            android:name=".table.customer.ui.activity.LandingPageActivityCustomer"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".ui.activity.LoginScreenActivity">
+        <activity android:name=".table.customer.ui.activity.LoginScreenActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -23,24 +23,23 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.activity.DetailViewActivity"
+            android:name=".table.customer.ui.activity.DetailViewActivity"
             android:label="@string/title_activity_detail_view"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".ui.activity.OrderCartActivity" />
+        <activity android:name=".table.customer.ui.activity.OrderCartActivity" />
 
         <provider
             android:name=".database.TableOrderContentProvider"
-            android:authorities="com.udacity.food.feasta.foodfeasta.database"></provider>
+            android:authorities="com.udacity.food.feasta.foodfeasta.database" />
 
         <activity
-            android:name=".ui.activity.LandingPageActivityManager"
+            android:name=".restaurant.manager.activity.LandingPageActivityManager"
             android:label="@string/title_activity_landing_page_manager"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
 
-        <receiver android:name=".ui.MenuWidget" >
-            <intent-filter >
-                <action
-                    android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+        <receiver android:name=".ui.MenuWidget">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
 
             <meta-data

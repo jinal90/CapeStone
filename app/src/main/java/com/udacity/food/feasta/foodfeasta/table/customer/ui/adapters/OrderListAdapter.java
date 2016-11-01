@@ -1,4 +1,4 @@
-package com.udacity.food.feasta.foodfeasta.ui.adapters;
+package com.udacity.food.feasta.foodfeasta.table.customer.ui.adapters;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;

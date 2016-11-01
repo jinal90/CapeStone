@@ -1,4 +1,4 @@
-package com.udacity.food.feasta.foodfeasta.ui.fragment;
+package com.udacity.food.feasta.foodfeasta.restaurant.manager.fragment;
 
 import android.content.Context;
 import android.os.AsyncTask;
@@ -17,7 +17,7 @@ import com.udacity.food.feasta.foodfeasta.helper.Constants;
 import com.udacity.food.feasta.foodfeasta.helper.Utility;
 import com.udacity.food.feasta.foodfeasta.model.FoodMenu;
 import com.udacity.food.feasta.foodfeasta.model.Fooditem;
-import com.udacity.food.feasta.foodfeasta.ui.adapters.MenuRecyclerViewAdapter;
+import com.udacity.food.feasta.foodfeasta.restaurant.manager.adapter.TableOrderAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,11 +28,10 @@ import java.util.List;
  * Activities containing this fragment MUST implement the {@link OnListFragmentInteractionListener}
  * interface.
  */
-public class MenuFragment extends Fragment {
+public class TableOrderFragment extends Fragment {
 
     // TODO: Customize parameter argument names
     // TODO: Customize parameters
-    private OnListFragmentInteractionListener mListener;
     private RecyclerView recyclerView;
     private FoodMenu menuObject;
     private static final String ARG_FOOD_TYPE = "food_type";
@@ -42,13 +41,13 @@ public class MenuFragment extends Fragment {
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
      */
-    public MenuFragment() {
+    public TableOrderFragment() {
     }
 
     // TODO: Customize parameter initialization
     @SuppressWarnings("unused")
-    public static MenuFragment newInstance(int foodType) {
-        MenuFragment fragment = new MenuFragment();
+    public static TableOrderFragment newInstance(int foodType) {
+        TableOrderFragment fragment = new TableOrderFragment();
         Bundle args = new Bundle();
         args.putInt(ARG_FOOD_TYPE, foodType);
         fragment.setArguments(args);
@@ -79,24 +78,17 @@ public class MenuFragment extends Fragment {
     public void showContent() {
         // Set the adapter
         recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 1));
-        recyclerView.setAdapter(new MenuRecyclerViewAdapter(menuObject, mListener));
+        recyclerView.setAdapter(new TableOrderAdapter(menuObject));
     }
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnListFragmentInteractionListener) {
-            mListener = (OnListFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnListFragmentInteractionListener");
-        }
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-        mListener = null;
     }
 
     /**

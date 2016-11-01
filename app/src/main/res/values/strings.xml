@@ -96,5 +96,6 @@
         "when a user tries to pick up one of cards.\n\n"
     </string>
     <string name="title_activity_landing_page_manager">LandingPageActivityManager</string>
+    <string name="title_activity_landing_manager">LandingManagerActivity</string>
 
 </resources>

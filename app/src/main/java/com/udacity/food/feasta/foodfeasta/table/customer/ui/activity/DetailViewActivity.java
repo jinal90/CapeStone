@@ -1,4 +1,4 @@
-package com.udacity.food.feasta.foodfeasta.ui.activity;
+package com.udacity.food.feasta.foodfeasta.table.customer.ui.activity;
 
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -11,6 +11,7 @@ import com.squareup.picasso.Picasso;
 import com.udacity.food.feasta.foodfeasta.R;
 import com.udacity.food.feasta.foodfeasta.helper.Constants;
 import com.udacity.food.feasta.foodfeasta.model.Fooditem;
+import com.udacity.food.feasta.foodfeasta.ui.BaseActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

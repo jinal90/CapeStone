@@ -1,4 +1,4 @@
-package com.udacity.food.feasta.foodfeasta.ui.activity;
+package com.udacity.food.feasta.foodfeasta.table.customer.ui.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,6 +11,8 @@ import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import com.udacity.food.feasta.foodfeasta.R;
+import com.udacity.food.feasta.foodfeasta.restaurant.manager.activity.LandingPageActivityManager;
+import com.udacity.food.feasta.foodfeasta.ui.BaseActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -59,12 +61,19 @@ public class LoginScreenActivity extends BaseActivity {
     @OnClick(R.id.btnSubmit)
     public void onClick(View view) {
 
-        if (radioCustomer.isChecked() || radioManager.isChecked()) {
+        if (radioCustomer.isChecked()) {
             Toast.makeText(this, "Success", Toast.LENGTH_SHORT).show();
 
             Intent intent = new Intent(this, LandingPageActivityCustomer.class);
             startActivity(intent);
-        } else {
+        }
+        else if (radioManager.isChecked()){
+            Toast.makeText(this, "Success", Toast.LENGTH_SHORT).show();
+
+            Intent intent = new Intent(this, LandingPageActivityManager.class);
+            startActivity(intent);
+        }
+        else {
 
             Toast.makeText(this, "Fail", Toast.LENGTH_SHORT).show();
         }

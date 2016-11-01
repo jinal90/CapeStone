@@ -1,4 +1,4 @@
-package com.udacity.food.feasta.foodfeasta.ui.adapters;
+package com.udacity.food.feasta.foodfeasta.table.customer.ui.adapters;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -11,7 +11,7 @@ import com.squareup.picasso.Picasso;
 import com.udacity.food.feasta.foodfeasta.R;
 import com.udacity.food.feasta.foodfeasta.model.FoodMenu;
 import com.udacity.food.feasta.foodfeasta.model.Fooditem;
-import com.udacity.food.feasta.foodfeasta.ui.fragment.MenuFragment;
+import com.udacity.food.feasta.foodfeasta.table.customer.ui.fragment.MenuFragment;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

@@ -5,7 +5,7 @@
     android:id="@+id/content_landing_page_activity_manager"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.udacity.food.feasta.foodfeasta.ui.activity.LandingPageActivityManager"
+    tools:context=".restaurant.manager.activity.LandingPageActivityManager"
     tools:showIn="@layout/app_bar_landing_page_activity_manager">
 
 </android.support.constraint.ConstraintLayout>

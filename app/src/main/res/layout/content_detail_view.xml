@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.udacity.food.feasta.foodfeasta.ui.activity.DetailViewActivity"
+    tools:context=".table.customer.ui.activity.DetailViewActivity"
     tools:showIn="@layout/activity_detail_view">
 
     <TextView

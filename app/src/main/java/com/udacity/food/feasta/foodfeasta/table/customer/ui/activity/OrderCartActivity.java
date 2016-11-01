@@ -1,4 +1,4 @@
-package com.udacity.food.feasta.foodfeasta.ui.activity;
+package com.udacity.food.feasta.foodfeasta.table.customer.ui.activity;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
