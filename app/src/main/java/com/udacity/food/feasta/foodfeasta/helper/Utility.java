@@ -1,9 +1,16 @@
 package com.udacity.food.feasta.foodfeasta.helper;
 
+import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.View;
+
+import com.udacity.food.feasta.foodfeasta.R;
 
 /**
  * Created by jinal on 10/22/2016.
@@ -31,6 +38,19 @@ public class Utility {
             return info.isConnected();
         else
             return false;
+    }
+
+    public static Dialog showAddItemDialog(Context context){
+        LayoutInflater mInflater = LayoutInflater.from(context);
+        View layout = mInflater.inflate(R.layout.order_layout, null);
+
+        Dialog alertDialog = new Dialog(context);
+        alertDialog.show();
+        alertDialog.setContentView(layout);
+        alertDialog.getWindow().setGravity(Gravity.CENTER);
+        alertDialog.setCancelable(false);
+        alertDialog.setCanceledOnTouchOutside(false);
+        return alertDialog;
     }
 
 }

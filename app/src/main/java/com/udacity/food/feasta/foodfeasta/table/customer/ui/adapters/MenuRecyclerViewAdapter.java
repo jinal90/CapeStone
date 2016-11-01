@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 import com.udacity.food.feasta.foodfeasta.R;
@@ -55,6 +56,13 @@ public class MenuRecyclerViewAdapter extends RecyclerView.Adapter<MenuRecyclerVi
                 }
             }
         });
+
+        holder.imgAddRemoveItem.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(holder.itemView.getContext(), "Added", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     @Override
@@ -72,6 +80,8 @@ public class MenuRecyclerViewAdapter extends RecyclerView.Adapter<MenuRecyclerVi
         TextView tvMenuItemPrice;
         @BindView(R.id.imgFoodItem)
         ImageView imgFoodItem;
+        @BindView(R.id.imgAddRemoveItem)
+        ImageView imgAddRemoveItem;
 
         public Fooditem mItem;
 

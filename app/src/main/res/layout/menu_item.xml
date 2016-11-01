@@ -11,7 +11,8 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp">
 
         <ImageView
             android:id="@+id/imgFoodItem"
@@ -22,62 +23,67 @@
             android:src="@drawable/item_afghani_chicken" />
 
         <RelativeLayout
-            android:id="@+id/rlItemDetails"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="5dp"
             android:layout_toRightOf="@id/imgFoodItem">
 
-            <TextView
-                android:id="@+id/tvMenuItemName"
+            <RelativeLayout
+                android:id="@+id/rlItemDetails"
+                android:layout_width="250dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_toLeftOf="@+id/imgAddRemoveItem">
+
+                <TextView
+                    android:id="@+id/tvMenuItemName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginBottom="5dp"
+                    android:text="Afghani Chicken" />
+
+                <TextView
+                    android:id="@+id/tvMenuItemDescription"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tvMenuItemName"
+                    android:text="Boneless chicken, fried with cream and flavour of garlic" />
+
+                <View
+                    android:id="@+id/divider"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_below="@+id/tvMenuItemDescription"
+                    android:layout_marginBottom="2dp"
+                    android:layout_marginTop="2dp"
+                    android:background="@color/black_overlay" />
+
+                <TextView
+                    android:id="@+id/tvMenuItemPrice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_below="@+id/divider"
+                    android:text="Rs. 160" />
+
+            </RelativeLayout>
+
+            <ImageView
+                android:id="@+id/imgAddRemoveItem"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
-                android:layout_marginBottom="5dp"
-                android:text="Afghani Chicken" />
-
-            <TextView
-                android:id="@+id/tvMenuItemDescription"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/tvMenuItemName"
-                android:text="Boneless chicken, fried with cream and flavour of garlic" />
-
-            <View
-                android:id="@+id/divider"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_below="@+id/tvMenuItemDescription"
-                android:background="@color/black_overlay" />
-
-            <TextView
-                android:id="@+id/tvMenuItemPrice"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
-                android:layout_below="@+id/divider"
-                android:text="Rs. 160" />
+                android:layout_centerVertical="true"
+                android:src="@drawable/ic_add_circle_outline_black_24dp" />
 
         </RelativeLayout>
+
+
     </RelativeLayout>
 
-    <TextView
-        android:id="@+id/id"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/text_margin"
-        android:textAppearance="?attr/textAppearanceListItem"
-        android:visibility="gone" />
-
-    <TextView
-        android:id="@+id/content"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/text_margin"
-        android:textAppearance="?attr/textAppearanceListItem"
-        android:visibility="gone" />
 </android.support.v7.widget.CardView>
 
 
