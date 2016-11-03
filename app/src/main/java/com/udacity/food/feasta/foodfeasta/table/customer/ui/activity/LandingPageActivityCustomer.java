@@ -31,6 +31,9 @@ import com.udacity.food.feasta.foodfeasta.ui.ViewPagerAdapter;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -203,9 +206,17 @@ public class LandingPageActivityCustomer extends BaseActivity
 
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(MenuFragment.newInstance(11), "Starters");
+
+        Iterator it = Constants.MENU_TYPE_HASHMAP.entrySet().iterator();
+        while (it.hasNext()) {
+            Map.Entry pair = (Map.Entry)it.next();
+            String key = (String)pair.getKey();
+            Integer value = (Integer)pair.getValue();
+            adapter.addFragment(MenuFragment.newInstance(value), key);
+        }
+        /*adapter.addFragment(MenuFragment.newInstance(11), "Starters");
         adapter.addFragment(MenuFragment.newInstance(12), "Main Course");
-        adapter.addFragment(MenuFragment.newInstance(13), "Desert");
+        adapter.addFragment(MenuFragment.newInstance(13), "Desert");*/
         viewPager.setAdapter(adapter);
     }
 

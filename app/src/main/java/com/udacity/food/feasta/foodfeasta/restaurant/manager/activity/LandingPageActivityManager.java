@@ -24,12 +24,15 @@ import com.udacity.food.feasta.foodfeasta.helper.Constants;
 import com.udacity.food.feasta.foodfeasta.helper.Utility;
 import com.udacity.food.feasta.foodfeasta.model.Fooditem;
 import com.udacity.food.feasta.foodfeasta.restaurant.manager.fragment.TableOrderFragment;
+import com.udacity.food.feasta.foodfeasta.table.customer.ui.fragment.MenuFragment;
 import com.udacity.food.feasta.foodfeasta.ui.ViewPagerAdapter;
 import com.udacity.food.feasta.foodfeasta.ui.BaseActivity;
 
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.Iterator;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -47,18 +50,10 @@ public class LandingPageActivityManager extends BaseActivity
     TabLayout mTabs;
     @BindView(R.id.viewpager)
     ViewPager mViewPager;
-    @BindView(R.id.floatingActionMenu)
-    FloatingActionMenu mFloatingActionMenu;
     @BindView(R.id.drawer_layout)
     DrawerLayout drawer;
     @BindView(R.id.nav_view)
     NavigationView navigationView;
-    @BindView(R.id.fabFeedback)
-    com.github.clans.fab.FloatingActionButton fabFeedback;
-    @BindView(R.id.fabWater)
-    com.github.clans.fab.FloatingActionButton fabWater;
-    @BindView(R.id.fabWaiter)
-    com.github.clans.fab.FloatingActionButton fabWaiter;
     @BindView(R.id.rlErrorView)
     RelativeLayout rlErrorView;
     @BindView(R.id.rlProgressIndicator)
@@ -68,7 +63,7 @@ public class LandingPageActivityManager extends BaseActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_landing_page);
+        setContentView(R.layout.activity_landing_page_manager);
 
         ButterKnife.bind(this);
 
@@ -76,41 +71,6 @@ public class LandingPageActivityManager extends BaseActivity
         mp = new MediaPlayer();
         setupUI();
         setupListeners();
-    }
-
-    @OnClick({R.id.fabWaiter, R.id.fabWater, R.id.fabFeedback})
-    public void onClick(View view) {
-
-        switch (view.getId()) {
-            case R.id.fabWaiter:
-
-                try {
-                    //mp.start();
-                    if (mp.isPlaying()) {
-                        mp.stop();
-                    }
-                    mp.reset();
-                    AssetFileDescriptor afd;
-                    afd = getAssets().openFd("door_bell.mp3");
-                    mp.setDataSource(afd.getFileDescriptor(), afd.getStartOffset(), afd.getLength());
-                    mp.prepare();
-                    mp.start();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-
-                break;
-            case R.id.fabWater:
-
-                break;
-            case R.id.fabFeedback:
-
-                break;
-            default:
-
-                break;
-
-        }
     }
 
     @Override
@@ -193,9 +153,16 @@ public class LandingPageActivityManager extends BaseActivity
 
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(TableOrderFragment.newInstance(11), "Starters");
+        Iterator it = Constants.TABLE_MAP.entrySet().iterator();
+        while (it.hasNext()) {
+            Map.Entry pair = (Map.Entry)it.next();
+            String key = (String)pair.getKey();
+            Integer value = (Integer)pair.getValue();
+            adapter.addFragment(TableOrderFragment.newInstance(value), key);
+        }
+        /*adapter.addFragment(TableOrderFragment.newInstance(11), "Starters");
         adapter.addFragment(TableOrderFragment.newInstance(12), "Main Course");
-        adapter.addFragment(TableOrderFragment.newInstance(13), "Desert");
+        adapter.addFragment(TableOrderFragment.newInstance(13), "Desert");*/
         viewPager.setAdapter(adapter);
     }
 
