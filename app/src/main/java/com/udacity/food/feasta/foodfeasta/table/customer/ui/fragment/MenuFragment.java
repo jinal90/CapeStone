@@ -17,6 +17,7 @@ import com.udacity.food.feasta.foodfeasta.helper.Constants;
 import com.udacity.food.feasta.foodfeasta.helper.Utility;
 import com.udacity.food.feasta.foodfeasta.model.FoodMenu;
 import com.udacity.food.feasta.foodfeasta.model.Fooditem;
+import com.udacity.food.feasta.foodfeasta.table.customer.ui.activity.LandingPageActivityCustomer;
 import com.udacity.food.feasta.foodfeasta.table.customer.ui.adapters.MenuRecyclerViewAdapter;
 
 import java.util.ArrayList;
@@ -79,7 +80,8 @@ public class MenuFragment extends Fragment {
     public void showContent() {
         // Set the adapter
         recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 1));
-        recyclerView.setAdapter(new MenuRecyclerViewAdapter(menuObject, mListener));
+        recyclerView.setAdapter(new MenuRecyclerViewAdapter(menuObject, mListener,
+                (LandingPageActivityCustomer)getActivity()));
     }
 
     @Override

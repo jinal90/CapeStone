@@ -12,6 +12,7 @@ import com.squareup.picasso.Picasso;
 import com.udacity.food.feasta.foodfeasta.R;
 import com.udacity.food.feasta.foodfeasta.model.FoodMenu;
 import com.udacity.food.feasta.foodfeasta.model.Fooditem;
+import com.udacity.food.feasta.foodfeasta.table.customer.ui.activity.LandingPageActivityCustomer;
 import com.udacity.food.feasta.foodfeasta.table.customer.ui.fragment.MenuFragment;
 
 import butterknife.BindView;
@@ -22,10 +23,13 @@ public class MenuRecyclerViewAdapter extends RecyclerView.Adapter<MenuRecyclerVi
 
     private final FoodMenu mFoodMenu;
     private final MenuFragment.OnListFragmentInteractionListener mListener;
+    private LandingPageActivityCustomer publishActivity;
 
-    public MenuRecyclerViewAdapter(FoodMenu items, MenuFragment.OnListFragmentInteractionListener listener) {
+    public MenuRecyclerViewAdapter(FoodMenu items, MenuFragment.OnListFragmentInteractionListener listener,
+                                   LandingPageActivityCustomer activity) {
         mFoodMenu = items;
         mListener = listener;
+        publishActivity = activity;
     }
 
     @Override
@@ -36,7 +40,7 @@ public class MenuRecyclerViewAdapter extends RecyclerView.Adapter<MenuRecyclerVi
     }
 
     @Override
-    public void onBindViewHolder(final ViewHolder holder, int position) {
+    public void onBindViewHolder(final ViewHolder holder, final int position) {
         holder.mItem = mFoodMenu.getFooditem().get(position);
         holder.tvMenuItemName.setText(mFoodMenu.getFooditem().get(position).getName());
         holder.tvMenuItemDescription.setText(mFoodMenu.getFooditem().get(position).getShort_desc());
@@ -60,7 +64,9 @@ public class MenuRecyclerViewAdapter extends RecyclerView.Adapter<MenuRecyclerVi
         holder.imgAddRemoveItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 Toast.makeText(holder.itemView.getContext(), "Added", Toast.LENGTH_SHORT).show();
+                publishActivity.publish(mFoodMenu.getFooditem().get(position).getName());
             }
         });
     }

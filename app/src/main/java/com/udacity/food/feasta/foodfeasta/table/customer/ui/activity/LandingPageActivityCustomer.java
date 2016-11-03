@@ -5,6 +5,8 @@ import android.content.res.AssetFileDescriptor;
 import android.media.MediaPlayer;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.GravityCompat;
@@ -20,6 +22,10 @@ import android.widget.RelativeLayout;
 
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.nearby.Nearby;
+import com.google.android.gms.nearby.messages.Message;
 import com.udacity.food.feasta.foodfeasta.R;
 import com.udacity.food.feasta.foodfeasta.helper.Constants;
 import com.udacity.food.feasta.foodfeasta.helper.Utility;
@@ -41,10 +47,14 @@ import butterknife.OnClick;
 
 public class LandingPageActivityCustomer extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener,
-        MenuFragment.OnListFragmentInteractionListener {
+        MenuFragment.OnListFragmentInteractionListener,
+        GoogleApiClient.ConnectionCallbacks,
+        GoogleApiClient.OnConnectionFailedListener {
 
     private MenuFragment mMenuFragment;
     private MediaPlayer mp;
+    private GoogleApiClient mGoogleApiClient;
+    private Message mActiveMessage;
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
@@ -81,6 +91,40 @@ public class LandingPageActivityCustomer extends BaseActivity
         mp = new MediaPlayer();
         setupUI();
         setupListeners();
+
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .addApi(Nearby.MESSAGES_API)
+                .addConnectionCallbacks(this)
+                .enableAutoManage(this, this)
+                .build();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if (!mGoogleApiClient.isConnected())
+            mGoogleApiClient.connect();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        unpublish();
+        if (mGoogleApiClient.isConnected()) {
+            mGoogleApiClient.disconnect();
+        }
+    }
+
+    public void publish(String message) {
+        mActiveMessage = new Message(message.getBytes());
+        Nearby.Messages.publish(mGoogleApiClient, mActiveMessage);
+    }
+
+    private void unpublish() {
+        if (mActiveMessage != null && mGoogleApiClient.isConnected()) {
+            Nearby.Messages.unpublish(mGoogleApiClient, mActiveMessage);
+            mActiveMessage = null;
+        }
     }
 
     @OnClick({R.id.fabWaiter, R.id.fabWater, R.id.fabFeedback})
@@ -244,6 +288,21 @@ public class LandingPageActivityCustomer extends BaseActivity
         setupViewPager(mViewPager);
         mTabs = (TabLayout) findViewById(R.id.tabs);
         mTabs.setupWithViewPager(mViewPager);
+    }
+
+    @Override
+    public void onConnected(@Nullable Bundle bundle) {
+
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+
+    }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+
     }
 
     public class MenuFetchingAsyncTask extends AsyncTask<String, Integer, Integer> {

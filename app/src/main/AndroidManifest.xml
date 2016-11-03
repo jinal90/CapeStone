@@ -47,6 +47,10 @@
                 android:resource="@xml/menu_widget_provider" />
         </receiver>
 
+        <meta-data
+            android:name="com.google.android.nearby.messages.API_KEY"
+            android:value="AIzaSyD7FaDj2gwAeg0R31T0ueieJ7YbgYikw_M" />
+
     </application>
 
 </manifest>
