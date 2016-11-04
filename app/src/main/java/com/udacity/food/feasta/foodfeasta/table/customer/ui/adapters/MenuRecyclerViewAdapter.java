@@ -14,6 +14,7 @@ import android.widget.Toast;
 import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
 import com.udacity.food.feasta.foodfeasta.R;
+import com.udacity.food.feasta.foodfeasta.helper.SessionFactory;
 import com.udacity.food.feasta.foodfeasta.model.Fooditem;
 import com.udacity.food.feasta.foodfeasta.model.TableOrder;
 import com.udacity.food.feasta.foodfeasta.table.customer.ui.activity.LandingPageActivityCustomer;
@@ -112,7 +113,8 @@ public class MenuRecyclerViewAdapter extends RecyclerViewCursorAdapter<MenuRecyc
                         public void onClick(DialogInterface dialog, int which) {
                             Toast.makeText(itemView.getContext(), "Added", Toast.LENGTH_SHORT).show();
                             TableOrder message = new TableOrder();
-                            message.setTableName("Table 1");
+                            //message.setTableName("Table 1");
+                            message.setTableName(SessionFactory.getInstance().getSelectedTable());
                             message.setFoodItemName(foodItem.getName());
                             Gson gson = new Gson();
                             String msgJson = gson.toJson(message);

@@ -98,4 +98,13 @@
     <string name="title_activity_landing_page_manager">LandingPageActivityManager</string>
     <string name="title_activity_landing_manager">LandingManagerActivity</string>
 
+    <string-array name="tableNameArray">
+        <item>Table 1</item>
+        <item>Table 2</item>
+        <item>Table 3</item>
+        <item>Table 4</item>
+        <item>Table 5</item>
+        <item>Table 6</item>
+    </string-array>
+
 </resources>

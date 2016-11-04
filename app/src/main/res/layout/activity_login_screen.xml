@@ -41,7 +41,15 @@
         android:layout_below="@+id/radioGroupUserType"
         android:layout_centerHorizontal="true">
 
-        <android.support.design.widget.TextInputLayout
+        <Spinner
+            android:id="@+id/tableNameSpinner"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:layout_marginBottom="5dp"
+            android:layout_marginTop="5dp" />
+
+        <!--<android.support.design.widget.TextInputLayout
             android:id="@+id/tlInputTable"
             android:layout_width="200dp"
             android:layout_height="wrap_content">
@@ -52,7 +60,7 @@
                 android:layout_height="wrap_content"
                 android:hint="Table No." />
 
-        </android.support.design.widget.TextInputLayout>
+        </android.support.design.widget.TextInputLayout>-->
 
         <android.support.design.widget.TextInputLayout
             android:id="@+id/tlInputName"

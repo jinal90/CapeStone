@@ -35,5 +35,4 @@ dependencies {
     compile 'com.google.code.gson:gson:2.7'
     compile 'com.google.android.gms:play-services-nearby:9.6.1'
     apt 'com.jakewharton:butterknife-compiler:8.4.0'
-    compile 'com.google.android.gms:play-services-nearby:9.6.1'
 }
