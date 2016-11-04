@@ -25,11 +25,11 @@ import com.google.android.gms.nearby.messages.Message;
 import com.google.android.gms.nearby.messages.MessageListener;
 import com.google.gson.Gson;
 import com.udacity.food.feasta.foodfeasta.R;
-import com.udacity.food.feasta.foodfeasta.database.MenuDataManager;
 import com.udacity.food.feasta.foodfeasta.database.RestaurantTableManager;
+import com.udacity.food.feasta.foodfeasta.database.TableOrderDataSource;
 import com.udacity.food.feasta.foodfeasta.helper.Constants;
 import com.udacity.food.feasta.foodfeasta.helper.Utility;
-import com.udacity.food.feasta.foodfeasta.model.MessageJson;
+import com.udacity.food.feasta.foodfeasta.model.TableOrder;
 import com.udacity.food.feasta.foodfeasta.restaurant.manager.fragment.TableOrderFragment;
 import com.udacity.food.feasta.foodfeasta.ui.BaseActivity;
 import com.udacity.food.feasta.foodfeasta.ui.ViewPagerAdapter;
@@ -95,11 +95,21 @@ public class LandingPageActivityManager extends BaseActivity
                 if (!TextUtils.isEmpty(messageAsString)) {
                     try {
                         Gson gson = new Gson();
-                        MessageJson msgJson = gson.fromJson(messageAsString, MessageJson.class);
-                        if (msgJson != null && msgJson.getFoodItem() != null)
+                        TableOrder orderJson = gson.fromJson(messageAsString, TableOrder.class);
+                        if (orderJson != null)
+                        {
                             Toast.makeText(LandingPageActivityManager.this,
-                                    msgJson.getTableName() +" - "+
-                                    msgJson.getFoodItem().getName(), Toast.LENGTH_SHORT).show();
+                                    orderJson.getTableName() +" - "+
+                                            orderJson.getFoodItemName(), Toast.LENGTH_SHORT).show();
+
+                            TableOrderDataSource dataSource
+                                    = new TableOrderDataSource(LandingPageActivityManager.this);
+                            dataSource.open();
+
+                                    dataSource.createOrder(orderJson.getTableName(),
+                                            orderJson.getFoodItemName());
+                            dataSource.close();
+                        }
                     } catch (Exception e) {
                         e.printStackTrace();
                     }

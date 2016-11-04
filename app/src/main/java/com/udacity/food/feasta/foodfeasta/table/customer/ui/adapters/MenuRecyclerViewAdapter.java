@@ -12,10 +12,8 @@ import android.widget.Toast;
 import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
 import com.udacity.food.feasta.foodfeasta.R;
-import com.udacity.food.feasta.foodfeasta.database.MenuDataManager;
-import com.udacity.food.feasta.foodfeasta.model.FoodMenu;
 import com.udacity.food.feasta.foodfeasta.model.Fooditem;
-import com.udacity.food.feasta.foodfeasta.model.MessageJson;
+import com.udacity.food.feasta.foodfeasta.model.TableOrder;
 import com.udacity.food.feasta.foodfeasta.table.customer.ui.activity.LandingPageActivityCustomer;
 import com.udacity.food.feasta.foodfeasta.table.customer.ui.fragment.MenuFragment;
 
@@ -102,9 +100,9 @@ public class MenuRecyclerViewAdapter extends RecyclerViewCursorAdapter<MenuRecyc
                 public void onClick(View v) {
 
                     Toast.makeText(itemView.getContext(), "Added", Toast.LENGTH_SHORT).show();
-                    MessageJson message = new MessageJson();
+                    TableOrder message = new TableOrder();
                     message.setTableName("Table One");
-                    message.setFoodItem(foodItem);
+                    message.setFoodItemName(foodItem.getName());
                     Gson gson = new Gson();
                     String msgJson = gson.toJson(message);
                     publishActivity.publish(msgJson);

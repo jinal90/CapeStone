@@ -25,6 +25,8 @@ import com.udacity.food.feasta.foodfeasta.model.Fooditem;
 import com.udacity.food.feasta.foodfeasta.restaurant.manager.adapter.TableOrderAdapter;
 
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.Map;
 
 /**
  * A fragment representing a list of Items.
@@ -88,6 +90,11 @@ public class TableOrderFragment extends Fragment implements LoaderManager.Loader
         dataSource.deleteAllItems();
         dataSource.createOrder("Table 1", "Chicken Momos");
         dataSource.createOrder("Table 1", "Samosa");
+        dataSource.createOrder("Table 1", "Samosa");
+        dataSource.createOrder("Table 1", "Apricot Ice Cream");
+        dataSource.createOrder("Table 3", "Butter Chicken");
+        dataSource.createOrder("Table 4", "Chicken Handi");
+        dataSource.createOrder("Table 3", "Sandwich");
         dataSource.close();
         this.getLoaderManager().restartLoader(1, null, this);
     }
@@ -105,10 +112,16 @@ public class TableOrderFragment extends Fragment implements LoaderManager.Loader
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         String type = "";
-        if (mTableName == Constants.TABLE_ONE) {
-            type = "Table 1";
-        }
 
+        Iterator it = Constants.TABLE_MAP.entrySet().iterator();
+        while (it.hasNext()) {
+            Map.Entry pair = (Map.Entry) it.next();
+            String key = (String) pair.getKey();
+            Integer value = (Integer) pair.getValue();
+            if (mTableName == value) {
+                type = key;
+            }
+        }
 
         switch (id) {
             case 2:
@@ -116,15 +129,17 @@ public class TableOrderFragment extends Fragment implements LoaderManager.Loader
                 if (args != null) {
                     ArrayList<String> itemNamesList = args.getStringArrayList("ItemNames");
                     if (itemNamesList != null && itemNamesList.size() > 0) {
-                       // String[] itemNameArray = new String[itemNamesList.size()];
-
-                        //Log.d("ItemName - ", " item -- len " + itemNameArray.length);
-
-                        //itemNameArray = itemNamesList.toArray(itemNameArray);
-                        String[] selectionArgs = {"Samosa"};
+                        String names = "";
+                        for (int i = 0; i < itemNamesList.size(); i++) {
+                            names = names + "'" + itemNamesList.get(i);
+                            if (i < itemNamesList.size() - 1)
+                                names = names + "',";
+                            else
+                                names = names + "'";
+                        }
                         final Uri uri1 = Uri.parse(String.valueOf(TableOrderContentProvider.CONTENT_URI_3));
                         return new CursorLoader(getActivity(), uri1, null,
-                                MenuDataManager.COLUMN_NAME + " =?", selectionArgs, MenuDataManager.COLUMN_ID + " DESC");
+                                MenuDataManager.COLUMN_NAME + " IN (" + names + ")", null, MenuDataManager.COLUMN_ID + " DESC");
                     }
 
                 }
