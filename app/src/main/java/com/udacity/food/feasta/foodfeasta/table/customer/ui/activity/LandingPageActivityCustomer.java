@@ -53,7 +53,6 @@ public class LandingPageActivityCustomer extends BaseActivity
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener {
 
-    private MenuFragment mMenuFragment;
     private MediaPlayer mp;
     private GoogleApiClient mGoogleApiClient;
     private Message mActiveMessage;

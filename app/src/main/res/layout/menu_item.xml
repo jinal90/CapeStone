@@ -20,7 +20,7 @@
             android:layout_height="100dp"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:src="@drawable/item_afghani_chicken" />
+            android:contentDescription="@string/contentDesc_food_img"/>
 
         <RelativeLayout
             android:layout_width="wrap_content"
@@ -42,14 +42,14 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentTop="true"
                     android:layout_marginBottom="5dp"
-                    android:text="Afghani Chicken" />
+                    android:contentDescription="@string/contentDesc_food_name"/>
 
                 <TextView
                     android:id="@+id/tvMenuItemDescription"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/tvMenuItemName"
-                    android:text="Boneless chicken, fried with cream and flavour of garlic" />
+                    android:contentDescription="@string/contentDesc_food_desc"/>
 
                 <View
                     android:id="@+id/divider"
@@ -67,7 +67,7 @@
                     android:layout_alignParentEnd="true"
                     android:layout_alignParentRight="true"
                     android:layout_below="@+id/divider"
-                    android:text="Rs. 160" />
+                    android:contentDescription="@string/contentDesc_food_price"/>
 
             </RelativeLayout>
 
@@ -77,7 +77,8 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:src="@drawable/ic_add_circle_outline_black_24dp" />
+                android:src="@drawable/ic_add_circle_outline_black_24dp"
+                android:contentDescription="@string/contentDesc_addButton"/>
 
         </RelativeLayout>
 

@@ -44,6 +44,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
+        android:contentDescription="@string/contentDesc_fab_menu"
         fab:menu_animationDelayPerItem="55"
         fab:menu_backgroundColor="@android:color/transparent"
         fab:menu_buttonSpacing="0dp"
@@ -79,24 +80,27 @@
             android:id="@+id/fabFeedback"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:contentDescription="@string/contentDesc_fab_feedback"
             android:src="@drawable/ic_feedback_white_24dp"
-            fab:fab_label="Feedback"
+            fab:fab_label="@string/fab_feedback"
             fab:fab_size="mini" />
 
         <com.github.clans.fab.FloatingActionButton
             android:id="@+id/fabWater"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:contentDescription="@string/contentDesc_fab_water"
             android:src="@drawable/ic_local_drink_white_24dp"
-            fab:fab_label="Drinking Water"
+            fab:fab_label="@string/fab_water"
             fab:fab_size="mini" />
 
         <com.github.clans.fab.FloatingActionButton
             android:id="@+id/fabWaiter"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:contentDescription="@string/contentDesc_fab_waiter"
             android:src="@drawable/ic_notifications_active_white_24dp"
-            fab:fab_label="Call Waiter"
+            fab:fab_label="@string/fab_waiter"
             fab:fab_size="mini" />
     </com.github.clans.fab.FloatingActionMenu>
 

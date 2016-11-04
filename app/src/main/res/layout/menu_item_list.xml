@@ -12,4 +12,5 @@
     android:layout_marginBottom="4dp"
     app:layoutManager="LinearLayoutManager"
     tools:context=".table.customer.ui.fragment.MenuFragment"
-    tools:listitem="@layout/menu_item" />
+    tools:listitem="@layout/menu_item"
+    android:contentDescription="@string/contentDesc_food_menu"/>
