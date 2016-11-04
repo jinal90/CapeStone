@@ -1,27 +1,26 @@
 package com.udacity.food.feasta.foodfeasta.table.customer.ui.fragment;
 
 import android.content.Context;
-import android.os.AsyncTask;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.google.gson.Gson;
 import com.udacity.food.feasta.foodfeasta.R;
+import com.udacity.food.feasta.foodfeasta.database.MenuDataManager;
+import com.udacity.food.feasta.foodfeasta.database.TableOrderContentProvider;
 import com.udacity.food.feasta.foodfeasta.helper.Constants;
-import com.udacity.food.feasta.foodfeasta.helper.Utility;
-import com.udacity.food.feasta.foodfeasta.model.FoodMenu;
 import com.udacity.food.feasta.foodfeasta.model.Fooditem;
 import com.udacity.food.feasta.foodfeasta.table.customer.ui.activity.LandingPageActivityCustomer;
 import com.udacity.food.feasta.foodfeasta.table.customer.ui.adapters.MenuRecyclerViewAdapter;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * A fragment representing a list of Items.
@@ -29,15 +28,15 @@ import java.util.List;
  * Activities containing this fragment MUST implement the {@link OnListFragmentInteractionListener}
  * interface.
  */
-public class MenuFragment extends Fragment {
+public class MenuFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
     // TODO: Customize parameter argument names
     // TODO: Customize parameters
     private OnListFragmentInteractionListener mListener;
     private RecyclerView recyclerView;
-    private FoodMenu menuObject;
     private static final String ARG_FOOD_TYPE = "food_type";
     private int mFoodType;
+    private MenuRecyclerViewAdapter adapter;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -71,8 +70,7 @@ public class MenuFragment extends Fragment {
         View view = inflater.inflate(R.layout.menu_item_list, container, false);
         if (view instanceof RecyclerView) {
             recyclerView = (RecyclerView) view;
-            ProcessMenuData task = new ProcessMenuData();
-            task.execute();
+            showContent();
         }
         return view;
     }
@@ -80,8 +78,10 @@ public class MenuFragment extends Fragment {
     public void showContent() {
         // Set the adapter
         recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 1));
-        recyclerView.setAdapter(new MenuRecyclerViewAdapter(menuObject, mListener,
-                (LandingPageActivityCustomer)getActivity()));
+        adapter = new MenuRecyclerViewAdapter(mListener,
+                (LandingPageActivityCustomer) getActivity());
+        recyclerView.setAdapter(adapter);
+        this.getLoaderManager().restartLoader(1, null, this);
     }
 
     @Override
@@ -101,6 +101,46 @@ public class MenuFragment extends Fragment {
         mListener = null;
     }
 
+    @Override
+    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        String type = "";
+        if (mFoodType == Constants.FOOD_DESSERT) {
+            type = "desert";
+        } else if (mFoodType == Constants.FOOD_MAIN_COURSE) {
+            type = "main_course";
+        } else if (mFoodType == Constants.FOOD_STARTER) {
+            type = "starter";
+        }
+
+        String[] selectionArgs = {type};
+        switch (id) {
+            case 1:
+
+                final Uri uri = Uri.parse(String.valueOf(TableOrderContentProvider.CONTENT_URI_3));
+                return new CursorLoader(getActivity(), uri, null,
+                        MenuDataManager.COLUMN_CATEGORY + " =?", selectionArgs, MenuDataManager.COLUMN_ID + " DESC");
+        }
+        return null;
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+        switch (loader.getId()) {
+            case 1:
+                adapter.swapCursor(data);
+                break;
+        }
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {
+        switch (loader.getId()) {
+            case 1:
+                adapter.swapCursor(null);
+                break;
+        }
+    }
+
     /**
      * This interface must be implemented by activities that contain this
      * fragment to allow an interaction in this fragment to be communicated
@@ -114,75 +154,5 @@ public class MenuFragment extends Fragment {
     public interface OnListFragmentInteractionListener {
         // TODO: Update argument type and name
         void onListFragmentInteraction(Fooditem item);
-    }
-
-    public class ProcessMenuData extends AsyncTask<String, Integer, Integer> {
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            //showProgressIndicator();
-        }
-
-        @Override
-        protected Integer doInBackground(String... params) {
-
-            if (Utility.isOnline(getActivity())) {
-                try {
-                    String response = Utility.getSavedStringDataFromPref(getActivity(), "MenuData");
-
-                    String type = "";
-                    if (!TextUtils.isEmpty(response)) {
-
-                        if (mFoodType == Constants.FOOD_DESSERT) {
-                            type = "desert";
-                        } else if (mFoodType == Constants.FOOD_MAIN_COURSE) {
-                            type = "main_course";
-                        } else if (mFoodType == Constants.FOOD_STARTER) {
-                            type = "starter";
-                        }
-
-                        Gson gson = new Gson();
-                        FoodMenu fullMenu = gson.fromJson(response, FoodMenu.class);
-                        menuObject = new FoodMenu();
-                        List itemList = new ArrayList<Fooditem>();
-                        if (fullMenu != null && fullMenu.getFooditem() != null
-                                && fullMenu.getFooditem().size() > 0) {
-                            for (int i = 0; i < fullMenu.getFooditem().size(); i++) {
-
-                                if (type.equalsIgnoreCase(fullMenu.getFooditem().get(i).getCategory())) {
-                                    itemList.add(fullMenu.getFooditem().get(i));
-                                }
-                            }
-                            menuObject.setFooditem(itemList);
-                            System.out.println("json -- " + menuObject.getFooditem().size());
-                            return Constants.SUCCESS;
-                        }
-
-                    }
-
-
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-
-            return Constants.FAILURE;
-        }
-
-        @Override
-        protected void onPostExecute(Integer result) {
-            super.onPostExecute(result);
-            switch (result) {
-                case Constants.SUCCESS:
-                    showContent();
-                    break;
-                case Constants.FAILURE:
-                    //showErrorView();
-                    break;
-                default:
-                    break;
-            }
-        }
     }
 }

@@ -1,8 +1,5 @@
 package com.udacity.food.feasta.foodfeasta.restaurant.manager.activity;
 
-import android.content.Intent;
-import android.content.res.AssetFileDescriptor;
-import android.media.MediaPlayer;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -21,20 +18,19 @@ import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
-import com.github.clans.fab.FloatingActionMenu;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.nearby.Nearby;
 import com.google.android.gms.nearby.messages.Message;
 import com.google.android.gms.nearby.messages.MessageListener;
+import com.google.gson.Gson;
 import com.udacity.food.feasta.foodfeasta.R;
 import com.udacity.food.feasta.foodfeasta.helper.Constants;
 import com.udacity.food.feasta.foodfeasta.helper.Utility;
-import com.udacity.food.feasta.foodfeasta.model.Fooditem;
+import com.udacity.food.feasta.foodfeasta.model.MessageJson;
 import com.udacity.food.feasta.foodfeasta.restaurant.manager.fragment.TableOrderFragment;
-import com.udacity.food.feasta.foodfeasta.table.customer.ui.fragment.MenuFragment;
-import com.udacity.food.feasta.foodfeasta.ui.ViewPagerAdapter;
 import com.udacity.food.feasta.foodfeasta.ui.BaseActivity;
+import com.udacity.food.feasta.foodfeasta.ui.ViewPagerAdapter;
 
 import java.io.InputStream;
 import java.net.HttpURLConnection;
@@ -44,12 +40,11 @@ import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 public class LandingPageActivityManager extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener,
         GoogleApiClient.ConnectionCallbacks,
-        GoogleApiClient.OnConnectionFailedListener{
+        GoogleApiClient.OnConnectionFailedListener {
 
     private GoogleApiClient mGoogleApiClient;
     private Message mActiveMessage;
@@ -91,7 +86,20 @@ public class LandingPageActivityManager extends BaseActivity
             @Override
             public void onFound(Message message) {
                 String messageAsString = new String(message.getContent());
-                Toast.makeText(LandingPageActivityManager.this, messageAsString, Toast.LENGTH_SHORT).show();
+                //Toast.makeText(LandingPageActivityManager.this, messageAsString, Toast.LENGTH_SHORT).show();
+
+                if (!TextUtils.isEmpty(messageAsString)) {
+                    try {
+                        Gson gson = new Gson();
+                        MessageJson msgJson = gson.fromJson(messageAsString, MessageJson.class);
+                        if (msgJson != null && msgJson.getFoodItem() != null)
+                            Toast.makeText(LandingPageActivityManager.this,
+                                    msgJson.getTableName() +" - "+
+                                    msgJson.getFoodItem().getName(), Toast.LENGTH_SHORT).show();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
             }
 
             @Override
@@ -209,9 +217,9 @@ public class LandingPageActivityManager extends BaseActivity
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
         Iterator it = Constants.TABLE_MAP.entrySet().iterator();
         while (it.hasNext()) {
-            Map.Entry pair = (Map.Entry)it.next();
-            String key = (String)pair.getKey();
-            Integer value = (Integer)pair.getValue();
+            Map.Entry pair = (Map.Entry) it.next();
+            String key = (String) pair.getKey();
+            Integer value = (Integer) pair.getValue();
             adapter.addFragment(TableOrderFragment.newInstance(value), key);
         }
         /*adapter.addFragment(TableOrderFragment.newInstance(11), "Starters");

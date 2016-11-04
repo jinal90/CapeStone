@@ -14,6 +14,10 @@ public class Fooditem implements Parcelable{
     private String price;
     private String short_desc;
 
+    public Fooditem(){
+
+    }
+
     protected Fooditem(Parcel in) {
         category = in.readString();
         image = in.readString();

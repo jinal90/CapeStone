@@ -11,7 +11,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class MenuDataManager extends SQLiteOpenHelper {
 
-    public static final String TABLE_FOOD_MENU = "FoodMenu";
+    public static final String TABLE_NAME = "FoodMenu";
     public static final String COLUMN_ID = "_id";
     public static final String COLUMN_NAME = "item_name";
     public static final String COLUMN_CATEGORY = "item_category";
@@ -26,15 +26,19 @@ public class MenuDataManager extends SQLiteOpenHelper {
 
     // Database creation sql statement
     private static final String DATABASE_CREATE = "create table "
-            + TABLE_FOOD_MENU + "( " + COLUMN_ID
+            + TABLE_NAME + "( " + COLUMN_ID
             + " integer primary key autoincrement, "
             + COLUMN_NAME + " text not null, "
             + COLUMN_CATEGORY + " text not null,"
             + COLUMN_IMAGE + " text,"
             + COLUMN_SHORT_DESC + " text,"
             + COLUMN_LONG_DESC + " text,"
-            + COLUMN_PRICE + " int"
+            + COLUMN_PRICE + " text"
             + ");";
+
+    public MenuDataManager(Context ctx) {
+        super(ctx, TABLE_NAME, null, DATABASE_VERSION);
+    }
 
     public MenuDataManager(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
         super(context, name, factory, version);
@@ -46,13 +50,13 @@ public class MenuDataManager extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-
+        db.execSQL(DATABASE_CREATE);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_FOOD_MENU);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
         onCreate(db);
 
     }

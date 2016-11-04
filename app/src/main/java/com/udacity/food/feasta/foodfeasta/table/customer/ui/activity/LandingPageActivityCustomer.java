@@ -26,9 +26,12 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.nearby.Nearby;
 import com.google.android.gms.nearby.messages.Message;
+import com.google.gson.Gson;
 import com.udacity.food.feasta.foodfeasta.R;
+import com.udacity.food.feasta.foodfeasta.database.MenuDataSource;
 import com.udacity.food.feasta.foodfeasta.helper.Constants;
 import com.udacity.food.feasta.foodfeasta.helper.Utility;
+import com.udacity.food.feasta.foodfeasta.model.FoodMenu;
 import com.udacity.food.feasta.foodfeasta.model.Fooditem;
 import com.udacity.food.feasta.foodfeasta.table.customer.ui.fragment.MenuFragment;
 import com.udacity.food.feasta.foodfeasta.ui.BaseActivity;
@@ -37,7 +40,9 @@ import com.udacity.food.feasta.foodfeasta.ui.ViewPagerAdapter;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -333,7 +338,21 @@ public class LandingPageActivityCustomer extends BaseActivity
                     response = sb.toString();
 
                     if (!TextUtils.isEmpty(response)) {
-                        Utility.saveStringDataInPref(LandingPageActivityCustomer.this, "MenuData", response);
+                        //Utility.saveStringDataInPref(LandingPageActivityCustomer.this, "MenuData", response);
+                        MenuDataSource menuDataSource = new MenuDataSource(LandingPageActivityCustomer.this);
+                        menuDataSource.open();
+
+                        menuDataSource.deleteAllItems();
+                        Gson gson = new Gson();
+                        FoodMenu fullMenu = gson.fromJson(response, FoodMenu.class);
+                        if (fullMenu != null && fullMenu.getFooditem() != null
+                                && fullMenu.getFooditem().size() > 0) {
+                            for (int i = 0; i < fullMenu.getFooditem().size(); i++) {
+
+                                menuDataSource.createItem(fullMenu.getFooditem().get(i));
+                            }
+                        }
+                        menuDataSource.close();
                         return Constants.SUCCESS;
                     }
 
