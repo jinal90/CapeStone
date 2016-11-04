@@ -1,6 +1,8 @@
 package com.udacity.food.feasta.foodfeasta.table.customer.ui.adapters;
 
+import android.content.DialogInterface;
 import android.database.Cursor;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -74,7 +76,7 @@ public class MenuRecyclerViewAdapter extends RecyclerViewCursorAdapter<MenuRecyc
             mView = view;
         }
 
-        public void bindDataToView(final Fooditem foodItem){
+        public void bindDataToView(final Fooditem foodItem) {
             mItem = foodItem;
             tvMenuItemName.setText(foodItem.getName());
             tvMenuItemDescription.setText(foodItem.getShort_desc());
@@ -99,13 +101,36 @@ public class MenuRecyclerViewAdapter extends RecyclerViewCursorAdapter<MenuRecyc
                 @Override
                 public void onClick(View v) {
 
-                    Toast.makeText(itemView.getContext(), "Added", Toast.LENGTH_SHORT).show();
-                    TableOrder message = new TableOrder();
-                    message.setTableName("Table One");
-                    message.setFoodItemName(foodItem.getName());
-                    Gson gson = new Gson();
-                    String msgJson = gson.toJson(message);
-                    publishActivity.publish(msgJson);
+                    final AlertDialog.Builder builder = new AlertDialog.Builder(publishActivity);
+
+                    builder.setTitle("Order Confirmation");
+
+                    builder.setMessage("Do you want to order " + foodItem.getName() +
+                            "?? \n It costs " + foodItem.getPrice() + ".");
+                    builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            Toast.makeText(itemView.getContext(), "Added", Toast.LENGTH_SHORT).show();
+                            TableOrder message = new TableOrder();
+                            message.setTableName("Table One");
+                            message.setFoodItemName(foodItem.getName());
+                            Gson gson = new Gson();
+                            String msgJson = gson.toJson(message);
+                            publishActivity.publish(msgJson);
+                        }
+                    });
+                    builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    });
+
+                    AlertDialog dialog = builder.create();
+                    dialog.setCanceledOnTouchOutside(false);
+                    dialog.setCancelable(false);
+                    dialog.show();
+
                 }
             });
         }

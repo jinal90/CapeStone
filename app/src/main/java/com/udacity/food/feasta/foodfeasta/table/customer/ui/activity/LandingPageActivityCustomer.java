@@ -40,11 +40,8 @@ import com.udacity.food.feasta.foodfeasta.ui.ViewPagerAdapter;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -114,8 +111,9 @@ public class LandingPageActivityCustomer extends BaseActivity
     @Override
     protected void onStop() {
         super.onStop();
-        unpublish();
+
         if (mGoogleApiClient.isConnected()) {
+            unpublish();
             mGoogleApiClient.disconnect();
         }
     }
@@ -258,9 +256,9 @@ public class LandingPageActivityCustomer extends BaseActivity
 
         Iterator it = Constants.MENU_TYPE_HASHMAP.entrySet().iterator();
         while (it.hasNext()) {
-            Map.Entry pair = (Map.Entry)it.next();
-            String key = (String)pair.getKey();
-            Integer value = (Integer)pair.getValue();
+            Map.Entry pair = (Map.Entry) it.next();
+            String key = (String) pair.getKey();
+            Integer value = (Integer) pair.getValue();
             adapter.addFragment(MenuFragment.newInstance(value), key);
         }
         /*adapter.addFragment(MenuFragment.newInstance(11), "Starters");
