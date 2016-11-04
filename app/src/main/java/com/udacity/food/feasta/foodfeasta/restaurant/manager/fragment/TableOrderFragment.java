@@ -1,6 +1,9 @@
 package com.udacity.food.feasta.foodfeasta.restaurant.manager.fragment;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -10,18 +13,18 @@ import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.udacity.food.feasta.foodfeasta.R;
 import com.udacity.food.feasta.foodfeasta.database.MenuDataManager;
 import com.udacity.food.feasta.foodfeasta.database.TableOrderContentProvider;
-import com.udacity.food.feasta.foodfeasta.database.TableOrderDataSource;
 import com.udacity.food.feasta.foodfeasta.database.TableOrderManager;
 import com.udacity.food.feasta.foodfeasta.helper.Constants;
-import com.udacity.food.feasta.foodfeasta.model.Fooditem;
 import com.udacity.food.feasta.foodfeasta.restaurant.manager.adapter.TableOrderAdapter;
 
 import java.util.ArrayList;
@@ -30,9 +33,6 @@ import java.util.Map;
 
 /**
  * A fragment representing a list of Items.
- * <p/>
- * Activities containing this fragment MUST implement the {@link OnListFragmentInteractionListener}
- * interface.
  */
 public class TableOrderFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
@@ -42,6 +42,8 @@ public class TableOrderFragment extends Fragment implements LoaderManager.Loader
     private static final String ARG_TABLE_NAME = "Table_Name";
     private int mTableName;
     private TableOrderAdapter adapter;
+
+    private BroadcastReceiver mReceiver;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -91,12 +93,48 @@ public class TableOrderFragment extends Fragment implements LoaderManager.Loader
 
     @Override
     public void onAttach(Context context) {
+        Log.d("onAttach -- ", "int --" + mTableName);
         super.onAttach(context);
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
+    }
+
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        IntentFilter intentFilter = new IntentFilter(
+                "foodfeasta.OrderReceiver");
+
+        mReceiver = new BroadcastReceiver() {
+
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                if (intent != null && intent.hasExtra("selectedTable")) {
+                    String selectedTable = intent.getStringExtra("selectedTable");
+                    if (!TextUtils.isEmpty(selectedTable)) {
+                        Toast.makeText(context, selectedTable, Toast.LENGTH_SHORT).show();
+                        if (Constants.TABLE_MAP.get(selectedTable) == mTableName) {
+                            TableOrderFragment.this.getLoaderManager().restartLoader(1, null,
+                                    TableOrderFragment.this);
+                        }
+                    }
+                }
+
+            }
+        };
+        //registering our receiver
+        getActivity().registerReceiver(mReceiver, intentFilter);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        //unregister our receiver
+        getActivity().unregisterReceiver(this.mReceiver);
     }
 
     @Override
@@ -175,18 +213,4 @@ public class TableOrderFragment extends Fragment implements LoaderManager.Loader
         }
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p/>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-    public interface OnListFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onListFragmentInteraction(Fooditem item);
-    }
 }

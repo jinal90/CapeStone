@@ -1,5 +1,7 @@
 package com.udacity.food.feasta.foodfeasta.restaurant.manager.activity;
 
+import android.app.PendingIntent;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -106,6 +108,10 @@ public class LandingPageActivityManager extends BaseActivity
                             dataSource.open();
                             dataSource.createOrder(orderJson.getTableName(), orderJson.getFoodItemName());
                             dataSource.close();
+
+                            Intent intent = new Intent("foodfeasta.OrderReceiver");
+                            intent.putExtra("selectedTable", orderJson.getTableName());
+                            sendBroadcast(intent);
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
