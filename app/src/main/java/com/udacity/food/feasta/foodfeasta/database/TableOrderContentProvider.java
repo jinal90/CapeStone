@@ -31,6 +31,7 @@ public class TableOrderContentProvider extends ContentProvider {
     SQLiteDatabase db;
     TableOrderManager dbTableOrderHelper;
     MenuDataManager dbMenuItemHelper;
+    RestaurantTableManager dbResTableHelper;
 
     private static UriMatcher uriMatcher;
 
@@ -58,7 +59,7 @@ public class TableOrderContentProvider extends ContentProvider {
     @Override
     public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
 
-        SQLiteDatabase db = dbMenuItemHelper.getWritableDatabase();
+        SQLiteDatabase db;
         SQLiteQueryBuilder queryBuilder = new SQLiteQueryBuilder();
 
         String id;
@@ -67,7 +68,14 @@ public class TableOrderContentProvider extends ContentProvider {
 
             case MENU_ITEMS:
             case MENU_ITEM:
+                db = dbMenuItemHelper.getWritableDatabase();
                 queryBuilder.setTables(MenuDataManager.TABLE_NAME);
+                break;
+
+            case ORDERS:
+            case ORDER:
+                db = dbTableOrderHelper.getWritableDatabase();
+                queryBuilder.setTables(TableOrderManager.TABLE_NAME);
                 break;
 
             default:
@@ -90,12 +98,19 @@ public class TableOrderContentProvider extends ContentProvider {
     @Override
     public Uri insert(Uri uri, ContentValues values) {
 
-        SQLiteDatabase db = dbMenuItemHelper.getWritableDatabase();
+        SQLiteDatabase db;
         long id = 0;
         switch (uriMatcher.match(uri)) {
             case MENU_ITEM:
             case MENU_ITEMS:
+                db = dbMenuItemHelper.getWritableDatabase();
                 id = db.insert(MenuDataManager.TABLE_NAME, null, values);
+                getContext().getContentResolver().notifyChange(uri, null);
+                break;
+            case ORDER:
+            case ORDERS:
+                db = dbTableOrderHelper.getWritableDatabase();
+                id = db.insert(TableOrderManager.TABLE_NAME, null, values);
                 getContext().getContentResolver().notifyChange(uri, null);
                 break;
             default:
@@ -108,14 +123,26 @@ public class TableOrderContentProvider extends ContentProvider {
 
     @Override
     public int delete(Uri uri, String selection, String[] selectionArgs) {
-        SQLiteDatabase db = dbMenuItemHelper.getWritableDatabase();
+        SQLiteDatabase db;
+        String id;
         switch (uriMatcher.match(uri)) {
             case MENU_ITEMS:
-                //do nothing
+                db = dbMenuItemHelper.getWritableDatabase();
+                break;
+            case ORDERS:
+                db = dbTableOrderHelper.getWritableDatabase();
                 break;
             case MENU_ITEM:
-                String id = uri.getPathSegments().get(1);
+                db = dbMenuItemHelper.getWritableDatabase();
+                 id = uri.getPathSegments().get(1);
                 selection = MenuDataManager.COLUMN_ID + " = " + id
+                        + (!TextUtils.isEmpty(selection) ?
+                        " AND (" + selection + ')' : "");
+                break;
+            case ORDER:
+                db = dbTableOrderHelper.getWritableDatabase();
+                 id = uri.getPathSegments().get(1);
+                selection = TableOrderManager.COLUMN_ID + " = " + id
                         + (!TextUtils.isEmpty(selection) ?
                         " AND (" + selection + ')' : "");
                 break;
@@ -129,14 +156,28 @@ public class TableOrderContentProvider extends ContentProvider {
 
     @Override
     public int update(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
-        SQLiteDatabase db = dbMenuItemHelper.getWritableDatabase();
+        SQLiteDatabase db;
+        String id;
         switch (uriMatcher.match(uri)) {
             case MENU_ITEMS:
                 //do nothing
+                db = dbMenuItemHelper.getWritableDatabase();
                 break;
             case MENU_ITEM:
-                String id = uri.getPathSegments().get(1);
+                db = dbMenuItemHelper.getWritableDatabase();
+                 id = uri.getPathSegments().get(1);
                 selection = MenuDataManager.COLUMN_ID + " = " + id
+                        + (!TextUtils.isEmpty(selection) ?
+                        " AND (" + selection + ')' : "");
+                break;
+            case ORDERS:
+                //do nothing
+                db = dbTableOrderHelper.getWritableDatabase();
+                break;
+            case ORDER:
+                db = dbTableOrderHelper.getWritableDatabase();
+                id = uri.getPathSegments().get(1);
+                selection = TableOrderManager.COLUMN_ID + " = " + id
                         + (!TextUtils.isEmpty(selection) ?
                         " AND (" + selection + ')' : "");
                 break;

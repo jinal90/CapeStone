@@ -1,5 +1,6 @@
 package com.udacity.food.feasta.foodfeasta.restaurant.manager.adapter;
 
+import android.database.Cursor;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,19 +10,17 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 import com.udacity.food.feasta.foodfeasta.R;
-import com.udacity.food.feasta.foodfeasta.model.FoodMenu;
 import com.udacity.food.feasta.foodfeasta.model.Fooditem;
+import com.udacity.food.feasta.foodfeasta.table.customer.ui.adapters.RecyclerViewCursorAdapter;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 
-public class TableOrderAdapter extends RecyclerView.Adapter<TableOrderAdapter.ViewHolder> {
+public class TableOrderAdapter extends RecyclerViewCursorAdapter<TableOrderAdapter.ViewHolder> {
 
-    private final FoodMenu mFoodMenu;
 
-    public TableOrderAdapter(FoodMenu items) {
-        mFoodMenu = items;
+    public TableOrderAdapter() {
     }
 
     @Override
@@ -32,21 +31,16 @@ public class TableOrderAdapter extends RecyclerView.Adapter<TableOrderAdapter.Vi
     }
 
     @Override
-    public void onBindViewHolder(final ViewHolder holder, int position) {
-        holder.mItem = mFoodMenu.getFooditem().get(position);
-        holder.tvMenuItemName.setText(mFoodMenu.getFooditem().get(position).getName());
-        holder.tvMenuItemDescription.setText(mFoodMenu.getFooditem().get(position).getShort_desc());
-        holder.tvMenuItemPrice.setText(mFoodMenu.getFooditem().get(position).getPrice());
+    public void onBindViewHolder(ViewHolder holder, Cursor cursor) {
+        Fooditem foodItem = new Fooditem();
+        foodItem.setName(cursor.getString(1));
+        foodItem.setCategory(cursor.getString(2));
+        foodItem.setImage(cursor.getString(3));
+        foodItem.setShort_desc(cursor.getString(4));
+        foodItem.setLong_desc(cursor.getString(5));
+        foodItem.setPrice(cursor.getString(6));
 
-        Picasso.with(holder.itemView.getContext())
-                .load(mFoodMenu.getFooditem().get(position).getImage())
-                .into(holder.imgFoodItem);
-
-    }
-
-    @Override
-    public int getItemCount() {
-        return mFoodMenu.getFooditem().size();
+        holder.bindDataToView(foodItem);
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -68,6 +62,18 @@ public class TableOrderAdapter extends RecyclerView.Adapter<TableOrderAdapter.Vi
             ButterKnife.bind(this, view);
             mView = view;
         }
+
+        public void bindDataToView(final Fooditem foodItem) {
+            mItem = foodItem;
+            tvMenuItemName.setText(foodItem.getName());
+            tvMenuItemDescription.setText(foodItem.getShort_desc());
+            tvMenuItemPrice.setText(foodItem.getPrice());
+
+            Picasso.with(itemView.getContext())
+                    .load(foodItem.getImage())
+                    .into(imgFoodItem);
+        }
+
 
         @Override
         public String toString() {

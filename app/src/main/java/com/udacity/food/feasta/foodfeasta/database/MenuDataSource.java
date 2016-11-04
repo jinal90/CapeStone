@@ -73,6 +73,22 @@ public class MenuDataSource {
 
     }
 
+    public Fooditem getSingleItem(String itemName){
+        Fooditem item = new Fooditem();
+        String[] selectionArgs = {itemName};
+        Cursor cursor = database.query(MenuDataManager.TABLE_NAME,
+                allColumns, MenuDataManager.COLUMN_NAME+" =?", selectionArgs, null, null, null);
+
+        cursor.moveToFirst();
+        while (!cursor.isAfterLast()) {
+            item = cursorToFoodItem(cursor);
+            cursor.moveToNext();
+        }
+        // make sure to close the cursor
+        cursor.close();
+        return item;
+    }
+
     public List<Fooditem> getAllFoodItems() {
         List<Fooditem> fooditems = new ArrayList<Fooditem>();
 

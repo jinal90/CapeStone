@@ -21,7 +21,7 @@ public class TableOrderDataSource {
     private SQLiteDatabase database;
     private TableOrderManager dbHelper;
     private String[] allColumns = { TableOrderManager.COLUMN_ID,
-            TableOrderManager.COLUMN_TABLE_ID, TableOrderManager.COLUMN_FOOD_ITEM_ID };
+            TableOrderManager.COLUMN_TABLE_NAME, TableOrderManager.COLUMN_FOOD_ITEM_NAME };
 
     public TableOrderDataSource(Context context) {
         dbHelper = new TableOrderManager(context);
@@ -35,10 +35,10 @@ public class TableOrderDataSource {
         dbHelper.close();
     }
 
-    public TableOrder createOrder(int tableId, int foodId) {
+    public TableOrder createOrder(String tableName, String foodName) {
         ContentValues values = new ContentValues();
-        values.put(TableOrderManager.COLUMN_TABLE_ID, tableId);
-        values.put(TableOrderManager.COLUMN_FOOD_ITEM_ID, foodId);
+        values.put(TableOrderManager.COLUMN_TABLE_NAME, tableName);
+        values.put(TableOrderManager.COLUMN_FOOD_ITEM_NAME, foodName);
         long insertId = database.insert(TableOrderManager.TABLE_NAME, null,
                 values);
         Cursor cursor = database.query(TableOrderManager.TABLE_NAME,
@@ -51,10 +51,15 @@ public class TableOrderDataSource {
     }
 
     public void deleteOrder(TableOrder order) {
-        long tableId = order.getTableId();
+        long tableId = order.getOrderId();
         System.out.println("TableOrder deleted with id: " + tableId);
-        database.delete(TableOrderManager.TABLE_NAME, TableOrderManager.COLUMN_TABLE_ID
+        database.delete(TableOrderManager.TABLE_NAME, TableOrderManager.COLUMN_ID
                 + " = " + tableId, null);
+    }
+
+    public void deleteAllItems(){
+        database.execSQL("delete from "+ TableOrderManager.TABLE_NAME);
+
     }
 
     public List<TableOrder> getAllOrders() {
@@ -77,8 +82,8 @@ public class TableOrderDataSource {
     private TableOrder cursorToComment(Cursor cursor) {
         TableOrder tableOrder = new TableOrder();
         tableOrder.setOrderId(cursor.getLong(0));
-        tableOrder.setTableId(cursor.getInt(1));
-        tableOrder.setFoodItemId(cursor.getInt(1));
+        tableOrder.setTableName(cursor.getString(1));
+        tableOrder.setFoodItemName(cursor.getString(2));
         return tableOrder;
     }
 }

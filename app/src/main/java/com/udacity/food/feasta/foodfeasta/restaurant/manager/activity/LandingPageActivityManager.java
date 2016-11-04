@@ -25,6 +25,8 @@ import com.google.android.gms.nearby.messages.Message;
 import com.google.android.gms.nearby.messages.MessageListener;
 import com.google.gson.Gson;
 import com.udacity.food.feasta.foodfeasta.R;
+import com.udacity.food.feasta.foodfeasta.database.MenuDataManager;
+import com.udacity.food.feasta.foodfeasta.database.RestaurantTableManager;
 import com.udacity.food.feasta.foodfeasta.helper.Constants;
 import com.udacity.food.feasta.foodfeasta.helper.Utility;
 import com.udacity.food.feasta.foodfeasta.model.MessageJson;
@@ -75,6 +77,8 @@ public class LandingPageActivityManager extends BaseActivity
 
         setupUI();
         setupListeners();
+
+        new RestaurantTableManager(this);
 
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .addApi(Nearby.MESSAGES_API)
