@@ -96,18 +96,15 @@ public class LandingPageActivityManager extends BaseActivity
                     try {
                         Gson gson = new Gson();
                         TableOrder orderJson = gson.fromJson(messageAsString, TableOrder.class);
-                        if (orderJson != null)
-                        {
+                        if (orderJson != null) {
                             Toast.makeText(LandingPageActivityManager.this,
-                                    orderJson.getTableName() +" - "+
+                                    orderJson.getTableName() + " - " +
                                             orderJson.getFoodItemName(), Toast.LENGTH_SHORT).show();
 
-                            TableOrderDataSource dataSource
-                                    = new TableOrderDataSource(LandingPageActivityManager.this);
+                            TableOrderDataSource dataSource =
+                                    new TableOrderDataSource(LandingPageActivityManager.this);
                             dataSource.open();
-
-                                    dataSource.createOrder(orderJson.getTableName(),
-                                            orderJson.getFoodItemName());
+                            dataSource.createOrder(orderJson.getTableName(), orderJson.getFoodItemName());
                             dataSource.close();
                         }
                     } catch (Exception e) {
@@ -126,6 +123,17 @@ public class LandingPageActivityManager extends BaseActivity
     @Override
     protected void onStart() {
         super.onStart();
+        /*TableOrderDataSource dataSource = new TableOrderDataSource(this);
+        dataSource.open();
+        dataSource.deleteAllItems();
+        dataSource.createOrder("Table 1", "Chicken Momos");
+        dataSource.createOrder("Table 1", "Samosa");
+        dataSource.createOrder("Table 1", "Samosa");
+        dataSource.createOrder("Table 1", "Apricot Ice Cream");
+        dataSource.createOrder("Table 3", "Butter Chicken");
+        dataSource.createOrder("Table 4", "Chicken Handi");
+        dataSource.createOrder("Table 3", "Sandwich");
+        dataSource.close();*/
         if (!mGoogleApiClient.isConnected())
             mGoogleApiClient.connect();
     }

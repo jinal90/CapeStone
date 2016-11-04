@@ -85,17 +85,7 @@ public class TableOrderFragment extends Fragment implements LoaderManager.Loader
         recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 1));
         adapter = new TableOrderAdapter();
         recyclerView.setAdapter(adapter);
-        TableOrderDataSource dataSource = new TableOrderDataSource(getActivity());
-        dataSource.open();
-        dataSource.deleteAllItems();
-        dataSource.createOrder("Table 1", "Chicken Momos");
-        dataSource.createOrder("Table 1", "Samosa");
-        dataSource.createOrder("Table 1", "Samosa");
-        dataSource.createOrder("Table 1", "Apricot Ice Cream");
-        dataSource.createOrder("Table 3", "Butter Chicken");
-        dataSource.createOrder("Table 4", "Chicken Handi");
-        dataSource.createOrder("Table 3", "Sandwich");
-        dataSource.close();
+
         this.getLoaderManager().restartLoader(1, null, this);
     }
 

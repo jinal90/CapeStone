@@ -112,7 +112,7 @@ public class MenuRecyclerViewAdapter extends RecyclerViewCursorAdapter<MenuRecyc
                         public void onClick(DialogInterface dialog, int which) {
                             Toast.makeText(itemView.getContext(), "Added", Toast.LENGTH_SHORT).show();
                             TableOrder message = new TableOrder();
-                            message.setTableName("Table One");
+                            message.setTableName("Table 1");
                             message.setFoodItemName(foodItem.getName());
                             Gson gson = new Gson();
                             String msgJson = gson.toJson(message);
