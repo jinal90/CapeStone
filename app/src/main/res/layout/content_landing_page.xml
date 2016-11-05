@@ -14,6 +14,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_constraintBottom_toBottomOf="@+id/content_landing_page"
+        app:layout_constraintStart_toStartOf="@+id/content_landing_page"
+        app:layout_constraintEnd_toEndOf="@+id/content_landing_page"
         app:layout_constraintLeft_toLeftOf="@+id/content_landing_page"
         app:layout_constraintRight_toRightOf="@+id/content_landing_page"
         app:layout_constraintTop_toTopOf="@+id/content_landing_page" />
