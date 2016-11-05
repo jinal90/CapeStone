@@ -8,6 +8,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.squareup.picasso.Callback;
+import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 import com.udacity.food.feasta.foodfeasta.R;
 import com.udacity.food.feasta.foodfeasta.model.Fooditem;
@@ -75,7 +77,25 @@ public class OrderListAdapter extends RecyclerViewCursorAdapter<OrderListAdapter
 
             Picasso.with(itemView.getContext())
                     .load(foodItem.getImage())
-                    .into(imgFoodItem);
+                    .networkPolicy(NetworkPolicy.OFFLINE)
+                    .placeholder(itemView.getResources().getDrawable(R.drawable.ic_restaurant_menu_black_48dp))
+                    .error(itemView.getResources().getDrawable(R.drawable.ic_restaurant_menu_black_48dp))
+                    .into(imgFoodItem, new Callback() {
+                        @Override
+                        public void onSuccess() {
+
+                        }
+
+                        @Override
+                        public void onError() {
+
+                            Picasso.with(itemView.getContext())
+                                    .load(foodItem.getImage())
+                                    .placeholder(itemView.getResources().getDrawable(R.drawable.ic_restaurant_menu_black_48dp))
+                                    .error(itemView.getResources().getDrawable(R.drawable.ic_restaurant_menu_black_48dp))
+                                    .into(imgFoodItem);
+                        }
+                    });
         }
 
     }

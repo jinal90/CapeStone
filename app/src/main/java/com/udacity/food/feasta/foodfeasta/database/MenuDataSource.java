@@ -106,6 +106,14 @@ public class MenuDataSource {
         return fooditems;
     }
 
+    public int getMenuCount() {
+        Cursor cursor = database.query(MenuDataManager.TABLE_NAME,
+                allColumns, null, null, null, null, null);
+        int cnt = cursor.getCount();
+        cursor.close();
+        return cnt;
+    }
+
     private Fooditem cursorToFoodItem(Cursor cursor) {
         Fooditem foodItem = new Fooditem();
         foodItem.setName(cursor.getString(1));

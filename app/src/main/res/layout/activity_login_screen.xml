@@ -143,6 +143,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/tvErrorTitle"
                 android:layout_centerHorizontal="true"
+                android:layout_marginTop="10dp"
                 android:contentDescription="@string/contentDesc_errorDetail"
                 android:text="@string/txt_ErrorDesc" />
 

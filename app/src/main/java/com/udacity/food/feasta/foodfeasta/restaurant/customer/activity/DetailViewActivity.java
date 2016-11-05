@@ -16,6 +16,8 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.nearby.Nearby;
 import com.google.android.gms.nearby.messages.Message;
 import com.google.gson.Gson;
+import com.squareup.picasso.Callback;
+import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 import com.udacity.food.feasta.foodfeasta.R;
 import com.udacity.food.feasta.foodfeasta.database.TableOrderDataSource;
@@ -110,7 +112,24 @@ public class DetailViewActivity extends BaseActivity implements
             if (!TextUtils.isEmpty(mFoodItem.getImage())) {
                 Picasso.with(this)
                         .load(mFoodItem.getImage())
-                        .into(imgItemPhoto);
+                        .networkPolicy(NetworkPolicy.OFFLINE)
+                        .placeholder(getResources().getDrawable(R.drawable.ic_restaurant_menu_black_48dp))
+                        .error(getResources().getDrawable(R.drawable.ic_restaurant_menu_black_48dp))
+                        .into(imgItemPhoto, new Callback() {
+                            @Override
+                            public void onSuccess() {
+
+                            }
+
+                            @Override
+                            public void onError() {
+                                Picasso.with(DetailViewActivity.this)
+                                        .load(mFoodItem.getImage())
+                                        .placeholder(getResources().getDrawable(R.drawable.ic_restaurant_menu_black_48dp))
+                                        .error(getResources().getDrawable(R.drawable.ic_restaurant_menu_black_48dp))
+                                        .into(imgItemPhoto);
+                            }
+                        });
             }
 
             if (!TextUtils.isEmpty(mFoodItem.getName())) {

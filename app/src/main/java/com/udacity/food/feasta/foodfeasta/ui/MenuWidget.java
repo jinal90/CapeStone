@@ -72,7 +72,10 @@ public class MenuWidget extends AppWidgetProvider {
                     }
                 };
 
-                Picasso.with(context).load(Constants.TODAYS_SPL_URL).into(target);
+                Picasso.with(context).load(Constants.TODAYS_SPL_URL)
+                        .placeholder(context.getResources().getDrawable(R.drawable.ic_restaurant_menu_black_48dp))
+                        .error(context.getResources().getDrawable(R.drawable.ic_restaurant_menu_black_48dp))
+                        .into(target);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -80,7 +83,7 @@ public class MenuWidget extends AppWidgetProvider {
             Intent configIntent = new Intent(context, LoginScreenActivity.class);
 
             PendingIntent configPendingIntent = PendingIntent.getActivity(context, 0, configIntent, 0);
-
+            configIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             remoteViews.setOnClickPendingIntent(R.id.rlWidgetContainer, configPendingIntent);
             appWidgetManager.updateAppWidget(appWidgetIds, remoteViews);
         }

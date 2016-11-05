@@ -10,6 +10,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
+import com.squareup.picasso.Callback;
+import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 import com.udacity.food.feasta.foodfeasta.R;
 import com.udacity.food.feasta.foodfeasta.database.TableOrderDataSource;
@@ -91,7 +93,24 @@ public class MenuRecyclerViewAdapter extends RecyclerViewCursorAdapter<MenuRecyc
 
             Picasso.with(itemView.getContext())
                     .load(foodItem.getImage())
-                    .into(imgFoodItem);
+                    .networkPolicy(NetworkPolicy.OFFLINE)
+                    .placeholder(publishActivity.getResources().getDrawable(R.drawable.ic_restaurant_menu_black_48dp))
+                    .error(publishActivity.getResources().getDrawable(R.drawable.ic_restaurant_menu_black_48dp))
+                    .into(imgFoodItem, new Callback() {
+                        @Override
+                        public void onSuccess() {
+
+                        }
+
+                        @Override
+                        public void onError() {
+                            Picasso.with(itemView.getContext())
+                                    .load(foodItem.getImage())
+                                    .placeholder(publishActivity.getResources().getDrawable(R.drawable.ic_restaurant_menu_black_48dp))
+                                    .error(publishActivity.getResources().getDrawable(R.drawable.ic_restaurant_menu_black_48dp))
+                                    .into(imgFoodItem);
+                        }
+                    });
 
             mView.setOnClickListener(new View.OnClickListener() {
                 @Override

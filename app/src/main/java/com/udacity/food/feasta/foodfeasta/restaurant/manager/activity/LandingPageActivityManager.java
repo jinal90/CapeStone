@@ -1,5 +1,6 @@
 package com.udacity.food.feasta.foodfeasta.restaurant.manager.activity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -10,6 +11,7 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.MenuItem;
@@ -32,6 +34,7 @@ import com.udacity.food.feasta.foodfeasta.ui.BaseActivity;
 import com.udacity.food.feasta.foodfeasta.ui.ViewPagerAdapter;
 
 import java.util.Iterator;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
@@ -107,7 +110,7 @@ public class LandingPageActivityManager extends BaseActivity
                                                     getString(R.string.message_send_drinking_water),
                                                     orderJson.getTableName()),
                                             Toast.LENGTH_SHORT).show();
-                                }else if (Constants.CLEAR_TABLE.equalsIgnoreCase(orderJson.getFoodItemName())) {
+                                } else if (Constants.CLEAR_TABLE.equalsIgnoreCase(orderJson.getFoodItemName())) {
                                     Toast.makeText(LandingPageActivityManager.this,
                                             String.format(Locale.ENGLISH,
                                                     getString(R.string.message_clear_table),
@@ -198,12 +201,46 @@ public class LandingPageActivityManager extends BaseActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_availability) {
-            // Handle the camera action
+
+            TableOrderDataSource tableDataSource = new TableOrderDataSource(LandingPageActivityManager.this);
+            tableDataSource.open();
+            List<String> tables = tableDataSource.getAvailableTables();
+            tableDataSource.close();
+
+            String message = "";
+            for (String t : tables) {
+                message = message + t + "\n";
+            }
+
+            if (TextUtils.isEmpty(message)) {
+                message = getString(R.string.message_fullTables);
+            }
+            showAvailabilityDialog(message);
+
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    public void showAvailabilityDialog(String message) {
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(getString(R.string.title_tableAvailable));
+
+        builder.setMessage(message);
+
+        builder.setPositiveButton(getString(R.string.btn_OK), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+
+        AlertDialog dialog = builder.create();
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.setCancelable(false);
+        dialog.show();
     }
 
     @Override

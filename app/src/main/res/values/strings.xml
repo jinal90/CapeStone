@@ -75,6 +75,8 @@
     <string name="message_send_drinking_water">Send drinking water on %1$s.</string>
     <string name="message_clear_table">%1$s is available. Kindly get it cleared for next customer.</string>
     <string name="message_goodbye">Thank you for visiting Food Feasta. \nHope you enjoyed our services.</string>
+    <string name="message_fullTables">Currently all tables are occupied</string>
+    <string name="title_tableAvailable">Table Availability</string>
 
     <string name="confirm_title">Confirmation</string>
     <string name="call_waiter_confirm_message">Do you want to a waiter.</string>

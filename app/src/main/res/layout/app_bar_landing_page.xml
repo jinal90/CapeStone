@@ -77,7 +77,7 @@
         fab:menu_shadowYOffset="4dp"
         fab:menu_showShadow="true">
 
-        <com.github.clans.fab.FloatingActionButton
+   <!--     <com.github.clans.fab.FloatingActionButton
             android:id="@+id/fabFeedback"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -87,7 +87,7 @@
             fab:fab_size="mini"
             fab:fab_colorNormal="@color/colorAccentDark"
             fab:fab_colorPressed="@color/colorAccent"
-            fab:fab_colorRipple="@color/colorAccent"/>
+            fab:fab_colorRipple="@color/colorAccent"/>-->
 
         <com.github.clans.fab.FloatingActionButton
             android:id="@+id/fabWater"

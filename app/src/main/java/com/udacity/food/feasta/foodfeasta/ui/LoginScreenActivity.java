@@ -292,7 +292,8 @@ public class LoginScreenActivity extends BaseActivity {
                                 return Constants.SUCCESS;
                             }
                         } else {
-                            return Constants.SUCCESS;
+
+                            return checkMenuDataExists();
                         }
 
                     }
@@ -307,10 +308,22 @@ public class LoginScreenActivity extends BaseActivity {
                     }
                 }
             } else {
-                return Constants.NETWORK_ERROR;
+                return checkMenuDataExists();
             }
 
             return Constants.FAILURE;
+        }
+
+        public int checkMenuDataExists() {
+            MenuDataSource menuDataSource = new MenuDataSource(LoginScreenActivity.this);
+            menuDataSource.open();
+            int count = menuDataSource.getMenuCount();
+            menuDataSource.close();
+
+            if (count > 0)
+                return Constants.SUCCESS;
+            else
+                return Constants.FAILURE;
         }
 
         @Override

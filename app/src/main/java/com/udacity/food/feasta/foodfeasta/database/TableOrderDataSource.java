@@ -10,7 +10,9 @@ import com.udacity.food.feasta.foodfeasta.helper.Constants;
 import com.udacity.food.feasta.foodfeasta.model.TableOrder;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by jinal on 10/25/2016.
@@ -81,6 +83,38 @@ public class TableOrderDataSource {
         // make sure to close the cursor
         cursor.close();
         return tableOrders;
+    }
+
+    public List<String> getOccupiedTables() {
+        List<String> tables = new ArrayList<String>();
+
+        Cursor cursor = database.query(TableOrderManager.TABLE_NAME,
+                allColumns, null, null, null, null, null);
+
+        cursor.moveToFirst();
+        while (!cursor.isAfterLast()) {
+            String value = cursor.getString(1);
+            tables.add(value);
+            cursor.moveToNext();
+        }
+        // make sure to close the cursor
+        cursor.close();
+        return tables;
+    }
+
+    public List<String> getAvailableTables(){
+        List<String> availableTables = new ArrayList<>();
+        List<String> occupiedTables = getOccupiedTables();
+
+        Iterator it = Constants.TABLE_MAP.entrySet().iterator();
+        while (it.hasNext()) {
+            Map.Entry pair = (Map.Entry) it.next();
+            String key = (String) pair.getKey();
+            if(!occupiedTables.contains(key)){
+                availableTables.add(key);
+            }
+        }
+        return availableTables;
     }
 
     private TableOrder cursorToComment(Cursor cursor) {

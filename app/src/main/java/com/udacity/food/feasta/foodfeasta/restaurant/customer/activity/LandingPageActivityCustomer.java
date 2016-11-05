@@ -66,8 +66,6 @@ public class LandingPageActivityCustomer extends BaseActivity
     DrawerLayout drawer;
     @BindView(R.id.nav_view)
     NavigationView navigationView;
-    @BindView(R.id.fabFeedback)
-    FloatingActionButton fabFeedback;
     @BindView(R.id.fabWater)
     FloatingActionButton fabWater;
     @BindView(R.id.fabWaiter)
@@ -126,7 +124,7 @@ public class LandingPageActivityCustomer extends BaseActivity
         }
     }
 
-    @OnClick({R.id.fabWaiter, R.id.fabWater, R.id.fabFeedback})
+    @OnClick({R.id.fabWaiter, R.id.fabWater})
     public void onClick(View view) {
 
         switch (view.getId()) {
@@ -197,9 +195,6 @@ public class LandingPageActivityCustomer extends BaseActivity
                         getString(R.string.btn_no),
                         null);
                 dialog.show();
-
-                break;
-            case R.id.fabFeedback:
 
                 break;
             default:
