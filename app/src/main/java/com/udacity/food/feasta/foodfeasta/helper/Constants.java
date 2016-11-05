@@ -25,6 +25,7 @@ public class Constants {
     public static final String SELECTED_FOOD_ITEM = "selected_food_item";
     public static final String MENU_VERSION_URL = "https://myfirstfirebase-2c835.firebaseio.com/MenuVersion.json";
     public static final String MENU_URL = "https://myfirstfirebase-2c835.firebaseio.com/foodmenu.json";
+    public static final String TODAYS_SPL_URL = "https://firebasestorage.googleapis.com/v0/b/myfirstfirebase-2c835.appspot.com/o/foodItems%2FtodaysSpecial.png?alt=media&token=f050e1c5-dc89-4718-8ea7-14090c1cc444";
 
     public static final String MANAGER_UNIQUE_USERNAME = "Manager123";
 

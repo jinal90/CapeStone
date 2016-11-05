@@ -1,6 +1,5 @@
 package com.udacity.food.feasta.foodfeasta.restaurant.customer.adapters;
 
-import android.content.DialogInterface;
 import android.database.Cursor;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
@@ -9,7 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
@@ -109,7 +107,7 @@ public class MenuRecyclerViewAdapter extends RecyclerViewCursorAdapter<MenuRecyc
             imgAddRemoveItem.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if(dialog != null && dialog.isShowing())
+                    if (dialog != null && dialog.isShowing())
                         dialog.dismiss();
                     dialog = Utility.showTwoButtonDialog(publishActivity,
                             publishActivity.getString(R.string.order_confirm_title),
