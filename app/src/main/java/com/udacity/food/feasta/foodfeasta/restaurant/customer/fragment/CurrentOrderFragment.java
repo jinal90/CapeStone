@@ -1,4 +1,4 @@
-package com.udacity.food.feasta.foodfeasta.restaurant.manager.fragment;
+package com.udacity.food.feasta.foodfeasta.restaurant.customer.fragment;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -11,6 +11,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -34,21 +35,20 @@ import java.util.Map;
 /**
  * A fragment representing a list of Items.
  */
-public class TableOrderFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
+public class CurrentOrderFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
+
     private RecyclerView recyclerView;
     private static final String ARG_TABLE_NAME = "Table_Name";
-    private int mTableName;
+    private String mTableName;
     private TableOrderAdapter adapter;
 
-    private BroadcastReceiver mReceiver;
-
-    public TableOrderFragment() {
+    public CurrentOrderFragment() {
     }
 
-    public static TableOrderFragment newInstance(int tableName) {
-        TableOrderFragment fragment = new TableOrderFragment();
+    public static CurrentOrderFragment newInstance(String tableName) {
+        CurrentOrderFragment fragment = new CurrentOrderFragment();
         Bundle args = new Bundle();
-        args.putInt(ARG_TABLE_NAME, tableName);
+        args.putString(ARG_TABLE_NAME, tableName);
         fragment.setArguments(args);
         return fragment;
     }
@@ -58,7 +58,7 @@ public class TableOrderFragment extends Fragment implements LoaderManager.Loader
         super.onCreate(savedInstanceState);
 
         if (getArguments() != null) {
-            mTableName = getArguments().getInt(ARG_TABLE_NAME);
+            mTableName = getArguments().getString(ARG_TABLE_NAME);
         }
     }
 
@@ -82,54 +82,8 @@ public class TableOrderFragment extends Fragment implements LoaderManager.Loader
         this.getLoaderManager().restartLoader(1, null, this);
     }
 
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        IntentFilter intentFilter = new IntentFilter(
-                "foodfeasta.OrderReceiver");
-
-        mReceiver = new BroadcastReceiver() {
-
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                if (intent != null && intent.hasExtra("selectedTable")) {
-                    String selectedTable = intent.getStringExtra("selectedTable");
-                    if (!TextUtils.isEmpty(selectedTable)) {
-                        Toast.makeText(context, selectedTable, Toast.LENGTH_SHORT).show();
-                        if (Constants.TABLE_MAP.get(selectedTable) == mTableName) {
-                            TableOrderFragment.this.getLoaderManager().restartLoader(1, null,
-                                    TableOrderFragment.this);
-                        }
-                    }
-                }
-
-            }
-        };
-        //registering our receiver
-        getActivity().registerReceiver(mReceiver, intentFilter);
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        //unregister our receiver
-        getActivity().unregisterReceiver(this.mReceiver);
-    }
-
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        String type = "";
-
-        Iterator it = Constants.TABLE_MAP.entrySet().iterator();
-        while (it.hasNext()) {
-            Map.Entry pair = (Map.Entry) it.next();
-            String key = (String) pair.getKey();
-            Integer value = (Integer) pair.getValue();
-            if (mTableName == value) {
-                type = key;
-            }
-        }
 
         switch (id) {
             case 2:
@@ -153,7 +107,7 @@ public class TableOrderFragment extends Fragment implements LoaderManager.Loader
                 }
 
             case 1:
-                String[] selectionArgs = {type};
+                String[] selectionArgs = {mTableName};
                 final Uri uri2 = Uri.parse(String.valueOf(TableOrderContentProvider.CONTENT_URI_1));
                 return new CursorLoader(getActivity(), uri2, null,
                         TableOrderManager.COLUMN_TABLE_NAME + " =?", selectionArgs, TableOrderManager.COLUMN_ID + " DESC");

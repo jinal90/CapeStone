@@ -107,6 +107,22 @@ public class LandingPageActivityManager extends BaseActivity
                                                     getString(R.string.message_send_drinking_water),
                                                     orderJson.getTableName()),
                                             Toast.LENGTH_SHORT).show();
+                                }else if (Constants.CLEAR_TABLE.equalsIgnoreCase(orderJson.getFoodItemName())) {
+                                    Toast.makeText(LandingPageActivityManager.this,
+                                            String.format(Locale.ENGLISH,
+                                                    getString(R.string.message_clear_table),
+                                                    orderJson.getTableName()),
+                                            Toast.LENGTH_SHORT).show();
+
+                                    TableOrderDataSource dataSource =
+                                            new TableOrderDataSource(LandingPageActivityManager.this);
+                                    dataSource.open();
+                                    dataSource.deleteOrder(orderJson.getTableName());
+                                    dataSource.close();
+
+                                    Intent intent = new Intent("foodfeasta.OrderReceiver");
+                                    intent.putExtra("selectedTable", orderJson.getTableName());
+                                    sendBroadcast(intent);
                                 } else {
                                     Toast.makeText(LandingPageActivityManager.this,
                                             String.format(Locale.ENGLISH,
@@ -181,18 +197,8 @@ public class LandingPageActivityManager extends BaseActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
+        if (id == R.id.nav_availability) {
             // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
-
-        } else if (id == R.id.nav_slideshow) {
-
-        } else if (id == R.id.nav_manage) {
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

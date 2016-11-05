@@ -18,12 +18,15 @@ public class Constants {
 
     public static final String CALL_WAITER = "CALL_WAITER";
     public static final String ORDER_WATER = "ORDER_WATER";
+    public static final String CLEAR_TABLE = "CLEAR_TABLE";
+
+    public static final String CURRENT_TABLE = "current_table";
 
     public static final String SELECTED_FOOD_ITEM = "selected_food_item";
     public static final String MENU_VERSION_URL = "https://myfirstfirebase-2c835.firebaseio.com/MenuVersion.json";
     public static final String MENU_URL = "https://myfirstfirebase-2c835.firebaseio.com/foodmenu.json";
 
-    public static final String MANAGER_UNIQUE_USERNAME = "Manager_Nov@2016";
+    public static final String MANAGER_UNIQUE_USERNAME = "Manager123";
 
     public static final HashMap<String, Integer> MENU_TYPE_HASHMAP;
     static{

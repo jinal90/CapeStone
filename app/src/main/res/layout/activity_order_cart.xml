@@ -10,23 +10,26 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/rvOrderCart"
+        <RelativeLayout
+            android:id="@+id/fragmentContainer"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_above="@+id/btnOrder"
-            android:layout_marginBottom="30dp"
-            android:contentDescription="@string/contentDesc_listCart" />
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/btnGenerateCheque"
+            android:layout_alignParentTop="true"></RelativeLayout>
 
         <Button
-            android:id="@+id/btnOrder"
+            android:id="@+id/btnGenerateCheque"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
+            android:layout_below="@+id/rlInputContainer"
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="50dp"
+            android:layout_marginTop="20dp"
             android:contentDescription="@string/contentDescription_Cheque"
-            android:text="@string/btn_generate_cheque" />
+            android:padding="10dp"
+            android:text="@string/btn_generate_cheque"
+            android:textAllCaps="true" />
 
 
     </RelativeLayout>

@@ -15,6 +15,7 @@ import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
 import com.udacity.food.feasta.foodfeasta.R;
 import com.udacity.food.feasta.foodfeasta.database.TableOrderDataSource;
+import com.udacity.food.feasta.foodfeasta.helper.Constants;
 import com.udacity.food.feasta.foodfeasta.helper.Utility;
 import com.udacity.food.feasta.foodfeasta.helper.session.SessionFactory;
 import com.udacity.food.feasta.foodfeasta.model.Fooditem;
@@ -131,7 +132,7 @@ public class MenuRecyclerViewAdapter extends RecyclerViewCursorAdapter<MenuRecyc
                                             new TableOrderDataSource(publishActivity);
                                     dataSource.open();
                                     dataSource.createOrder(
-                                            SessionFactory.getInstance().getSelectedTable(publishActivity),
+                                            Constants.CURRENT_TABLE,
                                             foodItem.getName());
                                     dataSource.close();
 

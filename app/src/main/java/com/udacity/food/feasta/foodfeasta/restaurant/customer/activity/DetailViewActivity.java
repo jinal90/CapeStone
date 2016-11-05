@@ -159,7 +159,7 @@ public class DetailViewActivity extends BaseActivity implements
                                         new TableOrderDataSource(DetailViewActivity.this);
                                 dataSource.open();
                                 dataSource.createOrder(
-                                        SessionFactory.getInstance().getSelectedTable(DetailViewActivity.this),
+                                        Constants.CURRENT_TABLE,
                                         mFoodItem.getName());
                                 dataSource.close();
                                 return null;

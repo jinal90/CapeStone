@@ -3,6 +3,7 @@
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="welcome">Bon appetit</string>
 
     <string name="action_settings">Settings</string>
     <!-- Activity tile -->
@@ -10,6 +11,7 @@
     <string name="title_activity_landing_page_manager">Restaurant Manager</string>
     <string name="title_activity_landing_page_customer">Restaurant Customer</string>
     <string name="title_activity_setup">User Setup</string>
+    <string name="title_activity_order">Current Order</string>
 
     <!-- Content descriptions for views for Accessibility-->
     <string name="contentDesc_detail_img">Detail image of food item selected.</string>
@@ -67,9 +69,12 @@
     <string name="message_invalid_username">Kindly enter valid username.</string>
     <string name="order_confirm_title">Order Confirmation</string>
     <string name="order_confirm_message">Do you want to order %1$s? \n It costs Rs. %2$s.</string>
+    <string name="cheque_confirm_message">Is your tummy full? Do you want to proceed for generation of cheque/bill?</string>
     <string name="message_new_order">New order from %1$s:- %2$s.</string>
     <string name="message_send_waiter">Send waiter on %1$s.</string>
     <string name="message_send_drinking_water">Send drinking water on %1$s.</string>
+    <string name="message_clear_table">%1$s is available. Kindly get it cleared for next customer.</string>
+    <string name="message_goodbye">Thank you for visiting Food Feasta. \nHope you enjoyed our services.</string>
 
     <string name="confirm_title">Confirmation</string>
     <string name="call_waiter_confirm_message">Do you want to a waiter.</string>

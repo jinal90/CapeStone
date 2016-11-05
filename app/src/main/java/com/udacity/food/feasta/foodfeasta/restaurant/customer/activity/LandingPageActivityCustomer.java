@@ -26,19 +26,16 @@ import com.google.android.gms.nearby.Nearby;
 import com.google.android.gms.nearby.messages.Message;
 import com.google.gson.Gson;
 import com.udacity.food.feasta.foodfeasta.R;
-import com.udacity.food.feasta.foodfeasta.database.TableOrderDataSource;
 import com.udacity.food.feasta.foodfeasta.helper.Constants;
 import com.udacity.food.feasta.foodfeasta.helper.Utility;
 import com.udacity.food.feasta.foodfeasta.helper.session.SessionFactory;
 import com.udacity.food.feasta.foodfeasta.model.Fooditem;
 import com.udacity.food.feasta.foodfeasta.model.TableOrder;
 import com.udacity.food.feasta.foodfeasta.restaurant.customer.fragment.MenuFragment;
-import com.udacity.food.feasta.foodfeasta.restaurant.manager.activity.LandingPageActivityManager;
 import com.udacity.food.feasta.foodfeasta.ui.BaseActivity;
 import com.udacity.food.feasta.foodfeasta.ui.ViewPagerAdapter;
 
 import java.util.Iterator;
-import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.Callable;
 
@@ -147,7 +144,7 @@ public class LandingPageActivityCustomer extends BaseActivity
                     mp.prepare();
                     mp.start();
 
-                    if(dialog != null && dialog.isShowing())
+                    if (dialog != null && dialog.isShowing())
                         dialog.dismiss();
 
                     dialog = Utility.showTwoButtonDialog(this,
@@ -178,7 +175,7 @@ public class LandingPageActivityCustomer extends BaseActivity
 
                 break;
             case R.id.fabWater:
-                if(dialog != null && dialog.isShowing())
+                if (dialog != null && dialog.isShowing())
                     dialog.dismiss();
                 dialog = Utility.showTwoButtonDialog(this,
                         getString(R.string.confirm_title),
@@ -228,18 +225,11 @@ public class LandingPageActivityCustomer extends BaseActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
+        if (id == R.id.nav_showOrder) {
             // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
 
-        } else if (id == R.id.nav_slideshow) {
-
-        } else if (id == R.id.nav_manage) {
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
+            Intent orderIntent = new Intent(this, OrderCartActivity.class);
+            startActivity(orderIntent);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

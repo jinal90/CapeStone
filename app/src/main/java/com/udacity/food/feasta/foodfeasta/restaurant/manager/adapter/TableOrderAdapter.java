@@ -74,11 +74,5 @@ public class TableOrderAdapter extends RecyclerViewCursorAdapter<TableOrderAdapt
                     .load(foodItem.getImage())
                     .into(imgFoodItem);
         }
-
-
-        @Override
-        public String toString() {
-            return super.toString() + " 'Something Something'";
-        }
     }
 }

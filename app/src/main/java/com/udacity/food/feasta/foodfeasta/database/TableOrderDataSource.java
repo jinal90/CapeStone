@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.udacity.food.feasta.foodfeasta.helper.Constants;
 import com.udacity.food.feasta.foodfeasta.model.TableOrder;
 
 import java.util.ArrayList;
@@ -50,11 +51,14 @@ public class TableOrderDataSource {
         return newOrder;
     }
 
-    public void deleteOrder(TableOrder order) {
-        long tableId = order.getOrderId();
-        System.out.println("TableOrder deleted with id: " + tableId);
-        database.delete(TableOrderManager.TABLE_NAME, TableOrderManager.COLUMN_ID
-                + " = " + tableId, null);
+    public void deleteOrder(String name) {
+        database.delete(TableOrderManager.TABLE_NAME, TableOrderManager.COLUMN_TABLE_NAME
+                + " = '" + name+"'", null);
+    }
+
+    public void deleteCurrentOrder() {
+        database.delete(TableOrderManager.TABLE_NAME, TableOrderManager.COLUMN_TABLE_NAME
+                + " = '" + Constants.CURRENT_TABLE+"'", null);
     }
 
     public void deleteAllItems(){

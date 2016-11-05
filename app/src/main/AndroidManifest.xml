@@ -34,6 +34,7 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".restaurant.customer.activity.OrderCartActivity"
+            android:label="@string/title_activity_order"
             android:screenOrientation="portrait" />
 
         <provider
