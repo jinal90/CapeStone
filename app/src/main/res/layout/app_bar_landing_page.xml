@@ -54,7 +54,7 @@
         fab:menu_colorRipple="@color/colorAccentDark"
         fab:menu_fab_label="Quick Help"
         fab:menu_fab_size="normal"
-        fab:menu_icon="@drawable/fab_add"
+        fab:menu_icon="@drawable/ic_live_help_white_24dp"
         fab:menu_labels_colorNormal="@android:color/white"
         fab:menu_labels_colorPressed="@color/grey_trans"
         fab:menu_labels_colorRipple="@color/grey_trans"

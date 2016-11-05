@@ -67,6 +67,7 @@ public class LoginScreenActivity extends BaseActivity {
 
         edtInputName.setVisibility(View.GONE);
         tableNameSpinner.setVisibility(View.GONE);
+        getSupportActionBar().setTitle(getString(R.string.title_activity_setup));
 
         // Create an ArrayAdapter using the string array and a default spinner layout
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
