@@ -3,8 +3,10 @@ apply plugin: 'android-apt'
 apply plugin: 'com.google.gms.google-services'
 
 android {
+
     compileSdkVersion 23
     buildToolsVersion "23.0.3"
+
     defaultConfig {
         applicationId "com.udacity.food.feasta.foodfeasta"
         minSdkVersion 15
@@ -12,10 +14,25 @@ android {
         versionCode 1
         versionName "1.0"
     }
+
+    signingConfigs {
+        config {
+            keyAlias 'foodOrderApp'
+            keyPassword 'food1234'
+            storeFile file('../keystore.jks')
+            storePassword 'food1234'
+        }
+    }
+
     buildTypes {
+        debug {
+            debuggable true
+        }
         release {
+            debuggable false
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.config
         }
     }
 }

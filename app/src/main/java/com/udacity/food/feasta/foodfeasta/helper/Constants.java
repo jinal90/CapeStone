@@ -10,12 +10,14 @@ public class Constants {
 
     public static final int SUCCESS = 0;
     public static final int FAILURE = 1;
+    public static final int NETWORK_ERROR = 2;
 
     public static final int FOOD_STARTER = 11;
     public static final int FOOD_MAIN_COURSE = 12;
     public static final int FOOD_DESSERT = 13;
 
     public static final String SELECTED_FOOD_ITEM = "selected_food_item";
+    public static final String MENU_URL = "https://myfirstfirebase-2c835.firebaseio.com/foodmenu.json";
 
     public static final String MANAGER_UNIQUE_USERNAME = "Manager_Nov@2016";
 

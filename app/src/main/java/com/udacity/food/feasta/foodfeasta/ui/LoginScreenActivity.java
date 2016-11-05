@@ -2,6 +2,7 @@ package com.udacity.food.feasta.foodfeasta.ui;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -19,12 +20,19 @@ import android.widget.Spinner;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
+import com.google.gson.Gson;
 import com.udacity.food.feasta.foodfeasta.R;
+import com.udacity.food.feasta.foodfeasta.database.MenuDataSource;
 import com.udacity.food.feasta.foodfeasta.helper.Constants;
 import com.udacity.food.feasta.foodfeasta.helper.Utility;
 import com.udacity.food.feasta.foodfeasta.helper.session.SessionFactory;
+import com.udacity.food.feasta.foodfeasta.model.FoodMenu;
 import com.udacity.food.feasta.foodfeasta.restaurant.customer.activity.LandingPageActivityCustomer;
 import com.udacity.food.feasta.foodfeasta.restaurant.manager.activity.LandingPageActivityManager;
+
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -48,6 +56,12 @@ public class LoginScreenActivity extends BaseActivity {
     Spinner tableNameSpinner;
     @BindView(R.id.activity_main)
     RelativeLayout rlMainContainer;
+    @BindView(R.id.rlMainContent)
+    RelativeLayout rlDataContainer;
+    @BindView(R.id.rlErrorView)
+    RelativeLayout rlErrorView;
+    @BindView(R.id.rlProgressIndicator)
+    RelativeLayout rlProgressIndicator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,6 +110,10 @@ public class LoginScreenActivity extends BaseActivity {
         tableNameSpinner.setSelection(0);
         tableNameSpinner.setSelected(true);
         adapter.notifyDataSetChanged();
+
+        MenuFetchingAsyncTask fetchingAsyncTask
+                = new MenuFetchingAsyncTask();
+        fetchingAsyncTask.execute();
 
         showAdd();
     }
@@ -186,6 +204,108 @@ public class LoginScreenActivity extends BaseActivity {
                 .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
                 .build();
         mAdView.loadAd(adRequest);
+    }
+
+
+    public void showProgressIndicator() {
+
+        rlProgressIndicator.setVisibility(View.VISIBLE);
+        rlErrorView.setVisibility(View.GONE);
+        rlDataContainer.setVisibility(View.GONE);
+
+    }
+
+    public void showErrorView() {
+        rlProgressIndicator.setVisibility(View.GONE);
+        rlErrorView.setVisibility(View.VISIBLE);
+        rlDataContainer.setVisibility(View.GONE);
+    }
+
+    public void showContent() {
+        rlProgressIndicator.setVisibility(View.GONE);
+        rlErrorView.setVisibility(View.GONE);
+        rlDataContainer.setVisibility(View.VISIBLE);
+    }
+
+    public class MenuFetchingAsyncTask extends AsyncTask<String, Integer, Integer> {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            showProgressIndicator();
+        }
+
+        @Override
+        protected Integer doInBackground(String... params) {
+
+            if (Utility.isOnline(LoginScreenActivity.this)) {
+                HttpURLConnection urlConnection = null;
+                try {
+                    String response = null;
+                    URL url = new URL(Constants.MENU_URL);
+                    urlConnection = (HttpURLConnection) url.openConnection();
+                    urlConnection.setConnectTimeout(30000);
+                    InputStream in = urlConnection.getInputStream();
+                    StringBuilder sb = new StringBuilder();
+                    byte[] buff = new byte[1024];
+                    int count;
+                    while ((count = in.read(buff)) > 0) {
+                        sb.append(new String(buff, 0, count));
+                    }
+                    response = sb.toString();
+
+                    if (!TextUtils.isEmpty(response)) {
+                        //Utility.saveStringDataInPref(LandingPageActivityCustomer.this, "MenuData", response);
+                        MenuDataSource menuDataSource = new MenuDataSource(LoginScreenActivity.this);
+                        menuDataSource.open();
+
+                        menuDataSource.deleteAllItems();
+                        Gson gson = new Gson();
+                        FoodMenu fullMenu = gson.fromJson(response, FoodMenu.class);
+                        if (fullMenu != null && fullMenu.getFooditem() != null
+                                && fullMenu.getFooditem().size() > 0) {
+                            for (int i = 0; i < fullMenu.getFooditem().size(); i++) {
+
+                                menuDataSource.createItem(fullMenu.getFooditem().get(i));
+                            }
+                        }
+                        menuDataSource.close();
+                        return Constants.SUCCESS;
+                    }
+
+                    System.out.println("json -- " + response);
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                } finally {
+                    if (urlConnection != null) {
+                        urlConnection.disconnect();
+                    }
+                }
+            } else {
+                return Constants.NETWORK_ERROR;
+            }
+
+            return Constants.FAILURE;
+        }
+
+        @Override
+        protected void onPostExecute(Integer result) {
+            super.onPostExecute(result);
+            switch (result) {
+                case Constants.SUCCESS:
+                    showContent();
+                    break;
+                case Constants.FAILURE:
+                    showErrorView();
+                    break;
+                case Constants.NETWORK_ERROR:
+                    showErrorView();
+                    break;
+                default:
+                    break;
+            }
+        }
     }
 
     @Override

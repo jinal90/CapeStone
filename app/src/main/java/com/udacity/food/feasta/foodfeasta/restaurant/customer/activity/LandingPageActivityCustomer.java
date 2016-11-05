@@ -218,9 +218,7 @@ public class LandingPageActivityCustomer extends BaseActivity
 
         navigationView.setNavigationItemSelectedListener(this);
 
-        MenuFetchingAsyncTask fetchingAsyncTask = new MenuFetchingAsyncTask();
-        fetchingAsyncTask.execute();
-
+        showContent();
     }
 
     @Override
@@ -285,79 +283,4 @@ public class LandingPageActivityCustomer extends BaseActivity
 
     }
 
-    public class MenuFetchingAsyncTask extends AsyncTask<String, Integer, Integer> {
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            showProgressIndicator();
-        }
-
-        @Override
-        protected Integer doInBackground(String... params) {
-
-            if (Utility.isOnline(LandingPageActivityCustomer.this)) {
-                HttpURLConnection urlConnection = null;
-                try {
-                    String response = null;
-                    URL url = new URL("https://myfirstfirebase-2c835.firebaseio.com/foodmenu.json");
-                    urlConnection = (HttpURLConnection) url.openConnection();
-                    urlConnection.setConnectTimeout(30000);
-                    InputStream in = urlConnection.getInputStream();
-                    StringBuilder sb = new StringBuilder();
-                    byte[] buff = new byte[1024];
-                    int count;
-                    while ((count = in.read(buff)) > 0) {
-                        sb.append(new String(buff, 0, count));
-                    }
-                    response = sb.toString();
-
-                    if (!TextUtils.isEmpty(response)) {
-                        //Utility.saveStringDataInPref(LandingPageActivityCustomer.this, "MenuData", response);
-                        MenuDataSource menuDataSource = new MenuDataSource(LandingPageActivityCustomer.this);
-                        menuDataSource.open();
-
-                        menuDataSource.deleteAllItems();
-                        Gson gson = new Gson();
-                        FoodMenu fullMenu = gson.fromJson(response, FoodMenu.class);
-                        if (fullMenu != null && fullMenu.getFooditem() != null
-                                && fullMenu.getFooditem().size() > 0) {
-                            for (int i = 0; i < fullMenu.getFooditem().size(); i++) {
-
-                                menuDataSource.createItem(fullMenu.getFooditem().get(i));
-                            }
-                        }
-                        menuDataSource.close();
-                        return Constants.SUCCESS;
-                    }
-
-                    System.out.println("json -- " + response);
-
-                } catch (Exception e) {
-                    e.printStackTrace();
-                } finally {
-                    if (urlConnection != null) {
-                        urlConnection.disconnect();
-                    }
-                }
-            }
-
-            return Constants.FAILURE;
-        }
-
-        @Override
-        protected void onPostExecute(Integer result) {
-            super.onPostExecute(result);
-            switch (result) {
-                case Constants.SUCCESS:
-                    showContent();
-                    break;
-                case Constants.FAILURE:
-                    showErrorView();
-                    break;
-                default:
-                    break;
-            }
-        }
-    }
 }
