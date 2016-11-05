@@ -1,6 +1,5 @@
 package com.udacity.food.feasta.foodfeasta.restaurant.customer.activity;
 
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -11,7 +10,6 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -21,10 +19,14 @@ import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
 import com.udacity.food.feasta.foodfeasta.R;
 import com.udacity.food.feasta.foodfeasta.helper.Constants;
+import com.udacity.food.feasta.foodfeasta.helper.Utility;
 import com.udacity.food.feasta.foodfeasta.helper.session.SessionFactory;
 import com.udacity.food.feasta.foodfeasta.model.Fooditem;
 import com.udacity.food.feasta.foodfeasta.model.TableOrder;
 import com.udacity.food.feasta.foodfeasta.ui.BaseActivity;
+
+import java.util.Locale;
+import java.util.concurrent.Callable;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -32,7 +34,7 @@ import butterknife.OnClick;
 
 public class DetailViewActivity extends BaseActivity implements
         GoogleApiClient.ConnectionCallbacks,
-        GoogleApiClient.OnConnectionFailedListener{
+        GoogleApiClient.OnConnectionFailedListener {
 
     @BindView(R.id.fab)
     FloatingActionButton fabAdd;
@@ -46,6 +48,7 @@ public class DetailViewActivity extends BaseActivity implements
     private Fooditem mFoodItem;
     private GoogleApiClient mGoogleApiClient;
     private Message mActiveMessage;
+    private AlertDialog dialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -132,35 +135,29 @@ public class DetailViewActivity extends BaseActivity implements
         switch (view.getId()) {
             case R.id.fab:
 
-                final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-
-                builder.setTitle("Order Confirmation");
-
-                builder.setMessage("Do you want to order " + mFoodItem.getName() +
-                        "?? \n It costs " + mFoodItem.getPrice() + ".");
-                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        Toast.makeText(DetailViewActivity.this, "Added", Toast.LENGTH_SHORT).show();
-                        TableOrder message = new TableOrder();
-                        //message.setTableName("Table 1");
-                        message.setTableName(SessionFactory.getInstance().getSelectedTable());
-                        message.setFoodItemName(mFoodItem.getName());
-                        Gson gson = new Gson();
-                        String msgJson = gson.toJson(message);
-                        publish(msgJson);
-                    }
-                });
-                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                });
-
-                AlertDialog dialog = builder.create();
-                dialog.setCanceledOnTouchOutside(false);
-                dialog.setCancelable(false);
+                if (dialog != null && dialog.isShowing())
+                    dialog.dismiss();
+                dialog = Utility.showTwoButtonDialog(this,
+                        getString(R.string.order_confirm_title),
+                        String.format(Locale.ENGLISH,
+                                getString(R.string.order_confirm_message),
+                                mFoodItem.getName(), mFoodItem.getPrice()),
+                        getString(R.string.btn_OK),
+                        new Callable() {
+                            @Override
+                            public Object call() throws Exception {
+                                TableOrder message = new TableOrder();
+                                //message.setTableName("Table 1");
+                                message.setTableName(SessionFactory.getInstance().getSelectedTable(DetailViewActivity.this));
+                                message.setFoodItemName(mFoodItem.getName());
+                                Gson gson = new Gson();
+                                String msgJson = gson.toJson(message);
+                                publish(msgJson);
+                                return null;
+                            }
+                        },
+                        getString(R.string.btn_cancel),
+                        null);
                 dialog.show();
 
                 break;

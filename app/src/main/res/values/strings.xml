@@ -47,6 +47,10 @@
     <!-- Strings for Buttons -->
     <string name="btn_submit">Submit</string>
     <string name="btn_generate_cheque">Generate Cheque</string>
+    <string name="btn_OK">OK</string>
+    <string name="btn_yes">Yes</string>
+    <string name="btn_no">No</string>
+    <string name="btn_cancel">Cancel</string>
 
     <!-- String for FAB -->
     <string name="fab_feedback">Feedback</string>
@@ -61,6 +65,18 @@
 
     <string name="message_select_usertype">Kindly select user type to proceed.</string>
     <string name="message_invalid_username">Kindly enter valid username.</string>
+    <string name="order_confirm_title">Order Confirmation</string>
+    <string name="order_confirm_message">Do you want to order %1$s? \n It costs Rs. %2$s.</string>
+    <string name="message_new_order">New order from %1$s:- %2$s.</string>
+    <string name="message_send_waiter">Send waiter on %1$s.</string>
+    <string name="message_send_drinking_water">Send drinking water on %1$s.</string>
+
+    <string name="confirm_title">Confirmation</string>
+    <string name="call_waiter_confirm_message">Do you want to a waiter.</string>
+    <string name="get_water_confirm_message">Do you want drinking water.</string>
+
+    <string name="key_selectedTable">SelectedTable</string>
+    <string name="key_menuVersion">MenuVersion</string>
 
     <string-array name="tableNameArray">
         <item>Table 1</item>

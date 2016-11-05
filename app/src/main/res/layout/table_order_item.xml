@@ -4,10 +4,10 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="5dp"
-    android:layout_marginLeft="2dp"
-    android:layout_marginRight="2dp"
-    android:layout_marginStart="2dp"
-    android:layout_marginEnd="2dp"
+    android:layout_marginEnd="4dp"
+    android:layout_marginLeft="4dp"
+    android:layout_marginRight="4dp"
+    android:layout_marginStart="4dp"
     android:layout_marginTop="5dp"
     android:elevation="2dp">
 
@@ -22,69 +22,50 @@
             android:layout_height="100dp"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:src="@drawable/item_afghani_chicken" />
+            android:contentDescription="@string/contentDesc_food_img" />
 
         <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_toRightOf="@id/imgFoodItem"
-            android:layout_toEndOf="@id/imgFoodItem">
+            android:layout_marginEnd="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_toEndOf="@id/imgFoodItem"
+            android:layout_toRightOf="@id/imgFoodItem">
 
-            <RelativeLayout
-                android:id="@+id/rlItemDetails"
-                android:layout_width="250dp"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
-                android:layout_marginStart="5dp"
-                android:layout_marginEnd="5dp"
-                android:layout_toLeftOf="@+id/imgAddRemoveItem"
-                android:layout_toStartOf="@+id/imgAddRemoveItem">
-
-                <TextView
-                    android:id="@+id/tvMenuItemName"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentTop="true"
-                    android:layout_marginBottom="5dp"
-                    android:text="Afghani Chicken" />
-
-                <TextView
-                    android:id="@+id/tvMenuItemDescription"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/tvMenuItemName"
-                    android:text="Boneless chicken, fried with cream and flavour of garlic" />
-
-                <View
-                    android:id="@+id/divider"
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_below="@+id/tvMenuItemDescription"
-                    android:layout_marginBottom="2dp"
-                    android:layout_marginTop="2dp"
-                    android:background="@color/black_overlay" />
-
-                <TextView
-                    android:id="@+id/tvMenuItemPrice"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignParentRight="true"
-                    android:layout_below="@+id/divider"
-                    android:text="Rs. 160" />
-
-            </RelativeLayout>
-
-            <ImageView
-                android:id="@+id/imgAddRemoveItem"
+            <TextView
+                android:id="@+id/tvMenuItemName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginBottom="5dp"
+                android:contentDescription="@string/contentDesc_food_name" />
+
+            <TextView
+                android:id="@+id/tvMenuItemDescription"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tvMenuItemName"
+                android:contentDescription="@string/contentDesc_food_desc" />
+
+            <View
+                android:id="@+id/divider"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@+id/tvMenuItemDescription"
+                android:layout_marginBottom="2dp"
+                android:layout_marginTop="2dp"
+                android:background="@color/black_overlay" />
+
+            <TextView
+                android:id="@+id/tvMenuItemPrice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"
-                android:src="@drawable/ic_add_circle_outline_black_24dp" />
+                android:layout_alignParentRight="true"
+                android:layout_below="@+id/divider"
+                android:contentDescription="@string/contentDesc_food_price" />
+
 
         </RelativeLayout>
 

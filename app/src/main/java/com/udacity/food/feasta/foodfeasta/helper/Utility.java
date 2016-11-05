@@ -1,21 +1,19 @@
 package com.udacity.food.feasta.foodfeasta.helper;
 
-import android.app.Activity;
-import android.app.Dialog;
-import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
-import android.view.Gravity;
-import android.view.LayoutInflater;
+import android.support.v7.app.AlertDialog;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
 
 import com.udacity.food.feasta.foodfeasta.R;
+
+import java.util.concurrent.Callable;
 
 /**
  * Created by jinal on 10/22/2016.
@@ -33,8 +31,22 @@ public class Utility {
     public static String getSavedStringDataFromPref(Context context, String key) {
         SharedPreferences prefs = context.getSharedPreferences(
                 context.getPackageName(), Context.MODE_PRIVATE);
-        return prefs.getString(key, null);
+        return prefs.getString(key, "");
     }
+
+    public static void saveIntDataInPref(Context context, String key,
+                                            int data) {
+        SharedPreferences prefs = context.getSharedPreferences(
+                context.getPackageName(), Context.MODE_PRIVATE);
+        prefs.edit().putInt(key, data).commit();
+    }
+
+    public static int getSavedIntDataFromPref(Context context, String key) {
+        SharedPreferences prefs = context.getSharedPreferences(
+                context.getPackageName(), Context.MODE_PRIVATE);
+        return prefs.getInt(key, 0);
+    }
+
     public static boolean isOnline(Context context) {
         ConnectivityManager connManager = (ConnectivityManager) context
                 .getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -45,20 +57,46 @@ public class Utility {
             return false;
     }
 
-    public static Dialog showAddItemDialog(Context context){
-        LayoutInflater mInflater = LayoutInflater.from(context);
-        View layout = mInflater.inflate(R.layout.order_layout, null);
+    public static AlertDialog showTwoButtonDialog(Context context, String title, String message,
+                                                  final String positiveBtn, final Callable positiveBtnCallable,
+                                                  final String negativeBtn, final Callable negativeBtnCallable) {
+        final AlertDialog.Builder builder = new AlertDialog.Builder(context);
 
-        Dialog alertDialog = new Dialog(context);
-        alertDialog.show();
-        alertDialog.setContentView(layout);
-        alertDialog.getWindow().setGravity(Gravity.CENTER);
-        alertDialog.setCancelable(false);
-        alertDialog.setCanceledOnTouchOutside(false);
-        return alertDialog;
+        builder.setTitle(title);
+        builder.setMessage(message);
+
+        builder.setPositiveButton(positiveBtn, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                if (positiveBtnCallable != null)
+                    try {
+                        positiveBtnCallable.call();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+            }
+        });
+        builder.setNegativeButton(negativeBtn, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                if (negativeBtnCallable != null)
+                    try {
+                        negativeBtnCallable.call();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                else
+                    dialog.dismiss();
+            }
+        });
+
+        AlertDialog dialog = builder.create();
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.setCancelable(false);
+        return dialog;
     }
 
-    public static void showSnackbar(View view, String message ){
+    public static void showSnackbar(View view, String message) {
         Snackbar snackbar = Snackbar
                 .make(view, message, Snackbar.LENGTH_LONG);
 

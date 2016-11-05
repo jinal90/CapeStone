@@ -14,12 +14,16 @@ import android.widget.Toast;
 import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
 import com.udacity.food.feasta.foodfeasta.R;
+import com.udacity.food.feasta.foodfeasta.helper.Utility;
 import com.udacity.food.feasta.foodfeasta.helper.session.SessionFactory;
 import com.udacity.food.feasta.foodfeasta.model.Fooditem;
 import com.udacity.food.feasta.foodfeasta.model.TableOrder;
 import com.udacity.food.feasta.foodfeasta.restaurant.customer.activity.LandingPageActivityCustomer;
 import com.udacity.food.feasta.foodfeasta.restaurant.customer.fragment.MenuFragment;
 import com.udacity.food.feasta.foodfeasta.ui.RecyclerViewCursorAdapter;
+
+import java.util.Locale;
+import java.util.concurrent.Callable;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -29,6 +33,7 @@ public class MenuRecyclerViewAdapter extends RecyclerViewCursorAdapter<MenuRecyc
 
     private final MenuFragment.OnListFragmentInteractionListener mListener;
     private LandingPageActivityCustomer publishActivity;
+    private AlertDialog dialog;
 
     public MenuRecyclerViewAdapter(MenuFragment.OnListFragmentInteractionListener listener,
                                    LandingPageActivityCustomer activity) {
@@ -102,37 +107,31 @@ public class MenuRecyclerViewAdapter extends RecyclerViewCursorAdapter<MenuRecyc
             imgAddRemoveItem.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
-                    final AlertDialog.Builder builder = new AlertDialog.Builder(publishActivity);
-
-                    builder.setTitle("Order Confirmation");
-
-                    builder.setMessage("Do you want to order " + foodItem.getName() +
-                            "?? \n It costs " + foodItem.getPrice() + ".");
-                    builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            Toast.makeText(itemView.getContext(), "Added", Toast.LENGTH_SHORT).show();
-                            TableOrder message = new TableOrder();
-                            //message.setTableName("Table 1");
-                            message.setTableName(SessionFactory.getInstance().getSelectedTable());
-                            message.setFoodItemName(foodItem.getName());
-                            Gson gson = new Gson();
-                            String msgJson = gson.toJson(message);
-                            publishActivity.publish(msgJson);
-                        }
-                    });
-                    builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-                        }
-                    });
-
-                    AlertDialog dialog = builder.create();
-                    dialog.setCanceledOnTouchOutside(false);
-                    dialog.setCancelable(false);
+                    if(dialog != null && dialog.isShowing())
+                        dialog.dismiss();
+                    dialog = Utility.showTwoButtonDialog(publishActivity,
+                            publishActivity.getString(R.string.order_confirm_title),
+                            String.format(Locale.ENGLISH,
+                                    publishActivity.getString(R.string.order_confirm_message),
+                                    foodItem.getName(), foodItem.getPrice()),
+                            publishActivity.getString(R.string.btn_OK),
+                            new Callable() {
+                                @Override
+                                public Object call() throws Exception {
+                                    TableOrder message = new TableOrder();
+                                    //message.setTableName("Table 1");
+                                    message.setTableName(SessionFactory.getInstance().getSelectedTable(publishActivity));
+                                    message.setFoodItemName(foodItem.getName());
+                                    Gson gson = new Gson();
+                                    String msgJson = gson.toJson(message);
+                                    publishActivity.publish(msgJson);
+                                    return null;
+                                }
+                            },
+                            publishActivity.getString(R.string.btn_cancel),
+                            null);
                     dialog.show();
+
 
                 }
             });

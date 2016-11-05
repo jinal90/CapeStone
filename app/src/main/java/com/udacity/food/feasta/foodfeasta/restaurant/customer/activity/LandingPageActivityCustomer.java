@@ -3,7 +3,6 @@ package com.udacity.food.feasta.foodfeasta.restaurant.customer.activity;
 import android.content.Intent;
 import android.content.res.AssetFileDescriptor;
 import android.media.MediaPlayer;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -13,9 +12,8 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
-import android.text.TextUtils;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.RelativeLayout;
@@ -28,20 +26,19 @@ import com.google.android.gms.nearby.Nearby;
 import com.google.android.gms.nearby.messages.Message;
 import com.google.gson.Gson;
 import com.udacity.food.feasta.foodfeasta.R;
-import com.udacity.food.feasta.foodfeasta.database.MenuDataSource;
 import com.udacity.food.feasta.foodfeasta.helper.Constants;
 import com.udacity.food.feasta.foodfeasta.helper.Utility;
-import com.udacity.food.feasta.foodfeasta.model.FoodMenu;
+import com.udacity.food.feasta.foodfeasta.helper.session.SessionFactory;
 import com.udacity.food.feasta.foodfeasta.model.Fooditem;
+import com.udacity.food.feasta.foodfeasta.model.TableOrder;
 import com.udacity.food.feasta.foodfeasta.restaurant.customer.fragment.MenuFragment;
 import com.udacity.food.feasta.foodfeasta.ui.BaseActivity;
 import com.udacity.food.feasta.foodfeasta.ui.ViewPagerAdapter;
 
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.Iterator;
+import java.util.Locale;
 import java.util.Map;
+import java.util.concurrent.Callable;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -56,6 +53,7 @@ public class LandingPageActivityCustomer extends BaseActivity
     private MediaPlayer mp;
     private GoogleApiClient mGoogleApiClient;
     private Message mActiveMessage;
+    private AlertDialog dialog;
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
@@ -146,12 +144,59 @@ public class LandingPageActivityCustomer extends BaseActivity
                     mp.setDataSource(afd.getFileDescriptor(), afd.getStartOffset(), afd.getLength());
                     mp.prepare();
                     mp.start();
+
+                    if(dialog != null && dialog.isShowing())
+                        dialog.dismiss();
+
+                    dialog = Utility.showTwoButtonDialog(this,
+                            getString(R.string.confirm_title),
+                            getString(R.string.call_waiter_confirm_message),
+                            getString(R.string.btn_yes),
+                            new Callable() {
+                                @Override
+                                public Object call() throws Exception {
+                                    TableOrder message = new TableOrder();
+                                    //message.setTableName("Table 1");
+                                    message.setTableName(SessionFactory.getInstance().getSelectedTable(LandingPageActivityCustomer.this));
+                                    message.setFoodItemName(Constants.CALL_WAITER);
+                                    Gson gson = new Gson();
+                                    String msgJson = gson.toJson(message);
+                                    publish(msgJson);
+                                    return null;
+                                }
+                            },
+                            getString(R.string.btn_no),
+                            null);
+                    dialog.show();
+
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
 
                 break;
             case R.id.fabWater:
+                if(dialog != null && dialog.isShowing())
+                    dialog.dismiss();
+                dialog = Utility.showTwoButtonDialog(this,
+                        getString(R.string.confirm_title),
+                        getString(R.string.get_water_confirm_message),
+                        getString(R.string.btn_yes),
+                        new Callable() {
+                            @Override
+                            public Object call() throws Exception {
+                                TableOrder message = new TableOrder();
+                                //message.setTableName("Table 1");
+                                message.setTableName(SessionFactory.getInstance().getSelectedTable(LandingPageActivityCustomer.this));
+                                message.setFoodItemName(Constants.ORDER_WATER);
+                                Gson gson = new Gson();
+                                String msgJson = gson.toJson(message);
+                                publish(msgJson);
+                                return null;
+                            }
+                        },
+                        getString(R.string.btn_no),
+                        null);
+                dialog.show();
 
                 break;
             case R.id.fabFeedback:

@@ -26,7 +26,7 @@ public class TableOrderAdapter extends RecyclerViewCursorAdapter<TableOrderAdapt
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.menu_item, parent, false);
+                .inflate(R.layout.table_order_item, parent, false);
         return new ViewHolder(view);
     }
 
@@ -61,6 +61,7 @@ public class TableOrderAdapter extends RecyclerViewCursorAdapter<TableOrderAdapt
 
             ButterKnife.bind(this, view);
             mView = view;
+
         }
 
         public void bindDataToView(final Fooditem foodItem) {

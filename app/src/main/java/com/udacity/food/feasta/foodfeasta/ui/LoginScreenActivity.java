@@ -96,7 +96,8 @@ public class LoginScreenActivity extends BaseActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 /*TextView tmpView = (TextView) view.findViewById(android.R.id.text1);
                 tmpView.setTextColor(Color.WHITE);*/
-                SessionFactory.getInstance().setSelectedTable(getResources().getStringArray(R.array.tableNameArray)[position]);
+                SessionFactory.getInstance().setSelectedTable(LoginScreenActivity.this,
+                        getResources().getStringArray(R.array.tableNameArray)[position]);
             }
 
             @Override
@@ -139,9 +140,10 @@ public class LoginScreenActivity extends BaseActivity {
         switch (view.getId()) {
             case R.id.btnSubmit:
                 if (radioCustomer.isChecked()) {
-                    if (TextUtils.isEmpty(SessionFactory.getInstance().getSelectedTable())) {
+                    if (TextUtils.isEmpty(SessionFactory.getInstance().getSelectedTable(LoginScreenActivity.this))) {
                         SessionFactory.getInstance()
-                                .setSelectedTable(getResources().getStringArray(R.array.tableNameArray)[0]);
+                                .setSelectedTable(LoginScreenActivity.this,
+                                        getResources().getStringArray(R.array.tableNameArray)[0]);
                     }
                     Intent intent = new Intent(this, LandingPageActivityCustomer.class);
                     startActivity(intent);
@@ -242,7 +244,8 @@ public class LoginScreenActivity extends BaseActivity {
                 HttpURLConnection urlConnection = null;
                 try {
                     String response = null;
-                    URL url = new URL(Constants.MENU_URL);
+
+                    URL url = new URL(Constants.MENU_VERSION_URL);
                     urlConnection = (HttpURLConnection) url.openConnection();
                     urlConnection.setConnectTimeout(30000);
                     InputStream in = urlConnection.getInputStream();
@@ -255,22 +258,43 @@ public class LoginScreenActivity extends BaseActivity {
                     response = sb.toString();
 
                     if (!TextUtils.isEmpty(response)) {
-                        //Utility.saveStringDataInPref(LandingPageActivityCustomer.this, "MenuData", response);
-                        MenuDataSource menuDataSource = new MenuDataSource(LoginScreenActivity.this);
-                        menuDataSource.open();
+                        int version = Integer.parseInt(response);
+                        if (SessionFactory.getInstance().getMenuDataVersion(LoginScreenActivity.this) < version) {
 
-                        menuDataSource.deleteAllItems();
-                        Gson gson = new Gson();
-                        FoodMenu fullMenu = gson.fromJson(response, FoodMenu.class);
-                        if (fullMenu != null && fullMenu.getFooditem() != null
-                                && fullMenu.getFooditem().size() > 0) {
-                            for (int i = 0; i < fullMenu.getFooditem().size(); i++) {
-
-                                menuDataSource.createItem(fullMenu.getFooditem().get(i));
+                            SessionFactory.getInstance().setMenuDataVersion(LoginScreenActivity.this, version);
+                            url = new URL(Constants.MENU_URL);
+                            urlConnection = (HttpURLConnection) url.openConnection();
+                            urlConnection.setConnectTimeout(30000);
+                            in = urlConnection.getInputStream();
+                            sb = new StringBuilder();
+                            buff = new byte[1024];
+                            while ((count = in.read(buff)) > 0) {
+                                sb.append(new String(buff, 0, count));
                             }
+                            response = sb.toString();
+
+                            if (!TextUtils.isEmpty(response)) {
+                                //Utility.saveStringDataInPref(LandingPageActivityCustomer.this, "MenuData", response);
+                                MenuDataSource menuDataSource = new MenuDataSource(LoginScreenActivity.this);
+                                menuDataSource.open();
+
+                                menuDataSource.deleteAllItems();
+                                Gson gson = new Gson();
+                                FoodMenu fullMenu = gson.fromJson(response, FoodMenu.class);
+                                if (fullMenu != null && fullMenu.getFooditem() != null
+                                        && fullMenu.getFooditem().size() > 0) {
+                                    for (int i = 0; i < fullMenu.getFooditem().size(); i++) {
+
+                                        menuDataSource.createItem(fullMenu.getFooditem().get(i));
+                                    }
+                                }
+                                menuDataSource.close();
+                                return Constants.SUCCESS;
+                            }
+                        } else {
+                            return Constants.SUCCESS;
                         }
-                        menuDataSource.close();
-                        return Constants.SUCCESS;
+
                     }
 
                     System.out.println("json -- " + response);
