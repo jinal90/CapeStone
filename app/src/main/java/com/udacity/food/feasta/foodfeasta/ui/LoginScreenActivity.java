@@ -16,6 +16,9 @@ import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
 import com.udacity.food.feasta.foodfeasta.R;
 import com.udacity.food.feasta.foodfeasta.helper.Constants;
 import com.udacity.food.feasta.foodfeasta.helper.Utility;
@@ -52,6 +55,8 @@ public class LoginScreenActivity extends BaseActivity {
         setContentView(R.layout.activity_login_screen);
 
         ButterKnife.bind(this);
+
+        MobileAds.initialize(getApplicationContext(), getString(R.string.ad_unit_app_id));
 
         setupUI();
         setupListeners();
@@ -90,6 +95,8 @@ public class LoginScreenActivity extends BaseActivity {
         tableNameSpinner.setSelection(0);
         tableNameSpinner.setSelected(true);
         adapter.notifyDataSetChanged();
+
+        showAdd();
     }
 
 
@@ -99,7 +106,7 @@ public class LoginScreenActivity extends BaseActivity {
         edtInputName.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                if(!hasFocus){
+                if (!hasFocus) {
                     InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(edtInputName.getWindowToken(), 0);
                 }
@@ -113,7 +120,7 @@ public class LoginScreenActivity extends BaseActivity {
         switch (view.getId()) {
             case R.id.btnSubmit:
                 if (radioCustomer.isChecked()) {
-                    if(TextUtils.isEmpty(SessionFactory.getInstance().getSelectedTable())){
+                    if (TextUtils.isEmpty(SessionFactory.getInstance().getSelectedTable())) {
                         SessionFactory.getInstance()
                                 .setSelectedTable(getResources().getStringArray(R.array.tableNameArray)[0]);
                     }
@@ -170,6 +177,14 @@ public class LoginScreenActivity extends BaseActivity {
 
                 break;
         }
+    }
+
+    public void showAdd() {
+        AdView mAdView = (AdView) findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder()
+                .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
+                .build();
+        mAdView.loadAd(adRequest);
     }
 
     @Override
