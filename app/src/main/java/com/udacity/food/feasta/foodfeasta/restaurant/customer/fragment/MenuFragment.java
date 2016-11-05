@@ -13,6 +13,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import com.udacity.food.feasta.foodfeasta.R;
 import com.udacity.food.feasta.foodfeasta.database.MenuDataManager;
@@ -153,6 +154,6 @@ public class MenuFragment extends Fragment implements LoaderManager.LoaderCallba
      */
     public interface OnListFragmentInteractionListener {
         // TODO: Update argument type and name
-        void onListFragmentInteraction(Fooditem item);
+        void onListFragmentInteraction(Fooditem item, ImageView img);
     }
 }

@@ -3,11 +3,13 @@ package com.udacity.food.feasta.foodfeasta.restaurant.customer.activity;
 import android.content.Intent;
 import android.content.res.AssetFileDescriptor;
 import android.media.MediaPlayer;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
@@ -16,6 +18,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import com.github.clans.fab.FloatingActionButton;
@@ -233,11 +236,18 @@ public class LandingPageActivityCustomer extends BaseActivity
     }
 
     @Override
-    public void onListFragmentInteraction(Fooditem item) {
+    public void onListFragmentInteraction(Fooditem item, ImageView imgView) {
 
         Intent detailViewIntent = new Intent(this, DetailViewActivity.class);
         detailViewIntent.putExtra(Constants.SELECTED_FOOD_ITEM, item);
-        startActivity(detailViewIntent);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            ActivityOptionsCompat options = ActivityOptionsCompat.
+                    makeSceneTransitionAnimation(this, imgView, getString(R.string.activity_image_trans));
+            startActivity(detailViewIntent, options.toBundle());
+        }
+        else {
+            startActivity(detailViewIntent);
+        }
     }
 
     @Override

@@ -23,7 +23,8 @@
             android:layout_height="100dp"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:contentDescription="@string/contentDesc_food_img"/>
+            android:contentDescription="@string/contentDesc_food_img"
+            android:transitionName="@string/activity_image_trans"/>
 
         <RelativeLayout
             android:layout_width="wrap_content"
