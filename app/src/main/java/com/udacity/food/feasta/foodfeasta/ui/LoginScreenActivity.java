@@ -1,7 +1,9 @@
-package com.udacity.food.feasta.foodfeasta.table.customer.ui.activity;
+package com.udacity.food.feasta.foodfeasta.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -10,13 +12,15 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.udacity.food.feasta.foodfeasta.R;
-import com.udacity.food.feasta.foodfeasta.helper.SessionFactory;
+import com.udacity.food.feasta.foodfeasta.helper.Constants;
+import com.udacity.food.feasta.foodfeasta.helper.session.SessionFactory;
+import com.udacity.food.feasta.foodfeasta.restaurant.customer.activity.LandingPageActivityCustomer;
 import com.udacity.food.feasta.foodfeasta.restaurant.manager.activity.LandingPageActivityManager;
-import com.udacity.food.feasta.foodfeasta.ui.BaseActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -38,6 +42,8 @@ public class LoginScreenActivity extends BaseActivity {
     EditText edtInputName;
     @BindView(R.id.tableNameSpinner)
     Spinner tableNameSpinner;
+    @BindView(R.id.activity_main)
+    RelativeLayout rlMainContainer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,10 +105,23 @@ public class LoginScreenActivity extends BaseActivity {
             Intent intent = new Intent(this, LandingPageActivityCustomer.class);
             startActivity(intent);
         } else if (radioManager.isChecked()) {
-            Toast.makeText(this, "Success", Toast.LENGTH_SHORT).show();
 
-            Intent intent = new Intent(this, LandingPageActivityManager.class);
-            startActivity(intent);
+            if (edtInputName.getText().toString() != null
+                    && !TextUtils.isEmpty(edtInputName.getText().toString())
+                    && Constants.MANAGER_UNIQUE_USERNAME.equalsIgnoreCase(edtInputName.getText().toString())) {
+                Toast.makeText(this, "Success", Toast.LENGTH_SHORT).show();
+
+                Intent intent = new Intent(this, LandingPageActivityManager.class);
+                startActivity(intent);
+            } else {
+                //Toast.makeText(this, "Kindly enter valid Manager username", Toast.LENGTH_SHORT).show();
+                Snackbar snackbar = Snackbar
+                        .make(rlMainContainer, "Kindly enter valid Manager username", Snackbar.LENGTH_LONG);
+
+                snackbar.show();
+            }
+
+
         } else {
 
             Toast.makeText(this, "Fail", Toast.LENGTH_SHORT).show();

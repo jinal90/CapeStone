@@ -1,4 +1,4 @@
-package com.udacity.food.feasta.foodfeasta.table.customer.ui.fragment;
+package com.udacity.food.feasta.foodfeasta.restaurant.customer.fragment;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -19,8 +19,8 @@ import com.udacity.food.feasta.foodfeasta.database.MenuDataManager;
 import com.udacity.food.feasta.foodfeasta.database.TableOrderContentProvider;
 import com.udacity.food.feasta.foodfeasta.helper.Constants;
 import com.udacity.food.feasta.foodfeasta.model.Fooditem;
-import com.udacity.food.feasta.foodfeasta.table.customer.ui.activity.LandingPageActivityCustomer;
-import com.udacity.food.feasta.foodfeasta.table.customer.ui.adapters.MenuRecyclerViewAdapter;
+import com.udacity.food.feasta.foodfeasta.restaurant.customer.activity.LandingPageActivityCustomer;
+import com.udacity.food.feasta.foodfeasta.restaurant.customer.adapters.MenuRecyclerViewAdapter;
 
 /**
  * A fragment representing a list of Items.

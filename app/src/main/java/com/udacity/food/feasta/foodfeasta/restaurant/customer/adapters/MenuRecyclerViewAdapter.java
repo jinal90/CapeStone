@@ -1,4 +1,4 @@
-package com.udacity.food.feasta.foodfeasta.table.customer.ui.adapters;
+package com.udacity.food.feasta.foodfeasta.restaurant.customer.adapters;
 
 import android.content.DialogInterface;
 import android.database.Cursor;
@@ -14,11 +14,12 @@ import android.widget.Toast;
 import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
 import com.udacity.food.feasta.foodfeasta.R;
-import com.udacity.food.feasta.foodfeasta.helper.SessionFactory;
+import com.udacity.food.feasta.foodfeasta.helper.session.SessionFactory;
 import com.udacity.food.feasta.foodfeasta.model.Fooditem;
 import com.udacity.food.feasta.foodfeasta.model.TableOrder;
-import com.udacity.food.feasta.foodfeasta.table.customer.ui.activity.LandingPageActivityCustomer;
-import com.udacity.food.feasta.foodfeasta.table.customer.ui.fragment.MenuFragment;
+import com.udacity.food.feasta.foodfeasta.restaurant.customer.activity.LandingPageActivityCustomer;
+import com.udacity.food.feasta.foodfeasta.restaurant.customer.fragment.MenuFragment;
+import com.udacity.food.feasta.foodfeasta.ui.RecyclerViewCursorAdapter;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

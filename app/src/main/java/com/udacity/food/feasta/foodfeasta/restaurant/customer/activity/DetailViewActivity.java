@@ -1,7 +1,6 @@
-package com.udacity.food.feasta.foodfeasta.table.customer.ui.activity;
+package com.udacity.food.feasta.foodfeasta.restaurant.customer.activity;
 
 import android.content.DialogInterface;
-import android.content.res.AssetFileDescriptor;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -22,7 +21,7 @@ import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
 import com.udacity.food.feasta.foodfeasta.R;
 import com.udacity.food.feasta.foodfeasta.helper.Constants;
-import com.udacity.food.feasta.foodfeasta.helper.SessionFactory;
+import com.udacity.food.feasta.foodfeasta.helper.session.SessionFactory;
 import com.udacity.food.feasta.foodfeasta.model.Fooditem;
 import com.udacity.food.feasta.foodfeasta.model.TableOrder;
 import com.udacity.food.feasta.foodfeasta.ui.BaseActivity;

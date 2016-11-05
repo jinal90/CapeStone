@@ -4,7 +4,7 @@
     android:id="@+id/activity_order_cart"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".table.customer.ui.activity.OrderCartActivity">
+    tools:context=".restaurant.customer.activity.OrderCartActivity">
 
     <RelativeLayout
         android:layout_width="match_parent"

@@ -1,4 +1,4 @@
-package com.udacity.food.feasta.foodfeasta.helper;
+package com.udacity.food.feasta.foodfeasta.helper.session;
 
 /**
  * Created by jinal on 11/4/2016.

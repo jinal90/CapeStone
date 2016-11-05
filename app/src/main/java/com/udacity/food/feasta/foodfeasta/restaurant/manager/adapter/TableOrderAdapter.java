@@ -11,7 +11,7 @@ import android.widget.TextView;
 import com.squareup.picasso.Picasso;
 import com.udacity.food.feasta.foodfeasta.R;
 import com.udacity.food.feasta.foodfeasta.model.Fooditem;
-import com.udacity.food.feasta.foodfeasta.table.customer.ui.adapters.RecyclerViewCursorAdapter;
+import com.udacity.food.feasta.foodfeasta.ui.RecyclerViewCursorAdapter;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

@@ -1,4 +1,4 @@
-package com.udacity.food.feasta.foodfeasta.table.customer.ui.adapters;
+package com.udacity.food.feasta.foodfeasta.ui;
 
 import android.database.Cursor;
 import android.support.v7.widget.RecyclerView;

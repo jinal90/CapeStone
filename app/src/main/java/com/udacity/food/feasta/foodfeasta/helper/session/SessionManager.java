@@ -1,6 +1,4 @@
-package com.udacity.food.feasta.foodfeasta.helper;
-
-import java.util.ArrayList;
+package com.udacity.food.feasta.foodfeasta.helper.session;
 
 /**
  * Created by jinal on 11/4/2016.
