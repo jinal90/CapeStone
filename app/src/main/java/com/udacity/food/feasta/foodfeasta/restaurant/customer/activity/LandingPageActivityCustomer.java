@@ -26,12 +26,14 @@ import com.google.android.gms.nearby.Nearby;
 import com.google.android.gms.nearby.messages.Message;
 import com.google.gson.Gson;
 import com.udacity.food.feasta.foodfeasta.R;
+import com.udacity.food.feasta.foodfeasta.database.TableOrderDataSource;
 import com.udacity.food.feasta.foodfeasta.helper.Constants;
 import com.udacity.food.feasta.foodfeasta.helper.Utility;
 import com.udacity.food.feasta.foodfeasta.helper.session.SessionFactory;
 import com.udacity.food.feasta.foodfeasta.model.Fooditem;
 import com.udacity.food.feasta.foodfeasta.model.TableOrder;
 import com.udacity.food.feasta.foodfeasta.restaurant.customer.fragment.MenuFragment;
+import com.udacity.food.feasta.foodfeasta.restaurant.manager.activity.LandingPageActivityManager;
 import com.udacity.food.feasta.foodfeasta.ui.BaseActivity;
 import com.udacity.food.feasta.foodfeasta.ui.ViewPagerAdapter;
 
@@ -162,6 +164,7 @@ public class LandingPageActivityCustomer extends BaseActivity
                                     Gson gson = new Gson();
                                     String msgJson = gson.toJson(message);
                                     publish(msgJson);
+
                                     return null;
                                 }
                             },

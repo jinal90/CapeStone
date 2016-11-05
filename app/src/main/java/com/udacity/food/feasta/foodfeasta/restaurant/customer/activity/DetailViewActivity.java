@@ -18,6 +18,7 @@ import com.google.android.gms.nearby.messages.Message;
 import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
 import com.udacity.food.feasta.foodfeasta.R;
+import com.udacity.food.feasta.foodfeasta.database.TableOrderDataSource;
 import com.udacity.food.feasta.foodfeasta.helper.Constants;
 import com.udacity.food.feasta.foodfeasta.helper.Utility;
 import com.udacity.food.feasta.foodfeasta.helper.session.SessionFactory;
@@ -153,6 +154,14 @@ public class DetailViewActivity extends BaseActivity implements
                                 Gson gson = new Gson();
                                 String msgJson = gson.toJson(message);
                                 publish(msgJson);
+
+                                TableOrderDataSource dataSource =
+                                        new TableOrderDataSource(DetailViewActivity.this);
+                                dataSource.open();
+                                dataSource.createOrder(
+                                        SessionFactory.getInstance().getSelectedTable(DetailViewActivity.this),
+                                        mFoodItem.getName());
+                                dataSource.close();
                                 return null;
                             }
                         },

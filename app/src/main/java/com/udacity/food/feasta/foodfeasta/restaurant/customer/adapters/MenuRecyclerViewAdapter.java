@@ -14,6 +14,7 @@ import android.widget.Toast;
 import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
 import com.udacity.food.feasta.foodfeasta.R;
+import com.udacity.food.feasta.foodfeasta.database.TableOrderDataSource;
 import com.udacity.food.feasta.foodfeasta.helper.Utility;
 import com.udacity.food.feasta.foodfeasta.helper.session.SessionFactory;
 import com.udacity.food.feasta.foodfeasta.model.Fooditem;
@@ -125,6 +126,15 @@ public class MenuRecyclerViewAdapter extends RecyclerViewCursorAdapter<MenuRecyc
                                     Gson gson = new Gson();
                                     String msgJson = gson.toJson(message);
                                     publishActivity.publish(msgJson);
+
+                                    TableOrderDataSource dataSource =
+                                            new TableOrderDataSource(publishActivity);
+                                    dataSource.open();
+                                    dataSource.createOrder(
+                                            SessionFactory.getInstance().getSelectedTable(publishActivity),
+                                            foodItem.getName());
+                                    dataSource.close();
+
                                     return null;
                                 }
                             },
