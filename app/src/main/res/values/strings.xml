@@ -84,6 +84,7 @@
 
     <string name="key_selectedTable">SelectedTable</string>
     <string name="key_menuVersion">MenuVersion</string>
+    <string name="rs">Rs. %1$s</string>
 
     <string-array name="tableNameArray">
         <item>Table 1</item>

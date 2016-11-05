@@ -89,7 +89,9 @@ public class MenuRecyclerViewAdapter extends RecyclerViewCursorAdapter<MenuRecyc
             mItem = foodItem;
             tvMenuItemName.setText(foodItem.getName());
             tvMenuItemDescription.setText(foodItem.getShort_desc());
-            tvMenuItemPrice.setText(foodItem.getPrice());
+            tvMenuItemPrice.setText(String.format(Locale.ENGLISH,
+                    itemView.getContext().getString(R.string.rs),
+                    foodItem.getPrice()));
 
             Picasso.with(itemView.getContext())
                     .load(foodItem.getImage())

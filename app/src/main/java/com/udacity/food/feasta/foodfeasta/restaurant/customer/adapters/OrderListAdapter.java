@@ -15,6 +15,8 @@ import com.udacity.food.feasta.foodfeasta.R;
 import com.udacity.food.feasta.foodfeasta.model.Fooditem;
 import com.udacity.food.feasta.foodfeasta.ui.RecyclerViewCursorAdapter;
 
+import java.util.Locale;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -73,7 +75,9 @@ public class OrderListAdapter extends RecyclerViewCursorAdapter<OrderListAdapter
             mItem = foodItem;
             tvMenuItemName.setText(foodItem.getName());
             tvMenuItemDescription.setText(foodItem.getShort_desc());
-            tvMenuItemPrice.setText(foodItem.getPrice());
+            tvMenuItemPrice.setText(String.format(Locale.ENGLISH,
+                    itemView.getContext().getString(R.string.rs),
+                    foodItem.getPrice()));
 
             Picasso.with(itemView.getContext())
                     .load(foodItem.getImage())
