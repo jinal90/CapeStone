@@ -8,6 +8,8 @@
     <!-- Activity tile -->
     <string name="title_activity_detail_view">Food Item Details</string>
     <string name="title_activity_landing_page_manager">Restaurant Manager</string>
+    <string name="title_activity_landing_page_customer">Restaurant Customer</string>
+    <string name="title_activity_setup">User Setup</string>
 
     <!-- Content descriptions for views for Accessibility-->
     <string name="contentDesc_detail_img">Detail image of food item selected.</string>
@@ -54,6 +56,11 @@
     <!-- Strings for text views -->
     <string name="txt_ErrorTitle">Error</string>
     <string name="txt_ErrorDesc">OOPS! There seems to be some issue loading data.</string>
+
+    <!-- alert messages strings-->
+
+    <string name="message_select_usertype">Kindly select user type to proceed.</string>
+    <string name="message_invalid_username">Kindly enter valid username.</string>
 
     <string-array name="tableNameArray">
         <item>Table 1</item>

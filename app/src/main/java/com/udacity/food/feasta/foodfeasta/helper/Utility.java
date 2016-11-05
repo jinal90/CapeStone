@@ -1,14 +1,19 @@
 package com.udacity.food.feasta.foodfeasta.helper;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.support.design.widget.Snackbar;
+import android.support.v4.content.ContextCompat;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.TextView;
 
 import com.udacity.food.feasta.foodfeasta.R;
 
@@ -51,6 +56,21 @@ public class Utility {
         alertDialog.setCancelable(false);
         alertDialog.setCanceledOnTouchOutside(false);
         return alertDialog;
+    }
+
+    public static void showSnackbar(View view, String message ){
+        Snackbar snackbar = Snackbar
+                .make(view, message, Snackbar.LENGTH_LONG);
+
+        View sbView = snackbar.getView();
+
+        // Changing snackbar background color
+        sbView.setBackgroundColor(ContextCompat.getColor(view.getContext(), R.color.colorAccent));
+
+        // Changing snackbar text color
+        TextView textView = (TextView) sbView.findViewById(android.support.design.R.id.snackbar_text);
+        textView.setTextColor(ContextCompat.getColor(view.getContext(), R.color.primary_text));
+        snackbar.show();
     }
 
 }

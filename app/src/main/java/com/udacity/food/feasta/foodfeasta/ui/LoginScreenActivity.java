@@ -1,10 +1,11 @@
 package com.udacity.food.feasta.foodfeasta.ui;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.Snackbar;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -14,10 +15,10 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
-import android.widget.Toast;
 
 import com.udacity.food.feasta.foodfeasta.R;
 import com.udacity.food.feasta.foodfeasta.helper.Constants;
+import com.udacity.food.feasta.foodfeasta.helper.Utility;
 import com.udacity.food.feasta.foodfeasta.helper.session.SessionFactory;
 import com.udacity.food.feasta.foodfeasta.restaurant.customer.activity.LandingPageActivityCustomer;
 import com.udacity.food.feasta.foodfeasta.restaurant.manager.activity.LandingPageActivityManager;
@@ -91,41 +92,61 @@ public class LoginScreenActivity extends BaseActivity {
         adapter.notifyDataSetChanged();
     }
 
+
     @Override
     public void setupListeners() {
 
+        edtInputName.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if(!hasFocus){
+                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(edtInputName.getWindowToken(), 0);
+                }
+            }
+        });
     }
 
-    @OnClick(R.id.btnSubmit)
+    @OnClick({R.id.btnSubmit, R.id.activity_main})
     public void onClick(View view) {
 
-        if (radioCustomer.isChecked()) {
-            Toast.makeText(this, "Success", Toast.LENGTH_SHORT).show();
+        switch (view.getId()) {
+            case R.id.btnSubmit:
+                if (radioCustomer.isChecked()) {
+                    if(TextUtils.isEmpty(SessionFactory.getInstance().getSelectedTable())){
+                        SessionFactory.getInstance()
+                                .setSelectedTable(getResources().getStringArray(R.array.tableNameArray)[0]);
+                    }
+                    Intent intent = new Intent(this, LandingPageActivityCustomer.class);
+                    startActivity(intent);
+                } else if (radioManager.isChecked()) {
 
-            Intent intent = new Intent(this, LandingPageActivityCustomer.class);
-            startActivity(intent);
-        } else if (radioManager.isChecked()) {
-
-            if (edtInputName.getText().toString() != null
-                    && !TextUtils.isEmpty(edtInputName.getText().toString())
-                    && Constants.MANAGER_UNIQUE_USERNAME.equalsIgnoreCase(edtInputName.getText().toString())) {
-                Toast.makeText(this, "Success", Toast.LENGTH_SHORT).show();
-
-                Intent intent = new Intent(this, LandingPageActivityManager.class);
-                startActivity(intent);
-            } else {
-                //Toast.makeText(this, "Kindly enter valid Manager username", Toast.LENGTH_SHORT).show();
-                Snackbar snackbar = Snackbar
-                        .make(rlMainContainer, "Kindly enter valid Manager username", Snackbar.LENGTH_LONG);
-
-                snackbar.show();
-            }
+                    if (edtInputName.getText().toString() != null
+                            && !TextUtils.isEmpty(edtInputName.getText().toString())
+                            && Constants.MANAGER_UNIQUE_USERNAME.equalsIgnoreCase(edtInputName.getText().toString())) {
+                        Intent intent = new Intent(this, LandingPageActivityManager.class);
+                        startActivity(intent);
+                    } else {
+                        Utility.showSnackbar(rlMainContainer, getString(R.string.message_invalid_username));
+                    }
 
 
-        } else {
+                } else {
+                    Utility.showSnackbar(rlMainContainer, getString(R.string.message_select_usertype));
+                }
 
-            Toast.makeText(this, "Fail", Toast.LENGTH_SHORT).show();
+                break;
+
+            case R.id.activity_main:
+
+                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+                break;
+
+            default:
+                break;
         }
+
 
     }
 
