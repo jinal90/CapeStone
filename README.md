@@ -1,5 +1,5 @@
 
-# CapeStone Stage2 - Food Feasta
+# CapStone Stage2 - Food Feasta
 A revolutionary new Food Ordering Menu app for particular restaurant - easy ordering menu, with description of food items with picture and price. The app will work on concept of Google Nearby API. Here the device with the restaurant manager/waiter acts as subscriber and device at table acts as publisher.
 What happens when customer visits any restaurant? Customer sits at table, looks at menu and waits for waiter to take their order. And if customer wants to add items to order then they need to call waiter again. Even at time of ordering food, customer is not used to all dishes so they usually ask waiter about taste and ingredients of food item before ordering any new item.
 This app will provide a seamless food ordering experience at restaurant. Devices will be kept at tables. App will have menu of food items served at that particular restaurant. Customers can glance at the menu, see details like ingredients, taste and type of food items with pictures and directly order from device. Once the customer confirms order, the details of order are received by device that is with restaurant manager/waiter along with table number. No paper, no confusion, no delays and at the end a consolidated check for customer is ready. That’s it, the app does it all.
